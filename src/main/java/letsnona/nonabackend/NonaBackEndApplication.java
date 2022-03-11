@@ -1,18 +1,20 @@
 package letsnona.nonabackend;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 
 @SpringBootApplication
 public class NonaBackEndApplication {
-    private static final String mainYml = "local";
+    private static final String mainYml = "";
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder(NonaBackEndApplication.class)
+        /*new SpringApplicationBuilder(NonaBackEndApplication.class)
                 .properties(
-                        "spring.config.location=" + "classpath:/application-" + mainYml + ".yml"
+                        "spring.config.location=" + "classpath:/application" + mainYml + ".yml"
 
-                ).run(args);
+                ).run(args);*/
+        SpringApplication.run(NonaBackEndApplication.class, args);
+
     }
 
 }

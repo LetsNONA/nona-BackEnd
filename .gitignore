@@ -7,7 +7,9 @@ build/
 
 ## yml setting
 src/main/resources/application-security.yml
-
+src/main/resources/application-app.yml
+src/main/resources/application-jwt.yml
+JwtProperties.java
 
 ### STS ###
 .apt_generated
