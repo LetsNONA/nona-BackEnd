@@ -11,8 +11,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class PropertiesTest {
-    @Autowired
-    JwtProperties test;
 
     @Value("${jwt.TOKEN_PREFIX}") String TOKEN_PREFIX;
     @Test
@@ -22,8 +20,5 @@ class PropertiesTest {
         assertThat(TOKEN_PREFIX).isNotEmpty();
     }
 
-    @Test
-    void beanProperties(){
-        System.out.println("test.toString() = " + test.toString());
-    }
+
 }

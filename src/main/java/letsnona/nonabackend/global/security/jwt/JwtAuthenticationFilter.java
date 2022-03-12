@@ -22,8 +22,7 @@ import java.util.Date;
 
 
 @RequiredArgsConstructor
-@Slf4j
-public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
 
     private final AuthenticationManager authenticationManager;
 
@@ -44,7 +43,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             e.printStackTrace();
         }
 
-        System.out.println("JwtAuthenticationFilter : " + loginRequestDto);
+        System.out.println("JwtAuthenticationFilter : "+loginRequestDto);
 
         // 유저네임패스워드 토큰 생성
         UsernamePasswordAuthenticationToken authenticationToken =
@@ -67,7 +66,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 authenticationManager.authenticate(authenticationToken);
 
         PrincipalDetails principalDetailis = (PrincipalDetails) authentication.getPrincipal();
-        System.out.println("Authentication : " + principalDetailis.getUser().getUsername());
+        System.out.println("Authentication : "+principalDetailis.getUser().getUsername());
         return authentication;
     }
 
@@ -80,12 +79,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String jwtToken = JWT.create()
                 .withSubject(principalDetailis.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
+                .withExpiresAt(new Date(System.currentTimeMillis()+JwtProperties.EXPIRATION_TIME))
                 .withClaim("id", principalDetailis.getUser().getId())
                 .withClaim("username", principalDetailis.getUser().getUsername())
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
-        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
+        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX+jwtToken);
     }
 
 }
