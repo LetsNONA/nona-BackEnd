@@ -35,10 +35,16 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:2.6.4'
     //mysql
     implementation 'mysql:mysql-connector-java'
+    //h2 test scope
+    testRuntimeOnly 'com.h2database:h2'
 
     //JWT
-    // https://mvnrepository.com/artifact/com.auth0/java-jwt
     implementation group: 'com.auth0', name: 'java-jwt', version: '3.18.3'
+    //파일입출력
+    implementation 'commons-io:commons-io:2.6'
+
+    // https://mvnrepository.com/artifact/org.imgscalr/imgscalr-lib (파일리사이징 썸네일 ) Scalr
+    implementation group: 'org.imgscalr', name: 'imgscalr-lib', version: '4.2'
 
 
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
