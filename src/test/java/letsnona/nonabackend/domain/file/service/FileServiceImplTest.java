@@ -1,4 +1,4 @@
-package letsnona.nonabackend.domain.post.service;
+package letsnona.nonabackend.domain.file.service;
 
 import letsnona.nonabackend.domain.file.service.FileServiceImpl;
 import org.junit.jupiter.api.Disabled;
@@ -25,6 +25,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class FileServiceImplTest {
+
+    /*Todo
+    *  -현재 시나리오 테스트로 작성되어있어,
+    *  유닛테스트 추가해야됩니다 */
 
     @Autowired
     MockMvc mockMvc;

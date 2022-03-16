@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface FileServiceInterface {
-    String getSaveDirectory();
+    String getSaveDirectoryPath();
 
 
     Boolean makeTumbnail(File originalFile) throws IOException;

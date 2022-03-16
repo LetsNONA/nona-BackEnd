@@ -24,11 +24,12 @@ public class FileServiceImpl implements FileServiceInterface {
     @Value("${file.path}")
     private String filePath;
 
-    private int dw = 250;
-    private int dh = 250;
+    private int tumbImg_width = 250;
+    private int tumbImg_height = 250;
+    
 
     @Override
-    public String getSaveDirectory() {
+    public String getSaveDirectoryPath() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         String str = sdf.format(date);
@@ -51,22 +52,21 @@ public class FileServiceImpl implements FileServiceInterface {
 
         // 원본 너비를 기준으로 하여 썸네일의 비율로 높이를 계산합니다.
         int nw = ow;
-        int nh = (ow * dh) / dw;
+        int nh = (ow * tumbImg_height) / tumbImg_width;
         // 계산된 높이가 원본보다 높다면 crop이 안되므로
         // 원본 높이를 기준으로 썸네일의 비율로 너비를 계산합니다.
         if (nh > oh) {
-            nw = (oh * dw) / dh;
+            nw = (oh * tumbImg_width) / tumbImg_height;
             nh = oh;
         }
         // 계산된 크기로 원본이미지를 가운데에서 crop 합니다.
         BufferedImage cropImg = Scalr.crop(srcImg, (ow - nw) / 2, (oh - nh) / 2, nw, nh);
         // crop된 이미지로 썸네일을 생성합니다.
-        BufferedImage destImg = Scalr.resize(cropImg, dw, dh);
+        BufferedImage destImg = Scalr.resize(cropImg, tumbImg_width, tumbImg_height);
 
-        String cropImgName = getSaveDirectory()+"/s_"+originalFile.getName() ;
+        String cropImgName = getSaveDirectoryPath()+"/s_"+originalFile.getName() ;
         try {
             File tumbImg = new File(cropImgName);
-////c4ba709b-dcd4-4395-bbb5-68ca13e4d3a6_IMG_1024.jpegs_c4ba709b-dcd4-4395-bbb5-68ca13e4d3a6_IMG_1024
             ImageIO.write(destImg, "jpg", tumbImg);
         }catch (IOException e )
             {
@@ -82,9 +82,9 @@ public class FileServiceImpl implements FileServiceInterface {
         for (MultipartFile file : multipartFiles
         ) {
             String saveFileName = uuid.toString() + "_" + file.getOriginalFilename();
-            String savePath = getSaveDirectory();
+            String savePath = getSaveDirectoryPath();
 
-            File target = new File(getSaveDirectory(), saveFileName);
+            File target = new File(getSaveDirectoryPath(), saveFileName);
 
             try {
                 file.transferTo(target);
