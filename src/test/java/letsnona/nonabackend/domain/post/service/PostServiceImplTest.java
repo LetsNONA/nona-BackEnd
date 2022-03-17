@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithUserDetails;
@@ -17,7 +18,6 @@ import org.springframework.test.context.TestPropertySource;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(classes = NonaBackEndApplication.class)
-@DataJpaTest
 class PostServiceImplTest {
 
     @Autowired
@@ -27,7 +27,7 @@ class PostServiceImplTest {
     PostRepository postRepository;
 
     @Test
-    @WithUserDetails("testId")
+    @WithUserDetails("testId3")
     void addPost() {
         //given
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

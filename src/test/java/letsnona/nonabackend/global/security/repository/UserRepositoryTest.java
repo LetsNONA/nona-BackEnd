@@ -14,9 +14,7 @@ import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-@DataJpaTest
-@TestPropertySource("classpath:application-test.yml")
+@SpringBootTest
 class UserRepositoryTest {
     @Autowired
     UserRepository userRepository;
