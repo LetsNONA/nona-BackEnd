@@ -1,6 +1,6 @@
 package letsnona.nonabackend.global.security.controller;
 
-import letsnona.nonabackend.global.security.repository.UserRepository;
+import letsnona.nonabackend.global.security.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ class RestApiControllerUnitTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    UserRepository userRepository;
+    MemberRepository memberRepository;
 
     @Test
     void getHome() throws Exception {

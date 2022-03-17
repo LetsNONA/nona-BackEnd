@@ -1,8 +1,8 @@
 package letsnona.nonabackend.global.security.controller;
 
 import letsnona.nonabackend.global.security.auth.PrincipalDetails;
-import letsnona.nonabackend.global.security.entity.User;
-import letsnona.nonabackend.global.security.repository.UserRepository;
+import letsnona.nonabackend.global.security.entity.Member;
+import letsnona.nonabackend.global.security.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor 
 public class RestApiController {
 	
-	private final UserRepository userRepository;
+	private final MemberRepository memberRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	// 모든 사람이 접근 가능
@@ -48,15 +48,15 @@ public class RestApiController {
 	
 	// 어드민이 접근 가능
 	@GetMapping("admin/users")
-	public List<User> users(){
-		return userRepository.findAll();
+	public List<Member> users(){
+		return memberRepository.findAll();
 	}
 	
 	@PostMapping("join")
-	public String join(@RequestBody User user) {
-		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		user.setRoles("ROLE_USER");
-		userRepository.save(user);
+	public String join(@RequestBody Member member) {
+		member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
+		member.setRoles("ROLE_USER");
+		memberRepository.save(member);
 		return "회원가입완료";
 	}
 	

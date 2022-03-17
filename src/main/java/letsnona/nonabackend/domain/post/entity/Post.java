@@ -1,6 +1,6 @@
 package letsnona.nonabackend.domain.post.entity;
 
-import letsnona.nonabackend.global.security.entity.User;
+import letsnona.nonabackend.global.security.entity.Member;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -19,7 +19,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @ManyToOne
-    private User owner;
+    private Member owner;
 
     private String imgid; // 임시 이미지 아이디, join 필요
     private String title;
@@ -39,7 +39,7 @@ public class Post {
     private boolean flagDelete;
 
     @Builder
-    public Post(User owner, String imgid, String title, String content, String category, String tradePlace, int price, String hashTag) {
+    public Post(Member owner, String imgid, String title, String content, String category, String tradePlace, int price, String hashTag) {
         this.owner = owner;
         this.imgid = imgid;
         this.title = title;

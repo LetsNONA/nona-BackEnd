@@ -1,30 +1,30 @@
 package letsnona.nonabackend.global.security.repository;
 
-import letsnona.nonabackend.global.security.entity.User;
+import letsnona.nonabackend.global.security.entity.Member;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-class UserRepositoryTest {
+@DataJpaTest
+@TestPropertySource(properties = { "spring.config.location=classpath:application-test.yml" })
+class MemberRepositoryTest {
     @Autowired
-    UserRepository userRepository;
+    MemberRepository memberRepository;
 
 /*    @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;*/
 
     @BeforeEach
     void setup(){
-        userRepository.deleteAll();
+        memberRepository.deleteAll();
     }
 
 
@@ -33,7 +33,7 @@ class UserRepositoryTest {
     void insertUser(){
         //given
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        User user = User.builder()
+        Member member = Member.builder()
                 .username("testId3")
                 .password(passwordEncoder.encode("test"))
                 .email("test@naver.com")
@@ -41,11 +41,12 @@ class UserRepositoryTest {
                 .build();
 
         //when
-        userRepository.save(user);
+        memberRepository.save(member);
 
         //then
-
-        assertThat(userRepository.findByUsername("testId3")).isEqualTo(user);
+        Member getDbMember = memberRepository.findByUsername("testId3");
+        getDbMember.toString();
+        assertThat(getDbMember).isEqualTo(member);
 
     }
 
