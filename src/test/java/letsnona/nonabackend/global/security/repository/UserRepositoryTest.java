@@ -5,20 +5,24 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+
+@DataJpaTest
+@TestPropertySource("classpath:application-test.yml")
 class UserRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+/*    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;*/
 
     @BeforeEach
     void setup(){
@@ -30,9 +34,10 @@ class UserRepositoryTest {
     @DisplayName("유저가입")
     void insertUser(){
         //given
+        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         User user = User.builder()
-                .username("testId")
-                .password(bCryptPasswordEncoder.encode("test"))
+                .username("testId3")
+                .password(passwordEncoder.encode("test"))
                 .email("test@naver.com")
                 .roles("ROLE_USER")
                 .build();
@@ -42,7 +47,7 @@ class UserRepositoryTest {
 
         //then
 
-        assertThat(userRepository.findByUsername("testId")).isEqualTo(user);
+        assertThat(userRepository.findByUsername("testId3")).isEqualTo(user);
 
     }
 

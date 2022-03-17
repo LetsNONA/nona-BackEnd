@@ -88,7 +88,6 @@ public class FileServiceImpl implements FileServiceInterface {
 
             try {
                 file.transferTo(target);
-                makeTumbnail(target);
             } catch (Exception e) {
                 e.printStackTrace();
             }
