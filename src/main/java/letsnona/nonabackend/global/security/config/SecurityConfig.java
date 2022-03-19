@@ -3,8 +3,7 @@ package letsnona.nonabackend.global.security.config;
 
 import letsnona.nonabackend.global.security.jwt.JwtAuthenticationFilter;
 import letsnona.nonabackend.global.security.jwt.JwtAuthorizationFilter;
-import letsnona.nonabackend.global.security.jwt.JwtProperties;
-import letsnona.nonabackend.global.security.repository.UserRepository;
+import letsnona.nonabackend.global.security.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired
-	private UserRepository userRepository;
+	private MemberRepository memberRepository;
 
 	@Autowired
 	private CorsConfig corsConfig;
@@ -41,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.httpBasic().disable()
 
 				.addFilter(new JwtAuthenticationFilter(authenticationManager()))
-				.addFilter(new JwtAuthorizationFilter(authenticationManager(), userRepository))
+				.addFilter(new JwtAuthorizationFilter(authenticationManager(), memberRepository))
 				.authorizeRequests()
 				.antMatchers("/user/**")
 				.access("hasRole('ROLE_USER') or hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")

@@ -2,11 +2,11 @@ package letsnona.nonabackend.global.security.controller;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import letsnona.nonabackend.global.security.entity.User;
+import letsnona.nonabackend.global.security.entity.Member;
 import letsnona.nonabackend.global.security.jwt.JwtProperties;
 import letsnona.nonabackend.global.security.provider.GoogleUser;
 import letsnona.nonabackend.global.security.provider.OAuthUserInfo;
-import letsnona.nonabackend.global.security.repository.UserRepository;
+import letsnona.nonabackend.global.security.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class JwtCreateController {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("/oauth/jwt/google")
@@ -30,11 +30,11 @@ public class JwtCreateController {
         OAuthUserInfo googleUser =
                 new GoogleUser((Map<String, Object>) data.get("profileObj"));
 
-        User userEntity =
-                userRepository.findByUsername(googleUser.getProvider() + "_" + googleUser.getProviderId());
+        Member memberEntity =
+                memberRepository.findByUsername(googleUser.getProvider() + "_" + googleUser.getProviderId());
 
-        if (userEntity == null) {
-            User userRequest = User.builder()
+        if (memberEntity == null) {
+            Member memberRequest = Member.builder()
                     .username(googleUser.getProvider() + "_" + googleUser.getProviderId())
                     .password(bCryptPasswordEncoder.encode("겟인데어"))
                     .email(googleUser.getEmail())
@@ -43,14 +43,14 @@ public class JwtCreateController {
                     .roles("ROLE_USER")
                     .build();
 
-            userEntity = userRepository.save(userRequest);
+            memberEntity = memberRepository.save(memberRequest);
         }
 
         String jwtToken = JWT.create()
-                .withSubject(userEntity.getUsername())
+                .withSubject(memberEntity.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
-                .withClaim("id", userEntity.getId())
-                .withClaim("username", userEntity.getUsername())
+                .withClaim("id", memberEntity.getId())
+                .withClaim("username", memberEntity.getUsername())
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
         return jwtToken;

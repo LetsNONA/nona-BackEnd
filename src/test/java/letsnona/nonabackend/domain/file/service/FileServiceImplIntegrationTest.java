@@ -3,6 +3,7 @@ package letsnona.nonabackend.domain.file.service;
 import letsnona.nonabackend.domain.file.service.FileServiceImpl;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,11 +25,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class FileServiceImplTest {
+@Tag("IntegrationTest")
+class FileServiceImplIntegrationTest {
 
     /*Todo
     *  -현재 시나리오 테스트로 작성되어있어,
-    *  유닛테스트 추가해야됩니다 */
+    *  유닛테스트 추가해야됩니다
+    *   또한 resources 폴더에서 사진 입출력 필요 */
 
     @Autowired
     MockMvc mockMvc;
@@ -37,17 +40,11 @@ class FileServiceImplTest {
     @Autowired
     FileServiceImpl service;
 
+
+/*
     @Test
     @WithUserDetails("testId")
     @DisplayName("controller_img저장")
-    void isHaveDir() throws Exception {
-        MockMultipartFile file =
-                new MockMultipartFile("file", "IMG_1024.jpeg", "image/jpeg", new FileInputStream("D:/IMG_1024.jpg"));
-        this.mockMvc.perform(multipart("/user/post").file(file)).andDo(print()).andExpect(status().isOk());
-    }
-
-    @Test
-    @WithUserDetails("testId")
     void makeTumbnail() throws Exception {
         //given
         MockMultipartFile file =
@@ -58,5 +55,5 @@ class FileServiceImplTest {
 
 
     }
-
+*/
 }

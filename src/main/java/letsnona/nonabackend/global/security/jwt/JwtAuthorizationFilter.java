@@ -3,8 +3,8 @@ package letsnona.nonabackend.global.security.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import letsnona.nonabackend.global.security.auth.PrincipalDetails;
-import letsnona.nonabackend.global.security.entity.User;
-import letsnona.nonabackend.global.security.repository.UserRepository;
+import letsnona.nonabackend.global.security.entity.Member;
+import letsnona.nonabackend.global.security.repository.MemberRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,11 +21,11 @@ import java.io.IOException;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private UserRepository userRepository;
+    private MemberRepository memberRepository;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, MemberRepository memberRepository) {
         super(authenticationManager);
-        this.userRepository = userRepository;
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -49,11 +49,11 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 .getClaim("username").asString();
 
         if (username != null) {
-            User user = userRepository.findByUsername(username);
+            Member member = memberRepository.findByUsername(username);
 
             // 인증은 토큰 검증시 끝. 인증을 하기 위해서가 아닌 스프링 시큐리티가 수행해주는 권한 처리를 위해
             // 아래와 같이 토큰을 만들어서 Authentication 객체를 강제로 만들고 그걸 세션에 저장!
-            PrincipalDetails principalDetails = new PrincipalDetails(user);
+            PrincipalDetails principalDetails = new PrincipalDetails(member);
             Authentication authentication = new UsernamePasswordAuthenticationToken(principalDetails, // 나중에 컨트롤러에서 DI해서
                     // 쓸 때 사용하기 편함.
                     null, // 패스워드는 모르니까 null 처리, 어차피 지금 인증하는게 아니니까!!

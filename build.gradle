@@ -36,7 +36,7 @@ dependencies {
     //mysql
     implementation 'mysql:mysql-connector-java'
     //h2 test scope
-    testRuntimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.h2database:h2'
 
     //JWT
     implementation group: 'com.auth0', name: 'java-jwt', version: '3.18.3'

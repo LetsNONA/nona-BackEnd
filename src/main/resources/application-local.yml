@@ -11,4 +11,5 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        type: trace
     database-platform: org.hibernate.dialect.MySQL5Dialect
