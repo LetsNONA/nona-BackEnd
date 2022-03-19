@@ -47,7 +47,7 @@ class PostServiceImplTest {
                 .tradePlace("임시거래지역")
                 .price(10000)
                 .hashTag("임시해쉬태그")
-                .imgid("임시이미지ID")
+               // .imgid("임시이미지ID")
                 .build();
 
         //when

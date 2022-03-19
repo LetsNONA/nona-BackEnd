@@ -1,19 +1,22 @@
 package letsnona.nonabackend.domain.post.entity;
 
+import letsnona.nonabackend.domain.file.entity.PostImg;
+import letsnona.nonabackend.global.entity.BaseTimeEntity;
 import letsnona.nonabackend.global.security.entity.Member;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Data
+@Getter
 @DynamicInsert
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Post {
+public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +24,9 @@ public class Post {
     @ManyToOne
     private Member owner;
 
-    private String imgid; // 임시 이미지 아이디, join 필요
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<PostImg> images = new ArrayList<>(); // 임시 이미지 아이디, join 필요
+
     private String title;
 
     @Column(columnDefinition = "TEXT")
@@ -38,10 +43,11 @@ public class Post {
     @Column(columnDefinition = "boolean default 0")
     private boolean flagDelete;
 
+
     @Builder
-    public Post(Member owner, String imgid, String title, String content, String category, String tradePlace, int price, String hashTag) {
+    public Post(Member owner, List<PostImg> images, String title, String content, String category, String tradePlace, int price, String hashTag) {
         this.owner = owner;
-        this.imgid = imgid;
+        this.images = images;
         this.title = title;
         this.content = content;
         this.category = category;

@@ -1,6 +1,6 @@
 package letsnona.nonabackend.domain.post.controller;
 
-import letsnona.nonabackend.domain.file.service.FileServiceInterface;
+import letsnona.nonabackend.domain.file.service.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -15,7 +15,7 @@ import java.util.List;
 public class PostController {
 
     @Autowired
-    FileServiceInterface postService;
+    FileService postService;
    @PostMapping("user/post")
     void savePost(Authentication authentication, List<MultipartFile> file){
        postService.saveImage(file);

@@ -17,9 +17,8 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-public class FileServiceImpl implements FileServiceInterface {
-    /*TODO
-     *  -file upload 후 썸네일처리*/
+public class FileServiceImpl implements FileService {
+
 
     @Value("${file.path}")
     private String filePath;
