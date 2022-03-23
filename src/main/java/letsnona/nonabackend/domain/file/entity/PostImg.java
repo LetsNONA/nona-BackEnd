@@ -22,7 +22,8 @@ public class PostImg {
     private String thumbImgSrc;
 
     @Builder
-    public PostImg(Post post, String originalImgSrc, String thumbImgSrc) {
+    public PostImg(long id ,Post post, String originalImgSrc, String thumbImgSrc) {
+       this.id =id;
         this.post = post;
         this.originalImgSrc = originalImgSrc;
         this.thumbImgSrc = thumbImgSrc;
