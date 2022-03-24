@@ -3,26 +3,31 @@ package letsnona.nonabackend.domain.post.dto;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
 import letsnona.nonabackend.global.security.entity.Member;
+import letsnona.nonabackend.global.security.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/*
 @DataJpaTest
 @TestPropertySource(properties = {"spring.config.location=classpath:application-test.yml"})
-class PostRequestDTOTest {
-    @Autowired
-    PostRepository repository;
+*/
 
-    @Autowired
-    EntityManager em;
+class PostRequestDTOTest {
+
 
     @BeforeAll
     static void setup() {
@@ -30,7 +35,7 @@ class PostRequestDTOTest {
     }
 
     @Test
-    void savePost() {
+    void dtoToEntityTest() {
         //given
 
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -51,8 +56,8 @@ class PostRequestDTOTest {
                 .build();
         Post entity = post.toEntity();
 
-        repository.save(entity);
-
+        assertThat(post.getOwner()).isEqualTo(entity.getOwner());
+        assertThat(post.getTitle()).isEqualTo(entity.getTitle());
 
     }
 }
