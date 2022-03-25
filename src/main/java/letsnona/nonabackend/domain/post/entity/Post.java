@@ -3,7 +3,10 @@ package letsnona.nonabackend.domain.post.entity;
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.global.entity.BaseTimeEntity;
 import letsnona.nonabackend.global.security.entity.Member;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -12,8 +15,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
-
 @DynamicInsert
 @NoArgsConstructor
 @AllArgsConstructor
@@ -58,6 +59,9 @@ public class Post extends BaseTimeEntity {
         this.hashTag = hashTag;
     }
 
+    public void changeImagesList (List<PostImg> list){
+        this.images = list;
+    }
 
 }
 

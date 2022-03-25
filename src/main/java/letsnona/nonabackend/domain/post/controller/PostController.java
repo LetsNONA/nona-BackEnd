@@ -18,6 +18,6 @@ public class PostController {
     FileService postService;
    @PostMapping("user/post")
     void savePost(Authentication authentication, List<MultipartFile> file){
-       postService.saveImage(file);
+       //postService.saveImage(file);
    }
 }

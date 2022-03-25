@@ -4,11 +4,13 @@ import letsnona.nonabackend.domain.post.entity.Post;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@ToString
 @NoArgsConstructor
 public class PostImg {
     @Id
@@ -20,12 +22,14 @@ public class PostImg {
 
     private String originalImgSrc;
     private String thumbImgSrc;
+    private String originalName;
 
     @Builder
-    public PostImg(long id ,Post post, String originalImgSrc, String thumbImgSrc) {
-       this.id =id;
+    public PostImg(long id, Post post, String originalImgSrc, String thumbImgSrc,String originalName) {
+        this.id = id;
         this.post = post;
         this.originalImgSrc = originalImgSrc;
         this.thumbImgSrc = thumbImgSrc;
+        this.originalName = originalName;
     }
 }

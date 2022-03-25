@@ -11,8 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
-public class PostImgRequestDTO {
+public class PostImgResponseDTO {
     private long id;
     private Post post;
     private String originalImgSrc;
@@ -25,6 +24,7 @@ public class PostImgRequestDTO {
                 .post(post)
                 .originalImgSrc(originalImgSrc)
                 .thumbImgSrc(thumbImgSrc)
+                .originalName(originalName)
                 .build();
 
         return postImg;
