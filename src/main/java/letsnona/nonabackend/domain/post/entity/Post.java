@@ -3,7 +3,10 @@ package letsnona.nonabackend.domain.post.entity;
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.global.entity.BaseTimeEntity;
 import letsnona.nonabackend.global.security.entity.Member;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -26,7 +29,7 @@ public class Post extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @Builder.Default
-    private  List<PostImg> images = new ArrayList<>(); // 임시 이미지 아이디, join 필요
+    private List<PostImg> images = new ArrayList<>(); // 임시 이미지 아이디, join 필요
 
     private String title;
 
@@ -37,7 +40,7 @@ public class Post extends BaseTimeEntity {
     private String tradePlace;
     private int price;
     private String hashTag;
-
+    private int hit;
     @Column(columnDefinition = "boolean default 0")
     private boolean flagCourierFee;
 
@@ -55,7 +58,6 @@ public class Post extends BaseTimeEntity {
         this.price = price;
         this.hashTag = hashTag;
     }
-
 
 
 }

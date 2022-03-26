@@ -1,6 +1,8 @@
 package letsnona.nonabackend.domain.file.service;
 
+import letsnona.nonabackend.domain.file.dto.PostImgResponseDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
+import letsnona.nonabackend.domain.post.repository.PostRepository;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.IOUtils;
@@ -23,6 +25,8 @@ public class FileServiceUnitTest {
 
     @Autowired
     FileService service;
+    @Autowired
+    PostRepository postRepository;
 
     @Test
     @DisplayName("이미지저장")
@@ -45,7 +49,8 @@ public class FileServiceUnitTest {
             imgLists.add(multipartFile);
         }
 
-        service.saveImage(post,imgLists);
+        service.saveImage(post, imgLists);
+
 
     }
 }

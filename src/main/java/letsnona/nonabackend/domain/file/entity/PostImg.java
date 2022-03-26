@@ -1,6 +1,7 @@
 package letsnona.nonabackend.domain.file.entity;
 
 import letsnona.nonabackend.domain.post.entity.Post;
+import letsnona.nonabackend.global.entity.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Getter
 @ToString
 @NoArgsConstructor
-public class PostImg {
+public class PostImg extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

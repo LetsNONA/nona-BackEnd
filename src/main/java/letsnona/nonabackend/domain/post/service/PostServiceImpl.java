@@ -6,6 +6,7 @@ import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.file.repository.PostImgRepository;
 import letsnona.nonabackend.domain.file.service.FileService;
 import letsnona.nonabackend.domain.post.dto.PostRequestDTO;
+import letsnona.nonabackend.domain.post.dto.PostResponseDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,16 +26,17 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public void savePost(PostRequestDTO postDTO, List<MultipartFile> imgList) {
+    public PostResponseDTO savePost(PostRequestDTO postDTO, List<MultipartFile> imgList) {
         Post post = postDTO.toEntity();
         List<PostImgResponseDTO> postImgResponseDTOS = fileService.saveImage(post, imgList);
         //  Post savedPost = postRepository.save(post);
         List<PostImg> postImgEntityList = new ArrayList<>(postImgResponseDTOS.stream()
                 .map(PostImgResponseDTO::toEntity)
                 .collect(Collectors.toList()));
-       // post.changeImagesList(postImgEntityList);
+        // post.changeImagesList(postImgEntityList);
         imgRepository.saveAll(postImgEntityList);
         // savedPost.changeImagesList(postImgEntityList);
-
+        PostResponseDTO responseDTO = new PostResponseDTO(post);
+        return responseDTO;
     }
 }
