@@ -1,5 +1,7 @@
 package letsnona.nonabackend.domain.file.service;
 
+import letsnona.nonabackend.domain.file.dto.PostImgResponseDTO;
+import letsnona.nonabackend.domain.post.entity.Post;
 import lombok.extern.slf4j.Slf4j;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,22 +13,22 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 @Slf4j
 @Service
-public class FileServiceImpl implements FileServiceInterface {
-    /*TODO
-     *  -file upload 후 썸네일처리*/
+public class FileServiceImpl implements FileService {
+
 
     @Value("${file.path}")
     private String filePath;
 
     private int tumbImg_width = 250;
     private int tumbImg_height = 250;
-    
+
 
     @Override
     public String getSaveDirectoryPath() {
@@ -44,7 +46,7 @@ public class FileServiceImpl implements FileServiceInterface {
     }
 
     @Override
-    public Boolean makeTumbnail(File originalFile) throws IOException {
+    public Boolean makeTumbnail(File originalFile, PostImgResponseDTO postImgResponseDTO) throws IOException {
         BufferedImage srcImg = ImageIO.read(originalFile);
 
         int ow = srcImg.getWidth();
@@ -64,23 +66,30 @@ public class FileServiceImpl implements FileServiceInterface {
         // crop된 이미지로 썸네일을 생성합니다.
         BufferedImage destImg = Scalr.resize(cropImg, tumbImg_width, tumbImg_height);
 
-        String cropImgName = getSaveDirectoryPath()+"/s_"+originalFile.getName() ;
+        String cropImgName = getSaveDirectoryPath() + "\\s_" + originalFile.getName();
         try {
             File tumbImg = new File(cropImgName);
             ImageIO.write(destImg, "jpg", tumbImg);
-        }catch (IOException e )
-            {
-                e.printStackTrace();
-                return false;
-            }
+            postImgResponseDTO.setThumbImgSrc(cropImgName);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
 
     @Override
-    public void saveImage(List<MultipartFile> multipartFiles) {
+    public List<PostImgResponseDTO> saveImage(Post post, List<MultipartFile> multipartFiles) {
         UUID uuid = UUID.randomUUID();
+        List<PostImgResponseDTO> responseDTOList = new ArrayList<>();
+
+
         for (MultipartFile file : multipartFiles
         ) {
+            PostImgResponseDTO postImgResponseDTO = new PostImgResponseDTO();
+            postImgResponseDTO.setPost(post);
+            postImgResponseDTO.setOriginalName(file.getOriginalFilename());
+
             String saveFileName = uuid.toString() + "_" + file.getOriginalFilename();
             String savePath = getSaveDirectoryPath();
 
@@ -88,9 +97,13 @@ public class FileServiceImpl implements FileServiceInterface {
 
             try {
                 file.transferTo(target);
+                postImgResponseDTO.setOriginalImgSrc((getSaveDirectoryPath() + "\\"+saveFileName).toString());
+                makeTumbnail(target, postImgResponseDTO);
+                responseDTOList.add(postImgResponseDTO);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        return responseDTOList;
     }
 }

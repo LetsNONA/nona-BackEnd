@@ -1,31 +1,51 @@
 package letsnona.nonabackend.domain.file.service;
 
+import letsnona.nonabackend.domain.post.entity.Post;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+//@ExtendWith(SpringExtension.class)
+@SpringBootTest
 public class FileServiceUnitTest {
 
     @Autowired
-    FileServiceImpl service;
+    FileService service;
 
     @Test
+    @DisplayName("이미지저장")
     void saveImg() throws IOException {
-//
-        String fileName = "test1Img.jpg";
-        Path filePath = Paths.get(File.separatorChar + "testImg", File.separatorChar + fileName);
-       InputStream file =  getClass().getResourceAsStream(filePath.toString());
+        /*   String directory = file.getPath();
+        String path = directory.substring(0,directory.length()-13);
+        int file_count = 0;
+        File dir = new File(path);*/
+        Post post = new Post();
+        List<MultipartFile> imgLists = new ArrayList<>();
+        int file_count = 4;
 
+        for (int i = 1; i <= file_count; i++) {
+            File file = new ClassPathResource("/testimg/test" + i + "Img.jpg").getFile();
+            FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
+            InputStream input = new FileInputStream(file);
+            OutputStream os = fileItem.getOutputStream();
+            IOUtils.copy(input, os);
+            MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
+            imgLists.add(multipartFile);
+        }
 
+        service.saveImage(post,imgLists);
 
     }
 }
