@@ -66,7 +66,7 @@ public class FileServiceImpl implements FileService {
         // crop된 이미지로 썸네일을 생성합니다.
         BufferedImage destImg = Scalr.resize(cropImg, tumbImg_width, tumbImg_height);
 
-        String cropImgName = getSaveDirectoryPath() + "/s_" + originalFile.getName();
+        String cropImgName = getSaveDirectoryPath() + "\\s_" + originalFile.getName();
         try {
             File tumbImg = new File(cropImgName);
             ImageIO.write(destImg, "jpg", tumbImg);
@@ -97,7 +97,7 @@ public class FileServiceImpl implements FileService {
 
             try {
                 file.transferTo(target);
-                postImgResponseDTO.setOriginalImgSrc((getSaveDirectoryPath() + saveFileName).toString());
+                postImgResponseDTO.setOriginalImgSrc((getSaveDirectoryPath() + "\\"+saveFileName).toString());
                 makeTumbnail(target, postImgResponseDTO);
                 responseDTOList.add(postImgResponseDTO);
             } catch (Exception e) {

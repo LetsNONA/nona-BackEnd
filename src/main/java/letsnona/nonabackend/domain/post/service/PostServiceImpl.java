@@ -28,13 +28,13 @@ public class PostServiceImpl implements PostService {
     public void savePost(PostRequestDTO postDTO, List<MultipartFile> imgList) {
         Post post = postDTO.toEntity();
         List<PostImgResponseDTO> postImgResponseDTOS = fileService.saveImage(post, imgList);
-      //  Post savedPost = postRepository.save(post);
+        //  Post savedPost = postRepository.save(post);
         List<PostImg> postImgEntityList = new ArrayList<>(postImgResponseDTOS.stream()
                 .map(PostImgResponseDTO::toEntity)
                 .collect(Collectors.toList()));
-        post.changeImagesList(postImgEntityList);
+       // post.changeImagesList(postImgEntityList);
         imgRepository.saveAll(postImgEntityList);
-       // savedPost.changeImagesList(postImgEntityList);
+        // savedPost.changeImagesList(postImgEntityList);
 
     }
 }

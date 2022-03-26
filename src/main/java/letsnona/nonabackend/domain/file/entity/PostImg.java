@@ -24,6 +24,12 @@ public class PostImg {
     private String thumbImgSrc;
     private String originalName;
 
+
+    public void setPost(Post post) {
+        this.post = post;
+        post.getImages().add(this);
+    }
+
     @Builder
     public PostImg(long id, Post post, String originalImgSrc, String thumbImgSrc,String originalName) {
         this.id = id;

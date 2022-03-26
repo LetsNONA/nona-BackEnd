@@ -27,6 +27,7 @@ public class PostImgResponseDTO {
                 .originalName(originalName)
                 .build();
 
+       postImg.setPost(post);
         return postImg;
     }
 }

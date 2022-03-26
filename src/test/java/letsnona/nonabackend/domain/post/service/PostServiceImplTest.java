@@ -80,7 +80,7 @@ void getTest(){
                 .roles("ROLE_USER")
                 .build();
 
-        PostRequestDTO post = PostRequestDTO.builder()
+        PostRequestDTO postRequestDTO = PostRequestDTO.builder()
                 .owner(member)
                 .title("test_제목입니다")
                 .content("test_내용입니다")
@@ -105,11 +105,11 @@ void getTest(){
 
         //when
         memberRepository.save(member);
-        postService.savePost(post, imgLists);
+        postService.savePost(postRequestDTO, imgLists);
        // Post getPost = postRepository.findByOwner(member);
         //then
 
-        //assertThat(post.getTitle()).isEqualTo(getPost.getTitle());
-        //assertThat(post.getContent()).isEqualTo(getPost.getContent());
+        //assertThat(postRequestDTO.getTitle()).isEqualTo(getPost.getTitle());
+        //assertThat(postRequestDTO.getContent()).isEqualTo(getPost.getContent());
     }
 }
