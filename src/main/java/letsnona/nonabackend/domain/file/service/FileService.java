@@ -1,5 +1,6 @@
 package letsnona.nonabackend.domain.file.service;
 
+import letsnona.nonabackend.domain.file.dto.PostImgRequestDTO;
 import letsnona.nonabackend.domain.file.dto.PostImgResponseDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,8 +14,8 @@ public interface FileService {
     String getSaveDirectoryPath();
 
     @Transactional
-    Boolean makeTumbnail(File originalFile, PostImgResponseDTO postImgResponseDTO) throws IOException;
+    Boolean makeTumbnail(File originalFile,  PostImgRequestDTO postImgRequestDTO) throws IOException;
 
     @Transactional
-    List<PostImgResponseDTO> saveImage(Post post, List<MultipartFile> multipartFiles);
+    List<PostImgRequestDTO> saveImage(Post post, List<MultipartFile> multipartFiles);
 }

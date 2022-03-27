@@ -3,10 +3,7 @@ package letsnona.nonabackend.domain.post.entity;
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.global.entity.BaseTimeEntity;
 import letsnona.nonabackend.global.security.entity.Member;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
@@ -29,7 +26,7 @@ public class Post extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @Builder.Default
-    private List<PostImg> images = new ArrayList<>(); // 임시 이미지 아이디, join 필요
+    private List<PostImg> images= new ArrayList<>() ; // 임시 이미지 아이디, join 필요
 
     private String title;
 
@@ -46,6 +43,8 @@ public class Post extends BaseTimeEntity {
 
     @Column(columnDefinition = "boolean default 0")
     private boolean flagDelete;
+
+
 
 
     @Builder
