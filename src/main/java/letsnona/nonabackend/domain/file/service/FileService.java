@@ -17,5 +17,6 @@ public interface FileService {
     Boolean makeTumbnail(File originalFile,  PostImgRequestDTO postImgRequestDTO) throws IOException;
 
     @Transactional
-    List<PostImgRequestDTO> saveImage(Post post, List<MultipartFile> multipartFiles);
+    //List<PostImgRequestDTO> saveImage(Post post, List<MultipartFile> multipartFiles);
+    List<PostImgRequestDTO> saveImage(List<MultipartFile> multipartFiles);
 }

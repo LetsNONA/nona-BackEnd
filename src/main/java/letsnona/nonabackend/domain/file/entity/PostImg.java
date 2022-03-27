@@ -28,7 +28,6 @@ public class PostImg extends BaseTimeEntity {
 
     public void setPost(Post post) {
         this.post = post;
-        post.getImages().add(this);
     }
 
     @Builder

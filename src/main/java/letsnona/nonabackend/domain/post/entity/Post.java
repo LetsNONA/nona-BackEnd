@@ -45,7 +45,10 @@ public class Post extends BaseTimeEntity {
     private boolean flagDelete;
 
 
-
+    public void addImg(PostImg img) {
+        img.setPost(this);
+        this.getImages().add(img);
+    }
 
     @Builder
     public Post(Member owner, String title, String content, String category, String tradePlace, int price, String hashTag) {

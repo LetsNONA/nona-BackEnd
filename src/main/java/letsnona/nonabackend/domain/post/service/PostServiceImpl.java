@@ -2,7 +2,6 @@ package letsnona.nonabackend.domain.post.service;
 
 
 import letsnona.nonabackend.domain.file.dto.PostImgRequestDTO;
-import letsnona.nonabackend.domain.file.dto.PostImgResponseDTO;
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.file.repository.PostImgRepository;
 import letsnona.nonabackend.domain.file.service.FileService;
@@ -29,16 +28,18 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponseDTO savePost(PostRequestDTO postDTO, List<MultipartFile> imgList) {
         Post post = postDTO.toEntity();
-        //List<PostImgResponseDTO> postImgResponseDTOS = fileService.saveImage(post, imgList);
-        List<PostImgRequestDTO> postImgRequestDTOList = fileService.saveImage(post, imgList);
-       //List<PostImg> postImgEntityList = new ArrayList<>(postImgResponseDTOS.stream()
-        List<PostImg> postImgEntityList = new ArrayList<>(postImgRequestDTOList.stream()
-                .map(PostImgRequestDTO::toEntity)
-                .collect(Collectors.toList()));
+
+        List<PostImgRequestDTO> postImgRequestDTOList = fileService.saveImage(imgList);
+        List<PostImg> postImgEntityList = postImgRequestDTOList.stream()
+                .map(PostImgRequestDTO::toEntity).collect(Collectors.toList());
+
+        for (PostImg img : postImgEntityList
+        ) {
+            post.addImg(img);
+        }
 
         imgRepository.saveAll(postImgEntityList);
 
-        PostResponseDTO responseDTO = new PostResponseDTO(post);
-        return responseDTO;
+        return new PostResponseDTO(post);
     }
 }

@@ -49,7 +49,7 @@ public class FileServiceUnitTest {
             imgLists.add(multipartFile);
         }
 
-        service.saveImage(post, imgLists);
+        service.saveImage(imgLists);
 
 
     }

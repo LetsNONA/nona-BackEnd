@@ -1,8 +1,6 @@
 package letsnona.nonabackend.domain.file.service;
 
 import letsnona.nonabackend.domain.file.dto.PostImgRequestDTO;
-import letsnona.nonabackend.domain.file.dto.PostImgResponseDTO;
-import letsnona.nonabackend.domain.post.entity.Post;
 import lombok.extern.slf4j.Slf4j;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,9 +25,6 @@ public class FileServiceImpl implements FileService {
     @Value("${file.path}")
     private String filePath;
 
-    private int tumbImg_width = 250;
-    private int tumbImg_height = 250;
-
 
     @Override
     public String getSaveDirectoryPath() {
@@ -50,6 +45,8 @@ public class FileServiceImpl implements FileService {
     public Boolean makeTumbnail(File originalFile, PostImgRequestDTO postImgRequestDTO) throws IOException {
         BufferedImage srcImg = ImageIO.read(originalFile);
 
+        int tumbImg_width = 250;
+        int tumbImg_height = 250;
         int ow = srcImg.getWidth();
         int oh = srcImg.getHeight();
 
@@ -80,29 +77,25 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    // public List<PostImgResponseDTO>
-    public List<PostImgRequestDTO> saveImage(Post post, List<MultipartFile> multipartFiles) {
+    public List<PostImgRequestDTO> saveImage(List<MultipartFile> multipartFiles) {
         UUID uuid = UUID.randomUUID();
 
-        //List<PostImgResponseDTO> responseDTOList = new ArrayList<>();
         List<PostImgRequestDTO> requestDTOList = new ArrayList<>();
 
         for (MultipartFile file : multipartFiles
         ) {
-            //PostImgResponseDTO
+
             PostImgRequestDTO postImgRequestDTO = new PostImgRequestDTO();
-            postImgRequestDTO.setPost(post);
+
             postImgRequestDTO.setOriginalName(file.getOriginalFilename());
 
             String saveFileName = uuid.toString() + "_" + file.getOriginalFilename();
             String savePath = getSaveDirectoryPath();
-
             File target = new File(getSaveDirectoryPath(), saveFileName);
-
             try {
                 file.transferTo(target);
                 //postImgResponseDTO
-                postImgRequestDTO.setOriginalImgSrc((getSaveDirectoryPath() + "\\"+saveFileName).toString());
+                postImgRequestDTO.setOriginalImgSrc((getSaveDirectoryPath() + "\\" + saveFileName).toString());
                 makeTumbnail(target, postImgRequestDTO);
                 //responseDTOList
                 requestDTOList.add(postImgRequestDTO);
