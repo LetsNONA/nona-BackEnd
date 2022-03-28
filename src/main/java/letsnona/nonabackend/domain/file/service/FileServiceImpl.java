@@ -1,7 +1,6 @@
 package letsnona.nonabackend.domain.file.service;
 
-import letsnona.nonabackend.domain.file.dto.PostImgResponseDTO;
-import letsnona.nonabackend.domain.post.entity.Post;
+import letsnona.nonabackend.domain.file.dto.PostImgRequestDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,9 +25,6 @@ public class FileServiceImpl implements FileService {
     @Value("${file.path}")
     private String filePath;
 
-    private int tumbImg_width = 250;
-    private int tumbImg_height = 250;
-
 
     @Override
     public String getSaveDirectoryPath() {
@@ -46,9 +42,11 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public Boolean makeTumbnail(File originalFile, PostImgResponseDTO postImgResponseDTO) throws IOException {
+    public Boolean makeTumbnail(File originalFile, PostImgRequestDTO postImgRequestDTO) throws IOException {
         BufferedImage srcImg = ImageIO.read(originalFile);
 
+        int tumbImg_width = 250;
+        int tumbImg_height = 250;
         int ow = srcImg.getWidth();
         int oh = srcImg.getHeight();
 
@@ -70,7 +68,7 @@ public class FileServiceImpl implements FileService {
         try {
             File tumbImg = new File(cropImgName);
             ImageIO.write(destImg, "jpg", tumbImg);
-            postImgResponseDTO.setThumbImgSrc(cropImgName);
+            postImgRequestDTO.setThumbImgSrc(cropImgName);
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -79,31 +77,32 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public List<PostImgResponseDTO> saveImage(Post post, List<MultipartFile> multipartFiles) {
+    public List<PostImgRequestDTO> saveImage(List<MultipartFile> multipartFiles) {
         UUID uuid = UUID.randomUUID();
-        List<PostImgResponseDTO> responseDTOList = new ArrayList<>();
 
+        List<PostImgRequestDTO> requestDTOList = new ArrayList<>();
 
         for (MultipartFile file : multipartFiles
         ) {
-            PostImgResponseDTO postImgResponseDTO = new PostImgResponseDTO();
-            postImgResponseDTO.setPost(post);
-            postImgResponseDTO.setOriginalName(file.getOriginalFilename());
+
+            PostImgRequestDTO postImgRequestDTO = new PostImgRequestDTO();
+
+            postImgRequestDTO.setOriginalName(file.getOriginalFilename());
 
             String saveFileName = uuid.toString() + "_" + file.getOriginalFilename();
             String savePath = getSaveDirectoryPath();
-
             File target = new File(getSaveDirectoryPath(), saveFileName);
-
             try {
                 file.transferTo(target);
-                postImgResponseDTO.setOriginalImgSrc((getSaveDirectoryPath() + "\\"+saveFileName).toString());
-                makeTumbnail(target, postImgResponseDTO);
-                responseDTOList.add(postImgResponseDTO);
+                //postImgResponseDTO
+                postImgRequestDTO.setOriginalImgSrc((getSaveDirectoryPath() + "\\" + saveFileName).toString());
+                makeTumbnail(target, postImgRequestDTO);
+                //responseDTOList
+                requestDTOList.add(postImgRequestDTO);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return responseDTOList;
+        return requestDTOList;
     }
 }

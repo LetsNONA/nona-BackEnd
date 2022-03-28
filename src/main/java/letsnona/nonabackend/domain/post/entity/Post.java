@@ -26,7 +26,7 @@ public class Post extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     @Builder.Default
-    private  List<PostImg> images = new ArrayList<>(); // 임시 이미지 아이디, join 필요
+    private List<PostImg> images= new ArrayList<>() ; // 임시 이미지 아이디, join 필요
 
     private String title;
 
@@ -37,13 +37,18 @@ public class Post extends BaseTimeEntity {
     private String tradePlace;
     private int price;
     private String hashTag;
-
+    private int hit;
     @Column(columnDefinition = "boolean default 0")
     private boolean flagCourierFee;
 
     @Column(columnDefinition = "boolean default 0")
     private boolean flagDelete;
 
+
+    public void addImg(PostImg img) {
+        img.setPost(this);
+        this.getImages().add(img);
+    }
 
     @Builder
     public Post(Member owner, String title, String content, String category, String tradePlace, int price, String hashTag) {
@@ -55,7 +60,6 @@ public class Post extends BaseTimeEntity {
         this.price = price;
         this.hashTag = hashTag;
     }
-
 
 
 }

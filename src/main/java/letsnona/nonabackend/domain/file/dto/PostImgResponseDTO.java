@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,6 +19,8 @@ public class PostImgResponseDTO {
     private String originalImgSrc;
     private String thumbImgSrc;
     private String originalName;
+  /*  private LocalDateTime createdDate;
+    private LocalDateTime modifiedDate;*/
 
     public PostImg toEntity() {
         PostImg postImg = PostImg.builder()

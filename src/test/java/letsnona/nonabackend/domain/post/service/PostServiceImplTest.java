@@ -3,6 +3,7 @@ package letsnona.nonabackend.domain.post.service;
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.file.repository.PostImgRepository;
 import letsnona.nonabackend.domain.post.dto.PostRequestDTO;
+import letsnona.nonabackend.domain.post.dto.PostResponseDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -10,7 +11,6 @@ import letsnona.nonabackend.global.security.repository.MemberRepository;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,11 +105,16 @@ void getTest(){
 
         //when
         memberRepository.save(member);
-        postService.savePost(postRequestDTO, imgLists);
-       // Post getPost = postRepository.findByOwner(member);
-        //then
+        PostResponseDTO responseDTO = postService.savePost(postRequestDTO, imgLists);
 
-        //assertThat(postRequestDTO.getTitle()).isEqualTo(getPost.getTitle());
-        //assertThat(postRequestDTO.getContent()).isEqualTo(getPost.getContent());
+        //then
+    assertThat(responseDTO.getImages().size()).isEqualTo(4);
     }
+
+    @Test
+    @DisplayName("게시물 읽기테스트")
+    void getPost() {
+
+    }
+
 }
