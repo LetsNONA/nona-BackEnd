@@ -5,15 +5,14 @@ import letsnona.nonabackend.domain.file.dto.PostImgRequestDTO;
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.file.repository.PostImgRepository;
 import letsnona.nonabackend.domain.file.service.FileService;
-import letsnona.nonabackend.domain.post.dto.PostRequestDTO;
-import letsnona.nonabackend.domain.post.dto.PostResponseDTO;
+import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
+import letsnona.nonabackend.domain.post.dto.add.PostAddResponseDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +25,7 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public PostResponseDTO savePost(PostRequestDTO postDTO, List<MultipartFile> imgList) {
+    public PostAddResponseDTO savePost(PostAddRequestDTO postDTO, List<MultipartFile> imgList) {
         Post post = postDTO.toEntity();
 
         List<PostImgRequestDTO> postImgRequestDTOList = fileService.saveImage(imgList);
@@ -40,6 +39,6 @@ public class PostServiceImpl implements PostService {
 
         imgRepository.saveAll(postImgEntityList);
 
-        return new PostResponseDTO(post);
+        return new PostAddResponseDTO(post);
     }
 }

@@ -7,8 +7,8 @@ services:
       - 3307:3306 # HOST:CONTAINER 포트번호
     environment:
       MYSQL_ROOT_PASSWORD: root # Root 비밀번호 설정
-      MYSQL_USER: nano # Nano 라는 유저 추가
-      MYSQL_PASSWORD: nano2 #Nano 유저의 비밀번호
+      MYSQL_USER: nona # Nano 라는 유저 추가
+      MYSQL_PASSWORD: nona2 #Nano 유저의 비밀번호
       MYSQL_DATABASE: testdb  #생성될 DB 네임
     command:
       - --character-set-server=utf8mb4

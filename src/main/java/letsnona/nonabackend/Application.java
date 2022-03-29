@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaAuditing
 //@EnableJpaRepositories("letsnona.nonabackend")
 @EnableJpaRepositories
-public class NonaBackEndApplication {
+public class Application {
     private static final String mainYml = "";
 
     public static void main(String[] args) {
@@ -18,7 +18,7 @@ public class NonaBackEndApplication {
                         "spring.config.location=" + "classpath:/application" + mainYml + ".yml"
 
                 ).run(args);*/
-        SpringApplication.run(NonaBackEndApplication.class, args);
+        SpringApplication.run(Application.class, args);
 
     }
 

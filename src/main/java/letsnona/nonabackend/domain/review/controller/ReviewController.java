@@ -1,35 +1,24 @@
-package letsnona.nonabackend.domain.post.controller;
+package letsnona.nonabackend.domain.review.controller;
 
 import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
 import letsnona.nonabackend.domain.post.dto.add.PostAddResponseDTO;
-import letsnona.nonabackend.domain.post.service.PostService;
 import letsnona.nonabackend.global.security.auth.PrincipalDetails;
 import letsnona.nonabackend.global.security.entity.Member;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
-@Slf4j
-public class PostController {
-    private final PostService postService;
-
-    @PostMapping("user/api/post")
+public class ReviewController {
     void savePost(Authentication authentication
             , @RequestPart(value = "key") PostAddRequestDTO postDTO
             , @RequestPart(value = "file") List<MultipartFile> file) {
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         Member user = principal.getUser();
-        postDTO.setOwner(user);
-        PostAddResponseDTO responseDTO = postService.savePost(postDTO, file);
-    }
-   /* @GetMapping("user/api/post/{postIndex}")
-    void getPostDetail(@PathVariable("postIndex") Long postIndex){
 
-    }*/
+    }
+
 }

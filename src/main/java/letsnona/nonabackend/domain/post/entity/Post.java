@@ -1,6 +1,7 @@
 package letsnona.nonabackend.domain.post.entity;
 
 import letsnona.nonabackend.domain.file.entity.PostImg;
+import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.global.entity.BaseTimeEntity;
 import letsnona.nonabackend.global.security.entity.Member;
 import lombok.*;
@@ -28,6 +29,10 @@ public class Post extends BaseTimeEntity {
     @Builder.Default
     private List<PostImg> images= new ArrayList<>() ; // 임시 이미지 아이디, join 필요
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Review> reviews= new ArrayList<>() ; // 임시 이미지 아이디, join 필요
+
     private String title;
 
     @Column(columnDefinition = "TEXT")
@@ -44,7 +49,10 @@ public class Post extends BaseTimeEntity {
     @Column(columnDefinition = "boolean default 0")
     private boolean flagDelete;
 
-
+    public void addReview(Review review) {
+        review.setPost(this);
+        this.getReviews().add(review);
+    }
     public void addImg(PostImg img) {
         img.setPost(this);
         this.getImages().add(img);

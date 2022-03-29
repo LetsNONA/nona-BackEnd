@@ -1,4 +1,4 @@
-package letsnona.nonabackend.domain.post.dto;
+package letsnona.nonabackend.domain.post.dto.add;
 
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.post.entity.Post;
@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PostResponseDTO {
+public class PostAddResponseDTO {
     private long id;
     private Member owner;
     private String title;
@@ -31,7 +31,7 @@ public class PostResponseDTO {
     private LocalDateTime modifiedDate;
     private List<PostImg> images = new ArrayList<>(); // 임시 이미지 아이디, join 필요
 
-    public PostResponseDTO(Post post) {
+    public PostAddResponseDTO(Post post) {
         this.id = post.getId();
         this.owner = post.getOwner();
         this.title = post.getTitle();

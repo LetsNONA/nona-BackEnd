@@ -29,6 +29,7 @@ public class Member extends BaseTimeEntity {
 
     private String password;
     private String email;
+    @Column(columnDefinition = "varchar(255) default 'ROLE_USER'")
     private String roles;
     private String providerId;
     private String provider;

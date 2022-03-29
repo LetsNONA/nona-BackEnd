@@ -2,8 +2,8 @@ package letsnona.nonabackend.domain.post.service;
 
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.file.repository.PostImgRepository;
-import letsnona.nonabackend.domain.post.dto.PostRequestDTO;
-import letsnona.nonabackend.domain.post.dto.PostResponseDTO;
+import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
+import letsnona.nonabackend.domain.post.dto.add.PostAddResponseDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -11,6 +11,7 @@ import letsnona.nonabackend.global.security.repository.MemberRepository;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,41 @@ void getTest(){
     System.out.println("images.toString() = " + images.toString());
 }
 
+@Test
+@DisplayName("게시글 천개저장")
+@Disabled
+void setPost1000() throws IOException {
+    Member member = memberRepository.findByUsername("testId");
+
+    for (int i = 0; i < 100; i++) {
+        PostAddRequestDTO postAddRequestDTO = PostAddRequestDTO.builder()
+                .owner(member)
+                .title("test["+i+"]제목입니다")
+                .content("test["+i+"]내용입니다")
+                .category("test["+i+"]임시카테리고")
+                .tradePlace("test["+i+"]임시거래지역")
+                .price(10000)
+                .hashTag("test["+i+"]임시해쉬태그")
+                // .imgid("임시이미지ID")
+                .build();
+        List<MultipartFile> imgLists = new ArrayList<>();
+        int file_count = 4;
+
+        for (int j =1; j <= file_count; j++) {
+            File file = new ClassPathResource("/testimg/test" + j + "Img.jpg").getFile();
+            FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
+            InputStream input = new FileInputStream(file);
+            OutputStream os = fileItem.getOutputStream();
+            IOUtils.copy(input, os);
+            MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
+            imgLists.add(multipartFile);
+        }
+
+        //when
+
+        PostAddResponseDTO responseDTO = postService.savePost(postAddRequestDTO, imgLists);
+    }
+}
 
     @Test
     @DisplayName("게시물 등록테스트")
@@ -80,7 +116,7 @@ void getTest(){
                 .roles("ROLE_USER")
                 .build();
 
-        PostRequestDTO postRequestDTO = PostRequestDTO.builder()
+        PostAddRequestDTO postAddRequestDTO = PostAddRequestDTO.builder()
                 .owner(member)
                 .title("test_제목입니다")
                 .content("test_내용입니다")
@@ -105,7 +141,7 @@ void getTest(){
 
         //when
         memberRepository.save(member);
-        PostResponseDTO responseDTO = postService.savePost(postRequestDTO, imgLists);
+        PostAddResponseDTO responseDTO = postService.savePost(postAddRequestDTO, imgLists);
 
         //then
     assertThat(responseDTO.getImages().size()).isEqualTo(4);
