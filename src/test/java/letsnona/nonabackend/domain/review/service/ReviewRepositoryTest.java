@@ -64,8 +64,10 @@ class ReviewRepositoryTest {
         byId.get().addReview(review);
 
         Review savedReview = reviewRepository.save(review);
-        Review findReview = reviewRepository.findById(savedReview.getId());
-        assertThat(savedReview).isEqualTo(findReview);
+       // Review findReview = reviewRepository.findById(savedReview.getId());
+        assertThat(savedReview.getId()).isNotNull();
+        assertThat(savedReview.getContent()).isEqualTo(requestDTO.getContent());
+        assertThat(savedReview.getGrade()).isEqualTo(requestDTO.getGrade());
 
     }
 }
