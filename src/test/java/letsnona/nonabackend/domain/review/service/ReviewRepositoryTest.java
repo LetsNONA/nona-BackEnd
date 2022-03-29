@@ -42,8 +42,6 @@ class ReviewRepositoryTest {
     @Transactional
     void saveReview() throws IOException {
 
-        /*ToDO
-        *  - 테스트코드 getId 할시에 여러개로 돌아오는거 수정해야함*/
 
         ReviewRequestDTO requestDTO = ReviewRequestDTO.builder()
                 .postId(1L)
@@ -66,7 +64,7 @@ class ReviewRepositoryTest {
         byId.get().addReview(review);
 
         Review savedReview = reviewRepository.save(review);
-        Review findReview = reviewRepository.findByPostId(byId.get().getId());
+        Review findReview = reviewRepository.findById(savedReview.getId());
         assertThat(savedReview).isEqualTo(findReview);
 
     }

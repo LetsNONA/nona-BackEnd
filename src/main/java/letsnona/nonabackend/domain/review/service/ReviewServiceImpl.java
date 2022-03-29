@@ -19,7 +19,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
 
     @Override
-    public void saveReview(Member user, ReviewRequestDTO requestDTO) {
+    public Review  saveReview(Member user, ReviewRequestDTO requestDTO) {
         Optional<Post> post = postRepository.findById(requestDTO.getPostId());
 
         ReviewDTO reviewDTO = ReviewDTO.builder()
@@ -32,7 +32,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = reviewDTO.toEntity();
 
         post.get().addReview(review);
-
         Review savedReview = reviewRepository.save(review);
+        return savedReview;
     }
 }
