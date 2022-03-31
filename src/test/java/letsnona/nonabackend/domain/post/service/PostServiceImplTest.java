@@ -110,7 +110,7 @@ void setPost1000() throws IOException {
         //given
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         Member member = Member.builder()
-                .username("testId")
+                .username("testId3")
                 .password(passwordEncoder.encode("test"))
                 .email("test@naver.com")
                 .roles("ROLE_USER")

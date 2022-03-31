@@ -23,7 +23,7 @@ public class Review extends BaseTimeEntity {
     @ManyToOne
     private Member owner;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Post post;
 
     private double grade;

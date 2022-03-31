@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
@@ -34,7 +33,7 @@ class MemberRepositoryTest {
         //given
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         Member member = Member.builder()
-                .username("testId3")
+                .username("testId4")
                 .password(passwordEncoder.encode("test"))
                 .email("test@naver.com")
                 .roles("ROLE_USER")
@@ -44,7 +43,7 @@ class MemberRepositoryTest {
         memberRepository.save(member);
 
         //then
-        Member getDbMember = memberRepository.findByUsername("testId3");
+        Member getDbMember = memberRepository.findByUsername("testId4");
         getDbMember.toString();
         assertThat(getDbMember).isEqualTo(member);
 

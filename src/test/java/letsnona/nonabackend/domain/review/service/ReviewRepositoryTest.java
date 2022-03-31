@@ -9,8 +9,6 @@ import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.domain.review.repository.ReviewRepository;
 import letsnona.nonabackend.global.security.entity.Member;
 import letsnona.nonabackend.global.security.repository.MemberRepository;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,13 +40,13 @@ class ReviewRepositoryTest {
     @Transactional
     void saveReview() throws IOException {
 
-
+        //given
         ReviewRequestDTO requestDTO = ReviewRequestDTO.builder()
                 .postId(1L)
                 .grade(3)
                 .content("정말맛있어요")
                 .build();
-
+        //when
         Member member = memberRepository.findByUsername("testId");
         Optional<Post> byId = postRepository.findById(requestDTO.getPostId());
 
@@ -65,6 +63,8 @@ class ReviewRepositoryTest {
 
         Review savedReview = reviewRepository.save(review);
        // Review findReview = reviewRepository.findById(savedReview.getId());
+
+        //then
         assertThat(savedReview.getId()).isNotNull();
         assertThat(savedReview.getContent()).isEqualTo(requestDTO.getContent());
         assertThat(savedReview.getGrade()).isEqualTo(requestDTO.getGrade());
