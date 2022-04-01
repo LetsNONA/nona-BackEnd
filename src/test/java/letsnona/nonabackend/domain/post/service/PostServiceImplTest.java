@@ -110,7 +110,7 @@ void setPost1000() throws IOException {
         //given
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         Member member = Member.builder()
-                .username("testId3")
+                .username("testId2")
                 .password(passwordEncoder.encode("test"))
                 .email("test@naver.com")
                 .roles("ROLE_USER")
@@ -118,12 +118,12 @@ void setPost1000() throws IOException {
 
         PostAddRequestDTO postAddRequestDTO = PostAddRequestDTO.builder()
                 .owner(member)
-                .title("test_제목입니다")
-                .content("test_내용입니다")
-                .category("임시카테리고")
-                .tradePlace("임시거래지역")
+                .title("test_제목입니다2")
+                .content("test_내용입니다2")
+                .category("임시카테리고2")
+                .tradePlace("임시거래지역2")
                 .price(10000)
-                .hashTag("임시해쉬태그")
+                .hashTag("임시해쉬태그2")
                 // .imgid("임시이미지ID")
                 .build();
         List<MultipartFile> imgLists = new ArrayList<>();

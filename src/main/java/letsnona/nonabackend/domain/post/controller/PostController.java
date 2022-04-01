@@ -2,6 +2,7 @@ package letsnona.nonabackend.domain.post.controller;
 
 import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
 import letsnona.nonabackend.domain.post.dto.add.PostAddResponseDTO;
+import letsnona.nonabackend.domain.post.dto.read.PostReadResDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
 import letsnona.nonabackend.domain.post.service.PostService;
@@ -39,7 +40,12 @@ public class PostController {
 
 
     @GetMapping("/posts")
-    Page<Post> getAllPosts(Pageable pageable){
-        return postRepository.findAll(pageable);
+    Page<PostReadResDTO> getAllPosts(Pageable pageable){
+        Page<Post> all = postRepository.findAll(pageable);
+        Page<PostReadResDTO> test = all.map(post ->   new PostReadResDTO(post.getId(),post.getOwner(),post.getImages(),post.getReviews()
+                ,post.getTitle(),post.getContent(),post.getCategory(),post.getTradePlace(),post.getPrice(),post.getHashTag(),post.getHit(),post.isFlagCourierFee()));
+
+
+        return test;
     }
 }

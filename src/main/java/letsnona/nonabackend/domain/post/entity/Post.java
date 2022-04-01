@@ -1,5 +1,6 @@
 package letsnona.nonabackend.domain.post.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.global.entity.BaseTimeEntity;
@@ -24,14 +25,15 @@ public class Post extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @JsonManagedReference
     @ManyToOne(fetch = FetchType.EAGER)
     private Member owner;
 
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL) @Builder.Default
     private List<PostImg> images= new ArrayList<>() ; // 임시 이미지 아이디, join 필요
 
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY) @Builder.Default
     private List<Review> reviews= new ArrayList<>() ; // 임시 이미지 아이디, join 필요
 

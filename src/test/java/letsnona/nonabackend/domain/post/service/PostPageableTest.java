@@ -1,5 +1,6 @@
 package letsnona.nonabackend.domain.post.service;
 
+import letsnona.nonabackend.domain.post.dto.read.PostReadResDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -35,7 +36,21 @@ class PostPageableTest {
         /*mockMvc.perform(get("/posts"))
                 .andExpect(status().isOk())
                 .andDo(print());*/
-        Pageable pageable = PageRequest.of(0,10);
+        Pageable pageable = PageRequest.of(0, 10);
         Page<Post> all = postRepository.findAll(pageable);
+Page<PostReadResDTO> test = all.map(post ->  PostReadResDTO.builder()
+        .id(post.getId())
+        .owner(post.getOwner())
+        .images(post.getImages())
+        .reviews(post.getReviews())
+        .title(post.getTitle())
+        .content(post.getContent())
+        .category(post.getCategory())
+        .tradePlace(post.getTradePlace())
+        .price(post.getPrice())
+        .hashTag(post.getHashTag())
+        .hit(post.getHit())
+        .flagCourierFee(post.isFlagCourierFee()).build());
+
     }
 }
