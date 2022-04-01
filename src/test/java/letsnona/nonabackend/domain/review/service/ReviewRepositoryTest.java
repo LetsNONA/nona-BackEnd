@@ -42,9 +42,9 @@ class ReviewRepositoryTest {
 
         //given
         ReviewRequestDTO requestDTO = ReviewRequestDTO.builder()
-                .postId(1L)
+                .postId(2L)
                 .grade(3)
-                .content("정말맛있어요")
+                .content("정말맛있어요2")
                 .build();
         //when
         Member member = memberRepository.findByUsername("testId");
