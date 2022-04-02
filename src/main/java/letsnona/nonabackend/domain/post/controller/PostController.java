@@ -10,15 +10,20 @@ import letsnona.nonabackend.global.security.auth.PrincipalDetails;
 import letsnona.nonabackend.global.security.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -36,6 +41,16 @@ public class PostController {
         Member user = principal.getUser();
         postDTO.setOwner(user);
         PostAddResponseDTO responseDTO = postService.savePost(postDTO, file);
+    }
+
+    @GetMapping("/images")
+    public ResponseEntity<byte[]> showImage(@RequestParam("img_path") String filePath) throws IOException {
+        String decodeFilePath = URLDecoder.decode(filePath, StandardCharsets.UTF_8);
+        System.out.println("decodeFilePath = " + decodeFilePath);
+        InputStream imageStream = new FileInputStream(filePath);
+        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
+        imageStream.close();
+        return new ResponseEntity<byte[]>(imageByteArray, HttpStatus.OK);
     }
 
 

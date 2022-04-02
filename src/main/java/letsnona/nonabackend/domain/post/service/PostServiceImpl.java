@@ -49,7 +49,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Page<PostReadResDTO> findAllPageToDTO(Page<Post> postPage) {
-        Page<PostReadResDTO> dtoPage = postPage.map(new Function<Post, PostReadResDTO>() {
+        return postPage.map(new Function<Post, PostReadResDTO>() {
             @Override
             public PostReadResDTO apply(Post post) {
 
@@ -58,10 +58,8 @@ public class PostServiceImpl implements PostService {
                 // List<Review> -> List<PostResReviewDTO>  { Entity -> DTO }
                 List<PostResReivewDTO> reivewDTOList = post.getReviews().stream().map(PostResReivewDTO::new).collect(Collectors.toList());
 
-                PostReadResDTO dto = new PostReadResDTO(post , imgDTOList,reivewDTOList);
-                return dto;
+                return new PostReadResDTO(post , imgDTOList,reivewDTOList);
             }
         });
-        return dtoPage;
     }
 }
