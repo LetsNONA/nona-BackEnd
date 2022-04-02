@@ -40,12 +40,8 @@ public class PostController {
 
 
     @GetMapping("/posts")
-    Page<PostReadResDTO> getAllPosts(Pageable pageable){
+    Page<PostReadResDTO> getAllPosts(Pageable pageable) {
         Page<Post> all = postRepository.findAll(pageable);
-        Page<PostReadResDTO> test = all.map(post ->   new PostReadResDTO(post.getId(),post.getOwner(),post.getImages(),post.getReviews()
-                ,post.getTitle(),post.getContent(),post.getCategory(),post.getTradePlace(),post.getPrice(),post.getHashTag(),post.getHit(),post.isFlagCourierFee()));
-
-
-        return test;
+        return postService.findAllPageToDTO(all);
     }
 }

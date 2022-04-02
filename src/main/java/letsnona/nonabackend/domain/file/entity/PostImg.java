@@ -6,14 +6,12 @@ import letsnona.nonabackend.global.entity.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@ToString
 @NoArgsConstructor
 public class PostImg extends BaseTimeEntity {
     @Id

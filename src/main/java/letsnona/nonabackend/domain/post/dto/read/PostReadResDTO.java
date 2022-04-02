@@ -1,22 +1,20 @@
 package letsnona.nonabackend.domain.post.dto.read;
 
-import letsnona.nonabackend.domain.file.entity.PostImg;
-import letsnona.nonabackend.domain.review.entity.Review;
+import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.global.security.entity.Member;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
 
-@Builder
+
 @AllArgsConstructor
 @Data
 public class PostReadResDTO {
     private long id;
     private Member owner;
-    private List<PostImg> images ;
-    private List<Review> reviews ;
+    private List<PostResImgDTO> images;
+    private List<PostResReivewDTO> reviews;
     private String title;
     private String content;
     private String category;
@@ -26,4 +24,18 @@ public class PostReadResDTO {
     private int hit;
     private boolean flagCourierFee;
 
+    public PostReadResDTO(Post post, List<PostResImgDTO> imgDTOList, List<PostResReivewDTO> reivewDTOList) {
+        this.id = post.getId();
+        this.owner = post.getOwner();
+        this.images = imgDTOList;
+        this.reviews = reivewDTOList;
+        this.title = post.getTitle();
+        this.content = post.getContent();
+        this.category = post.getCategory();
+        this.tradePlace = post.getTradePlace();
+        this.price = post.getPrice();
+        this.hashTag = post.getHashTag();
+        this.hit = post.getHit();
+        this.flagCourierFee = post.isFlagCourierFee();
+    }
 }

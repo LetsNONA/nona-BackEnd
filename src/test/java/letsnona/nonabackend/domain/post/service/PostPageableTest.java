@@ -1,6 +1,8 @@
 package letsnona.nonabackend.domain.post.service;
 
 import letsnona.nonabackend.domain.post.dto.read.PostReadResDTO;
+import letsnona.nonabackend.domain.post.dto.read.PostResImgDTO;
+import letsnona.nonabackend.domain.post.dto.read.PostResReivewDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -13,6 +15,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -37,20 +45,33 @@ class PostPageableTest {
                 .andExpect(status().isOk())
                 .andDo(print());*/
         Pageable pageable = PageRequest.of(0, 10);
+
         Page<Post> all = postRepository.findAll(pageable);
-Page<PostReadResDTO> test = all.map(post ->  PostReadResDTO.builder()
-        .id(post.getId())
-        .owner(post.getOwner())
-        .images(post.getImages())
-        .reviews(post.getReviews())
-        .title(post.getTitle())
-        .content(post.getContent())
-        .category(post.getCategory())
-        .tradePlace(post.getTradePlace())
-        .price(post.getPrice())
-        .hashTag(post.getHashTag())
-        .hit(post.getHit())
-        .flagCourierFee(post.isFlagCourierFee()).build());
+        Page<PostReadResDTO> dtoPage = all.map(new Function<Post, PostReadResDTO>() {
+            @Override
+            public PostReadResDTO apply(Post post) {
+
+                List<PostResImgDTO> imgDTOList = post.getImages().stream().map(PostResImgDTO::new).collect(Collectors.toList());
+                List<PostResReivewDTO> reivewDTOList = post.getReviews().stream().map(PostResReivewDTO::new).collect(Collectors.toList());
+
+                PostReadResDTO dto = new PostReadResDTO(
+                        post.getId(),
+                        post.getOwner(),
+                        imgDTOList,
+                        reivewDTOList,
+                        post.getTitle(),
+                        post.getContent(),
+                        post.getCategory(),
+                        post.getTradePlace(),
+                        post.getPrice(),
+                        post.getHashTag(),
+                        post.getHit(),
+                        post.isFlagCourierFee()
+                );
+                return dto;
+            }
+        });
+        assertThat(all).isEqualTo(dtoPage);
 
     }
 }
