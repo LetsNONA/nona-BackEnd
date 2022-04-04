@@ -1,5 +1,6 @@
 package letsnona.nonabackend.domain.review.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.global.entity.BaseTimeEntity;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -23,7 +24,7 @@ public class Review extends BaseTimeEntity {
     @ManyToOne
     private Member owner;
 
-
+    @JsonBackReference
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Post post;
 

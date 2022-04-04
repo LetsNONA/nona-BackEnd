@@ -31,11 +31,11 @@ public class Post extends BaseTimeEntity {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL) @Builder.Default
-    private List<PostImg> images= new ArrayList<>() ; // 임시 이미지 아이디, join 필요
+    private List<PostImg> images= new ArrayList<>() ;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY) @Builder.Default
-    private List<Review> reviews= new ArrayList<>() ; // 임시 이미지 아이디, join 필요
+    private List<Review> reviews= new ArrayList<>() ;
 
     private String title;
 

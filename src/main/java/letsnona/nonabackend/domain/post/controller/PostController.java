@@ -10,18 +10,14 @@ import letsnona.nonabackend.global.security.auth.PrincipalDetails;
 import letsnona.nonabackend.global.security.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.IOUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -43,19 +39,18 @@ public class PostController {
         PostAddResponseDTO responseDTO = postService.savePost(postDTO, file);
     }
 
+
     @GetMapping("/images")
-    public ResponseEntity<byte[]> showImage(@RequestParam("img_path") String filePath) throws IOException {
+    ResponseEntity<byte[]> showImage(@RequestParam("img_path") String filePath) throws IOException {
         String decodeFilePath = URLDecoder.decode(filePath, StandardCharsets.UTF_8);
-        System.out.println("decodeFilePath = " + decodeFilePath);
-        InputStream imageStream = new FileInputStream(filePath);
-        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
-        imageStream.close();
-        return new ResponseEntity<byte[]>(imageByteArray, HttpStatus.OK);
+        return postService.getRespIMG(filePath);
     }
 
 
     @GetMapping("/posts")
     Page<PostReadResDTO> getAllPosts(Pageable pageable) {
+        /*TODO
+        *  - 모든 포스트 반환시 리뷰 제외하고, 평점으로 해야함*/
         Page<Post> all = postRepository.findAll(pageable);
         return postService.findAllPageToDTO(all);
     }

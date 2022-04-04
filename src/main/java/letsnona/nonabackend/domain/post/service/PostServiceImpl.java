@@ -13,10 +13,16 @@ import letsnona.nonabackend.domain.post.dto.read.PostResReivewDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.IOUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -24,6 +30,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
+
     private final PostRepository postRepository;
     private final PostImgRepository imgRepository;
     private final FileService fileService;
@@ -32,6 +39,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostAddResponseDTO savePost(PostAddRequestDTO postDTO, List<MultipartFile> imgList) {
         Post post = postDTO.toEntity();
+
 
         List<PostImgRequestDTO> postImgRequestDTOList = fileService.saveImage(imgList);
         List<PostImg> postImgEntityList = postImgRequestDTOList.stream()
@@ -52,14 +60,30 @@ public class PostServiceImpl implements PostService {
         return postPage.map(new Function<Post, PostReadResDTO>() {
             @Override
             public PostReadResDTO apply(Post post) {
-
                 // List<PostImg> -> List<PostResImgDTO>  { Entity -> DTO }
-                List<PostResImgDTO> imgDTOList = post.getImages().stream().map(PostResImgDTO::new).collect(Collectors.toList());
+                List<PostResImgDTO> imgDTOList = getPostResImgDTOS(post);
                 // List<Review> -> List<PostResReviewDTO>  { Entity -> DTO }
-                List<PostResReivewDTO> reivewDTOList = post.getReviews().stream().map(PostResReivewDTO::new).collect(Collectors.toList());
-
-                return new PostReadResDTO(post , imgDTOList,reivewDTOList);
+                List<PostResReivewDTO> reivewDTOList = getPostResReivewDTOS(post);
+                return new PostReadResDTO(post, imgDTOList, reivewDTOList);
             }
         });
+    }
+
+    private List<PostResReivewDTO> getPostResReivewDTOS(Post post) {
+        List<PostResReivewDTO> reivewDTOList = post.getReviews().stream().map(PostResReivewDTO::new).collect(Collectors.toList());
+        return reivewDTOList;
+    }
+
+    private List<PostResImgDTO> getPostResImgDTOS(Post post) {
+        List<PostResImgDTO> imgDTOList = post.getImages().stream().map(PostResImgDTO::new).collect(Collectors.toList());
+        return imgDTOList;
+    }
+
+    @Override
+    public ResponseEntity<byte[]> getRespIMG(String filePath) throws IOException {
+        InputStream imageStream = new FileInputStream(filePath);
+        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
+        imageStream.close();
+        return new ResponseEntity<byte[]>(imageByteArray, HttpStatus.OK);
     }
 }
