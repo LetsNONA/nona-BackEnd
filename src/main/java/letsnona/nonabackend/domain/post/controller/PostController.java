@@ -39,6 +39,11 @@ public class PostController {
         PostAddResponseDTO responseDTO = postService.savePost(postDTO, file);
     }
 
+    @GetMapping("user/api/post/{postIndex}")
+    PostReadResDTO getPostDetail(@PathVariable long postIndex){
+        System.out.println("postIndex = " + postIndex);
+        return postService.getPostDetails(postIndex);
+    }
 
     @GetMapping("/images")
     ResponseEntity<byte[]> showImage(@RequestParam("img_path") String filePath) throws IOException {

@@ -4,8 +4,12 @@ import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.file.repository.PostImgRepository;
 import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
 import letsnona.nonabackend.domain.post.dto.add.PostAddResponseDTO;
+import letsnona.nonabackend.domain.post.dto.read.PostReadResDTO;
+import letsnona.nonabackend.domain.post.dto.read.PostResImgDTO;
+import letsnona.nonabackend.domain.post.dto.read.PostResReivewDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
+import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.global.security.entity.Member;
 import letsnona.nonabackend.global.security.repository.MemberRepository;
 import org.apache.commons.fileupload.FileItem;
@@ -42,7 +46,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PostServiceImplTest {
 
     @Autowired
-    MemberRepository memberRepository;
+     MemberRepository memberRepository;
 
     @Autowired
      PostRepository postRepository;
@@ -65,6 +69,22 @@ void getTest(){
     List<PostImg> images = post.get().getImages();
 
     System.out.println("images.toString() = " + images.toString());
+}
+
+@Test
+@DisplayName("게시글 상세보기")
+@Transactional
+void getPostDetails(){
+    Optional<Post> byId = postRepository.findById(1L);
+    List<PostResReivewDTO> postResReivewDTOS = postService.getPostResReivewDTOS(byId.get());
+    List<PostResImgDTO> postResImgDTOS = postService.getPostResImgDTOS(byId.get());
+
+    PostReadResDTO postReadResDTO = new PostReadResDTO
+            (byId.get(),postResImgDTOS,postResReivewDTOS);
+
+    assertThat(byId.get().getTitle()).isEqualTo(postReadResDTO.getTitle());
+    assertThat(postReadResDTO.getReviews()).isNotInstanceOf(Review.class);
+    System.out.println("postReadResDTO = " + postReadResDTO);
 }
 
 @Test

@@ -24,6 +24,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -69,14 +70,23 @@ public class PostServiceImpl implements PostService {
         });
     }
 
-    private List<PostResReivewDTO> getPostResReivewDTOS(Post post) {
-        List<PostResReivewDTO> reivewDTOList = post.getReviews().stream().map(PostResReivewDTO::new).collect(Collectors.toList());
-        return reivewDTOList;
+    @Override
+    public PostReadResDTO getPostDetails(long index) {
+        Optional<Post> byId = postRepository.findById(index);
+        List<PostResReivewDTO> postResReivewDTOS = getPostResReivewDTOS(byId.get());
+        List<PostResImgDTO> postResImgDTOS = getPostResImgDTOS(byId.get());
+
+        return new PostReadResDTO
+                (byId.get(),postResImgDTOS,postResReivewDTOS);
     }
 
-    private List<PostResImgDTO> getPostResImgDTOS(Post post) {
-        List<PostResImgDTO> imgDTOList = post.getImages().stream().map(PostResImgDTO::new).collect(Collectors.toList());
-        return imgDTOList;
+    @Override
+    public List<PostResReivewDTO> getPostResReivewDTOS(Post post) {
+        return post.getReviews().stream().map(PostResReivewDTO::new).collect(Collectors.toList());
+    }
+    @Override
+    public List<PostResImgDTO> getPostResImgDTOS(Post post) {
+        return post.getImages().stream().map(PostResImgDTO::new).collect(Collectors.toList());
     }
 
     @Override

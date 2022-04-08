@@ -76,16 +76,3 @@ public class Post extends BaseTimeEntity {
 
 }
 
-    /*
-        .user(user)
-                .title("test_제목입니다")
-                .content("test_내용입니다")
-                .category("임시카테리고")
-                .tradePlace("임시거래지역")
-                .price(10000)
-                .flagCourierFee(0)
-                .hashTag("임시해쉬태그")
-                .imgid("임시이미지ID")
-                .flagDelete("0")
-                .build();
-    * */
