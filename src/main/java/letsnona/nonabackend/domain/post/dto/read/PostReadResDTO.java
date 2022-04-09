@@ -14,6 +14,7 @@ public class PostReadResDTO {
     private long id;
     private Member owner;
     private List<PostResImgDTO> images;
+    private double averageReviewGrade = 0 ;
     private List<PostResReviewDTO> reviews;
     private String title;
     private String content;
@@ -23,6 +24,15 @@ public class PostReadResDTO {
     private String hashTag;
     private int hit;
     private boolean flagCourierFee;
+
+    double getAverageReviewsGrade(List<PostResReviewDTO> reivewDTOList){
+        double sum = 0 ;
+        for (PostResReviewDTO dto : reivewDTOList
+             ) {
+            sum += dto.getGrade();
+        }
+        return sum / reivewDTOList.size();
+    }
 
     public PostReadResDTO(Post post, List<PostResImgDTO> imgDTOList, List<PostResReviewDTO> reivewDTOList) {
         this.id = post.getId();
@@ -37,5 +47,6 @@ public class PostReadResDTO {
         this.hashTag = post.getHashTag();
         this.hit = post.getHit();
         this.flagCourierFee = post.isFlagCourierFee();
+        this.averageReviewGrade = getAverageReviewsGrade(reivewDTOList);
     }
 }

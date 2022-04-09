@@ -52,9 +52,10 @@ class PostPageableTest {
             public PostReadResDTO apply(Post post) {
 
                 List<PostResImgDTO> imgDTOList = post.getImages().stream().map(PostResImgDTO::new).collect(Collectors.toList());
-                List<PostResReviewDTO> reivewDTOList = post.getReviews().stream().map(PostResReviewDTO::new).collect(Collectors.toList());
+                List<PostResReviewDTO> reviewDTOList = post.getReviews().stream().map(PostResReviewDTO::new).collect(Collectors.toList());
 
-                PostReadResDTO dto = new PostReadResDTO(
+                return new PostReadResDTO(post, imgDTOList, reviewDTOList);
+                /*PostReadResDTO dto = new PostReadResDTO(
                         post.getId(),
                         post.getOwner(),
                         imgDTOList,
@@ -68,10 +69,12 @@ class PostPageableTest {
                         post.getHit(),
                         post.isFlagCourierFee()
                 );
-                return dto;
+                return dto;*/
             }
         });
-        assertThat(all).isEqualTo(dtoPage);
+       assertThat(all).isInstanceOf(Page.class);
+        assertThat(dtoPage).isInstanceOf(Page.class);
+        assertThat(dtoPage.getContent().get(0)).isInstanceOf(PostReadResDTO.class);
 
     }
 }

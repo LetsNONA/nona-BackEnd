@@ -42,12 +42,12 @@ class ReviewRepositoryTest {
 
         //given
         ReviewRequestDTO requestDTO = ReviewRequestDTO.builder()
-                .postId(2L)
-                .grade(1)
-                .content("댓글 3")
+                .postId(1L)
+                .grade(4)
+                .content("댓글 4")
                 .build();
         //when
-        Member member = memberRepository.findByUsername("testId2");
+        Member member = memberRepository.findByUsername("testId");
         Optional<Post> byId = postRepository.findById(requestDTO.getPostId());
 
         ReviewDTO reviewDTO = ReviewDTO.builder()
