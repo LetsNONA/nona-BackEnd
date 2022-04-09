@@ -9,9 +9,10 @@ import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
 import letsnona.nonabackend.domain.post.dto.add.PostAddResponseDTO;
 import letsnona.nonabackend.domain.post.dto.read.PostReadResDTO;
 import letsnona.nonabackend.domain.post.dto.read.PostResImgDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostResReivewDTO;
+import letsnona.nonabackend.domain.post.dto.read.PostResReviewDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
+import letsnona.nonabackend.domain.review.entity.Review;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.data.domain.Page;
@@ -41,7 +42,6 @@ public class PostServiceImpl implements PostService {
     public PostAddResponseDTO savePost(PostAddRequestDTO postDTO, List<MultipartFile> imgList) {
         Post post = postDTO.toEntity();
 
-
         List<PostImgRequestDTO> postImgRequestDTOList = fileService.saveImage(imgList);
         List<PostImg> postImgEntityList = postImgRequestDTOList.stream()
                 .map(PostImgRequestDTO::toEntity).collect(Collectors.toList());
@@ -57,15 +57,15 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<PostReadResDTO> findAllPageToDTO(Page<Post> postPage) {
+    public Page<PostReadResDTO> getAllPost(Page<Post> postPage) {
         return postPage.map(new Function<Post, PostReadResDTO>() {
             @Override
             public PostReadResDTO apply(Post post) {
                 // List<PostImg> -> List<PostResImgDTO>  { Entity -> DTO }
-                List<PostResImgDTO> imgDTOList = getPostResImgDTOS(post);
+                List<PostResImgDTO> imgDTOList = getImageEntityToDTO(post.getImages());
                 // List<Review> -> List<PostResReviewDTO>  { Entity -> DTO }
-                List<PostResReivewDTO> reivewDTOList = getPostResReivewDTOS(post);
-                return new PostReadResDTO(post, imgDTOList, reivewDTOList);
+                List<PostResReviewDTO> reviewDTOList = getReviewEntityToDTO(post.getReviews());
+                return new PostReadResDTO(post, imgDTOList, reviewDTOList);
             }
         });
     }
@@ -73,20 +73,22 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostReadResDTO getPostDetails(long index) {
         Optional<Post> byId = postRepository.findById(index);
-        List<PostResReivewDTO> postResReivewDTOS = getPostResReivewDTOS(byId.get());
-        List<PostResImgDTO> postResImgDTOS = getPostResImgDTOS(byId.get());
+
+        List<PostResReviewDTO> postResReviewDTOS = getReviewEntityToDTO(byId.get().getReviews());
+        List<PostResImgDTO> postResImgDTOS = getImageEntityToDTO(byId.get().getImages());
 
         return new PostReadResDTO
-                (byId.get(),postResImgDTOS,postResReivewDTOS);
+                (byId.get(), postResImgDTOS, postResReviewDTOS);
     }
 
     @Override
-    public List<PostResReivewDTO> getPostResReivewDTOS(Post post) {
-        return post.getReviews().stream().map(PostResReivewDTO::new).collect(Collectors.toList());
+    public List<PostResReviewDTO> getReviewEntityToDTO(List<Review> reviewList) {
+        return reviewList.stream().map(PostResReviewDTO::new).collect(Collectors.toList());
     }
+
     @Override
-    public List<PostResImgDTO> getPostResImgDTOS(Post post) {
-        return post.getImages().stream().map(PostResImgDTO::new).collect(Collectors.toList());
+    public List<PostResImgDTO> getImageEntityToDTO(List<PostImg> imgList) {
+        return imgList.stream().map(PostResImgDTO::new).collect(Collectors.toList());
     }
 
     @Override

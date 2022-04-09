@@ -14,7 +14,7 @@ public class PostReadResDTO {
     private long id;
     private Member owner;
     private List<PostResImgDTO> images;
-    private List<PostResReivewDTO> reviews;
+    private List<PostResReviewDTO> reviews;
     private String title;
     private String content;
     private String category;
@@ -24,7 +24,7 @@ public class PostReadResDTO {
     private int hit;
     private boolean flagCourierFee;
 
-    public PostReadResDTO(Post post, List<PostResImgDTO> imgDTOList, List<PostResReivewDTO> reivewDTOList) {
+    public PostReadResDTO(Post post, List<PostResImgDTO> imgDTOList, List<PostResReviewDTO> reivewDTOList) {
         this.id = post.getId();
         this.owner = post.getOwner();
         this.images = imgDTOList;

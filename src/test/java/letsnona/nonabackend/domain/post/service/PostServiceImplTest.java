@@ -6,7 +6,7 @@ import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
 import letsnona.nonabackend.domain.post.dto.add.PostAddResponseDTO;
 import letsnona.nonabackend.domain.post.dto.read.PostReadResDTO;
 import letsnona.nonabackend.domain.post.dto.read.PostResImgDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostResReivewDTO;
+import letsnona.nonabackend.domain.post.dto.read.PostResReviewDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
 import letsnona.nonabackend.domain.review.entity.Review;
@@ -76,11 +76,11 @@ void getTest(){
 @Transactional
 void getPostDetails(){
     Optional<Post> byId = postRepository.findById(1L);
-    List<PostResReivewDTO> postResReivewDTOS = postService.getPostResReivewDTOS(byId.get());
-    List<PostResImgDTO> postResImgDTOS = postService.getPostResImgDTOS(byId.get());
+    List<PostResReviewDTO> postResReviewDTOS = postService.getReviewEntityToDTO(byId.get().getReviews());
+    List<PostResImgDTO> postResImgDTOS = postService.getImageEntityToDTO(byId.get().getImages());
 
     PostReadResDTO postReadResDTO = new PostReadResDTO
-            (byId.get(),postResImgDTOS,postResReivewDTOS);
+            (byId.get(),postResImgDTOS, postResReviewDTOS);
 
     assertThat(byId.get().getTitle()).isEqualTo(postReadResDTO.getTitle());
     assertThat(postReadResDTO.getReviews()).isNotInstanceOf(Review.class);

@@ -4,14 +4,14 @@ import letsnona.nonabackend.domain.review.entity.Review;
 import lombok.Data;
 
 @Data
-public class PostResReivewDTO {
+public class PostResReviewDTO {
     private long id;
     private String owner;
     private long post_id;
     private double grade;
     private String content;
 
-    public PostResReivewDTO(Review review) {
+    public PostResReviewDTO(Review review) {
         this.id = review.getId();
         this.owner = review.getOwner().getUsername();
         this.post_id = review.getPost().getId();

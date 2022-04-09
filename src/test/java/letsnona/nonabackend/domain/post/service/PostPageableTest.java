@@ -2,7 +2,7 @@ package letsnona.nonabackend.domain.post.service;
 
 import letsnona.nonabackend.domain.post.dto.read.PostReadResDTO;
 import letsnona.nonabackend.domain.post.dto.read.PostResImgDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostResReivewDTO;
+import letsnona.nonabackend.domain.post.dto.read.PostResReviewDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -52,7 +52,7 @@ class PostPageableTest {
             public PostReadResDTO apply(Post post) {
 
                 List<PostResImgDTO> imgDTOList = post.getImages().stream().map(PostResImgDTO::new).collect(Collectors.toList());
-                List<PostResReivewDTO> reivewDTOList = post.getReviews().stream().map(PostResReivewDTO::new).collect(Collectors.toList());
+                List<PostResReviewDTO> reivewDTOList = post.getReviews().stream().map(PostResReviewDTO::new).collect(Collectors.toList());
 
                 PostReadResDTO dto = new PostReadResDTO(
                         post.getId(),
