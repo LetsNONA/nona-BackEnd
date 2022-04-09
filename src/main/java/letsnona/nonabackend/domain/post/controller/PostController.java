@@ -40,7 +40,7 @@ public class PostController {
     }
 
     @GetMapping("user/api/post/{postIndex}")
-    PostReadResDTO getPostDetail(@PathVariable long postIndex){
+    PostReadResDTO getPostDetail(@PathVariable long postIndex) {
         return postService.getPostDetails(postIndex);
     }
 
@@ -53,9 +53,8 @@ public class PostController {
 
     @GetMapping("/posts")
     Page<PostReadResDTO> getAllPosts(Pageable pageable) {
-        /*TODO
-        *  - 모든 포스트 반환시 리뷰 제외하고, 평점으로 해야함*/
-        Page<Post> all = postRepository.findAll(pageable);
+//        Page<Post> all = postRepository.findAll(pageable);
+        Page<Post> all = postRepository.findAllByFlagDelete(pageable,false);
         return postService.getAllPost(all);
     }
 }

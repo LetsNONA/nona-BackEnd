@@ -15,4 +15,8 @@ Optional<Post> findById(Long id);
 //@Query("select p from Post p left join fetch p.owner")
 @EntityGraph("PostWithMember")
 Page<Post> findAll(Pageable pageable);
+
+@EntityGraph("PostWithMember")
+//@EntityGraph(attributePaths = {"owner","images","reviews"})
+    Page<Post> findAllByFlagDelete(Pageable pageable,boolean flagDelete);
 }

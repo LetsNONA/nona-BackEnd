@@ -30,7 +30,7 @@ public class Post extends BaseTimeEntity {
     private Member owner;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL) @Builder.Default
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL,fetch = FetchType.LAZY) @Builder.Default
     private List<PostImg> images= new ArrayList<>() ;
 
     @JsonManagedReference

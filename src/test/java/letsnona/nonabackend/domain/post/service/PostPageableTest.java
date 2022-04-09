@@ -55,24 +55,10 @@ class PostPageableTest {
                 List<PostResReviewDTO> reviewDTOList = post.getReviews().stream().map(PostResReviewDTO::new).collect(Collectors.toList());
 
                 return new PostReadResDTO(post, imgDTOList, reviewDTOList);
-                /*PostReadResDTO dto = new PostReadResDTO(
-                        post.getId(),
-                        post.getOwner(),
-                        imgDTOList,
-                        reivewDTOList,
-                        post.getTitle(),
-                        post.getContent(),
-                        post.getCategory(),
-                        post.getTradePlace(),
-                        post.getPrice(),
-                        post.getHashTag(),
-                        post.getHit(),
-                        post.isFlagCourierFee()
-                );
-                return dto;*/
+
             }
         });
-       assertThat(all).isInstanceOf(Page.class);
+        assertThat(all).isInstanceOf(Page.class);
         assertThat(dtoPage).isInstanceOf(Page.class);
         assertThat(dtoPage.getContent().get(0)).isInstanceOf(PostReadResDTO.class);
 
