@@ -1,8 +1,6 @@
 package letsnona.nonabackend.domain.file.service;
 
 import letsnona.nonabackend.domain.file.dto.PostImgRequestDTO;
-import letsnona.nonabackend.domain.file.dto.PostImgResponseDTO;
-import letsnona.nonabackend.domain.post.entity.Post;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 

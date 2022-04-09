@@ -1,13 +1,13 @@
 package letsnona.nonabackend.global.security.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import letsnona.nonabackend.global.entity.BaseTimeEntity;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,9 +27,12 @@ public class Member extends BaseTimeEntity {
     @Column(unique = true)
     private String username;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String email;
+    @Column(columnDefinition = "varchar(255) default 'ROLE_USER'")
     private String roles;
+
     private String providerId;
     private String provider;
 

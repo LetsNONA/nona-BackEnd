@@ -1,6 +1,5 @@
 package letsnona.nonabackend.domain.file.service;
 
-import letsnona.nonabackend.domain.file.dto.PostImgResponseDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
 import org.apache.commons.fileupload.FileItem;
@@ -37,10 +36,12 @@ public class FileServiceUnitTest {
         File dir = new File(path);*/
         Post post = new Post();
         List<MultipartFile> imgLists = new ArrayList<>();
-        int file_count = 4;
+       int file_count = 4;
+
 
         for (int i = 1; i <= file_count; i++) {
             File file = new ClassPathResource("/testimg/test" + i + "Img.jpg").getFile();
+            //File file = new ClassPathResource("/testimg/test" + i + "Img.jpg").getFile();
             FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
             InputStream input = new FileInputStream(file);
             OutputStream os = fileItem.getOutputStream();
@@ -53,4 +54,6 @@ public class FileServiceUnitTest {
 
 
     }
+
+
 }

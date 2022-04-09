@@ -1,23 +1,12 @@
 package letsnona.nonabackend.domain.post.dto;
 
+import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
-import letsnona.nonabackend.domain.post.repository.PostRepository;
 import letsnona.nonabackend.global.security.entity.Member;
-import letsnona.nonabackend.global.security.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestPropertySource(properties = {"spring.config.location=classpath:application-test.yml"})
 */
 
-class PostRequestDTOTest {
+class PostAddRequestDTOTest {
 
 
     @BeforeAll
@@ -45,7 +34,7 @@ class PostRequestDTOTest {
                 .email("test@naver.com")
                 .roles("ROLE_USER")
                 .build();
-        PostRequestDTO post = PostRequestDTO.builder()
+        PostAddRequestDTO post = PostAddRequestDTO.builder()
                 .owner(member)
                 .title("test_제목입니다")
                 .content("test_내용입니다")

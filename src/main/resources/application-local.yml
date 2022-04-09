@@ -2,8 +2,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3307/testdb?serverTimezone=UTC&characterEncoding=UTF-8
-    username: nano
-    password: nano2
+    username: nona
+    password: nona2
   jpa:
     hibernate:
       ddl-auto: update
@@ -13,3 +13,10 @@ spring:
         format_sql: true
         type: trace
     database-platform: org.hibernate.dialect.MySQL5Dialect
+logging:
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace

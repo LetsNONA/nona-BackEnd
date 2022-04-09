@@ -11,6 +11,10 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,7 +72,8 @@ public class FileServiceImpl implements FileService {
         try {
             File tumbImg = new File(cropImgName);
             ImageIO.write(destImg, "jpg", tumbImg);
-            postImgRequestDTO.setThumbImgSrc(cropImgName);
+            String encode = URLEncoder.encode(cropImgName, StandardCharsets.UTF_8);
+            postImgRequestDTO.setThumbImgSrc(encode);
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -95,7 +100,9 @@ public class FileServiceImpl implements FileService {
             try {
                 file.transferTo(target);
                 //postImgResponseDTO
-                postImgRequestDTO.setOriginalImgSrc((getSaveDirectoryPath() + "\\" + saveFileName).toString());
+                String originalSrc = (getSaveDirectoryPath() + "\\" + saveFileName).toString();
+                String encode = URLEncoder.encode(originalSrc, StandardCharsets.UTF_8);
+                postImgRequestDTO.setOriginalImgSrc(encode);
                 makeTumbnail(target, postImgRequestDTO);
                 //responseDTOList
                 requestDTOList.add(postImgRequestDTO);
@@ -105,4 +112,6 @@ public class FileServiceImpl implements FileService {
         }
         return requestDTOList;
     }
+
+
 }

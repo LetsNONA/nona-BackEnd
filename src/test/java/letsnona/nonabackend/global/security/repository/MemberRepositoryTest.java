@@ -5,16 +5,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
-@TestPropertySource(properties = { "spring.config.location=classpath:application-test.yml" })
+//@DataJpaTest
+//@TestPropertySource(properties = { "spring.config.location=classpath:application-test.yml" })
+@SpringBootTest
 class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
@@ -34,7 +33,7 @@ class MemberRepositoryTest {
         //given
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         Member member = Member.builder()
-                .username("testId3")
+                .username("testId")
                 .password(passwordEncoder.encode("test"))
                 .email("test@naver.com")
                 .roles("ROLE_USER")
@@ -44,7 +43,7 @@ class MemberRepositoryTest {
         memberRepository.save(member);
 
         //then
-        Member getDbMember = memberRepository.findByUsername("testId3");
+        Member getDbMember = memberRepository.findByUsername("testId");
         getDbMember.toString();
         assertThat(getDbMember).isEqualTo(member);
 

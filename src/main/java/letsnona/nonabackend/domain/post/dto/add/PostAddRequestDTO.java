@@ -1,4 +1,4 @@
-package letsnona.nonabackend.domain.post.dto;
+package letsnona.nonabackend.domain.post.dto.add;
 
 import letsnona.nonabackend.domain.file.dto.PostImgRequestDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
@@ -15,7 +15,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostRequestDTO {
+public class PostAddRequestDTO {
 
     private long id;
     private Member owner;
