@@ -17,9 +17,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @DynamicInsert
-@NoArgsConstructor @AllArgsConstructor @Builder
-@NamedEntityGraph(name="PostWithMember" , attributeNodes = @NamedAttributeNode("owner"))
+@Getter
+@DynamicInsert
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@NamedEntityGraph(name = "PostWithMember", attributeNodes = {
+        @NamedAttributeNode("owner"),
+        @NamedAttributeNode("category")
+})
 public class Post extends BaseTimeEntity {
 
     @Id
@@ -34,12 +40,14 @@ public class Post extends BaseTimeEntity {
     private Category category;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL,fetch = FetchType.LAZY) @Builder.Default
-    private List<PostImg> images= new ArrayList<>() ;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<PostImg> images = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY) @Builder.Default
-    private List<Review> reviews= new ArrayList<>() ;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Review> reviews = new ArrayList<>();
 
     private String title;
 
@@ -60,6 +68,7 @@ public class Post extends BaseTimeEntity {
         review.setPost(this);
         this.getReviews().add(review);
     }
+
     public void addImg(PostImg img) {
         img.setPost(this);
         this.getImages().add(img);

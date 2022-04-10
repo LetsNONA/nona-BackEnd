@@ -27,6 +27,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class PostController {
+    /*
+    * TODO
+    *  -게시글 추가
+    *   게시글 삭제
+    *   게시글 수정
+    *   게시글 검색*/
+    
     private final PostService postService;
     private final PostRepository postRepository;
     private final CategoryRepository categoryRepository;
