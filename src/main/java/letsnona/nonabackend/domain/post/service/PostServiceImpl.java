@@ -1,6 +1,8 @@
 package letsnona.nonabackend.domain.post.service;
 
 
+import letsnona.nonabackend.domain.cataegory.entity.Category;
+import letsnona.nonabackend.domain.cataegory.repository.CategoryRepository;
 import letsnona.nonabackend.domain.file.dto.PostImgRequestDTO;
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.file.repository.PostImgRepository;
@@ -8,8 +10,8 @@ import letsnona.nonabackend.domain.file.service.FileService;
 import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
 import letsnona.nonabackend.domain.post.dto.add.PostAddResponseDTO;
 import letsnona.nonabackend.domain.post.dto.read.PostReadResDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostResImgDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostResReviewDTO;
+import letsnona.nonabackend.domain.post.dto.read.PostReadResImgDTO;
+import letsnona.nonabackend.domain.post.dto.read.PostReadResReviewDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
 import letsnona.nonabackend.domain.review.entity.Review;
@@ -36,11 +38,12 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final PostImgRepository imgRepository;
     private final FileService fileService;
-
+private final CategoryRepository categoryRepository;
 
     @Override
     public PostAddResponseDTO savePost(PostAddRequestDTO postDTO, List<MultipartFile> imgList) {
-        Post post = postDTO.toEntity();
+        Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(postDTO.getCategory());
+        Post post = postDTO.toEntity(byCategoryCode.get());
 
         List<PostImgRequestDTO> postImgRequestDTOList = fileService.saveImage(imgList);
         List<PostImg> postImgEntityList = postImgRequestDTOList.stream()
@@ -62,9 +65,9 @@ public class PostServiceImpl implements PostService {
             @Override
             public PostReadResDTO apply(Post post) {
                 // List<PostImg> -> List<PostResImgDTO>  { Entity -> DTO }
-                List<PostResImgDTO> imgDTOList = getImageEntityToDTO(post.getImages());
+                List<PostReadResImgDTO> imgDTOList = getImageEntityToDTO(post.getImages());
                 // List<Review> -> List<PostResReviewDTO>  { Entity -> DTO }
-                List<PostResReviewDTO> reviewDTOList = getReviewEntityToDTO(post.getReviews());
+                List<PostReadResReviewDTO> reviewDTOList = getReviewEntityToDTO(post.getReviews());
                 return new PostReadResDTO(post, imgDTOList, reviewDTOList);
             }
         });
@@ -74,21 +77,21 @@ public class PostServiceImpl implements PostService {
     public PostReadResDTO getPostDetails(long index) {
         Optional<Post> byId = postRepository.findById(index);
 
-        List<PostResReviewDTO> postResReviewDTOS = getReviewEntityToDTO(byId.get().getReviews());
-        List<PostResImgDTO> postResImgDTOS = getImageEntityToDTO(byId.get().getImages());
+        List<PostReadResReviewDTO> postReadResReviewDTOS = getReviewEntityToDTO(byId.get().getReviews());
+        List<PostReadResImgDTO> postReadResImgDTOS = getImageEntityToDTO(byId.get().getImages());
 
         return new PostReadResDTO
-                (byId.get(), postResImgDTOS, postResReviewDTOS);
+                (byId.get(), postReadResImgDTOS, postReadResReviewDTOS);
     }
 
     @Override
-    public List<PostResReviewDTO> getReviewEntityToDTO(List<Review> reviewList) {
-        return reviewList.stream().map(PostResReviewDTO::new).collect(Collectors.toList());
+    public List<PostReadResReviewDTO> getReviewEntityToDTO(List<Review> reviewList) {
+        return reviewList.stream().map(PostReadResReviewDTO::new).collect(Collectors.toList());
     }
 
     @Override
-    public List<PostResImgDTO> getImageEntityToDTO(List<PostImg> imgList) {
-        return imgList.stream().map(PostResImgDTO::new).collect(Collectors.toList());
+    public List<PostReadResImgDTO> getImageEntityToDTO(List<PostImg> imgList) {
+        return imgList.stream().map(PostReadResImgDTO::new).collect(Collectors.toList());
     }
 
     @Override

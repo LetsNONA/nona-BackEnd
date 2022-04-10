@@ -8,14 +8,14 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class PostResImgDTO {
+public class PostReadResImgDTO {
     private long id;
     private long post_id;
     private String originalImgSrc;
     private String thumbImgSrc;
     private String originalName;
 
-    public PostResImgDTO (PostImg postImg){
+    public PostReadResImgDTO(PostImg postImg){
         this.id = postImg.getId();
         this.post_id = postImg.getPost().getId();
         this.originalImgSrc = postImg.getOriginalImgSrc();

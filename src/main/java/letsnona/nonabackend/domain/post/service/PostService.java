@@ -4,8 +4,8 @@ import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
 import letsnona.nonabackend.domain.post.dto.add.PostAddResponseDTO;
 import letsnona.nonabackend.domain.post.dto.read.PostReadResDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostResImgDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostResReviewDTO;
+import letsnona.nonabackend.domain.post.dto.read.PostReadResImgDTO;
+import letsnona.nonabackend.domain.post.dto.read.PostReadResReviewDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.review.entity.Review;
 import org.springframework.data.domain.Page;
@@ -30,7 +30,7 @@ public interface PostService {
     @Transactional
     ResponseEntity<byte[]> getRespIMG(String filePath) throws IOException;
 
-    List<PostResReviewDTO> getReviewEntityToDTO(List<Review> reviewList);
-    List<PostResImgDTO> getImageEntityToDTO(List<PostImg> imgList);
+    List<PostReadResReviewDTO> getReviewEntityToDTO(List<Review> reviewList);
+    List<PostReadResImgDTO> getImageEntityToDTO(List<PostImg> imgList);
 
 }

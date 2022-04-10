@@ -1,5 +1,6 @@
 package letsnona.nonabackend.domain.post.controller;
 
+import letsnona.nonabackend.domain.cataegory.repository.CategoryRepository;
 import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
 import letsnona.nonabackend.domain.post.dto.add.PostAddResponseDTO;
 import letsnona.nonabackend.domain.post.dto.read.PostReadResDTO;
@@ -28,6 +29,7 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
     private final PostRepository postRepository;
+    private final CategoryRepository categoryRepository;
 
     @PostMapping("user/api/post")
     void savePost(Authentication authentication
@@ -54,7 +56,7 @@ public class PostController {
     @GetMapping("/posts")
     Page<PostReadResDTO> getAllPosts(Pageable pageable) {
 //        Page<Post> all = postRepository.findAll(pageable);
-        Page<Post> all = postRepository.findAllByFlagDelete(pageable,false);
+        Page<Post> all = postRepository.findAllByFlagDelete(pageable, false);
         return postService.getAllPost(all);
     }
 }

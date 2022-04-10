@@ -1,5 +1,6 @@
 package letsnona.nonabackend.domain.post.dto.add;
 
+import letsnona.nonabackend.domain.cataegory.entity.Category;
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -21,7 +22,7 @@ public class PostAddResponseDTO {
     private Member owner;
     private String title;
     private String content;
-    private String category;
+    private Category category;
     private String tradePlace;
     private int price;
     private int hit;

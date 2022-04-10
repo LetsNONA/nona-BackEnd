@@ -1,7 +1,8 @@
 package letsnona.nonabackend.domain.post.dto.read;
 
+import letsnona.nonabackend.domain.cataegory.dto.PostReadResCategoryDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
-import letsnona.nonabackend.global.security.entity.Member;
+import letsnona.nonabackend.global.security.dto.PostReadResUserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,36 +13,36 @@ import java.util.List;
 @Data
 public class PostReadResDTO {
     private long id;
-    private Member owner;
-    private List<PostResImgDTO> images;
+    private PostReadResUserDTO owner;
+    private List<PostReadResImgDTO> images;
     private double averageReviewGrade;
-    private List<PostResReviewDTO> reviews;
+    private List<PostReadResReviewDTO> reviews;
     private String title;
     private String content;
-    private String category;
+    private PostReadResCategoryDTO category;
     private String tradePlace;
     private int price;
     private String hashTag;
     private int hit;
     private boolean flagCourierFee;
 
-    double getAverageReviewsGrade(List<PostResReviewDTO> reviewDTOList){
+    double getAverageReviewsGrade(List<PostReadResReviewDTO> reviewDTOList){
         double sum = 0 ;
-        for (PostResReviewDTO dto : reviewDTOList
+        for (PostReadResReviewDTO dto : reviewDTOList
              ) {
             sum += dto.getGrade();
         }
         return sum / reviewDTOList.size();
     }
 
-    public PostReadResDTO(Post post, List<PostResImgDTO> imgDTOList, List<PostResReviewDTO> resReviewDTOS) {
+    public PostReadResDTO(Post post, List<PostReadResImgDTO> imgDTOList, List<PostReadResReviewDTO> resReviewDTOS) {
         this.id = post.getId();
-        this.owner = post.getOwner();
+        this.owner = new PostReadResUserDTO(post.getOwner());
         this.images = imgDTOList;
         this.reviews = resReviewDTOS;
         this.title = post.getTitle();
         this.content = post.getContent();
-        this.category = post.getCategory();
+        this.category = new PostReadResCategoryDTO(post.getCategory());
         this.tradePlace = post.getTradePlace();
         this.price = post.getPrice();
         this.hashTag = post.getHashTag();

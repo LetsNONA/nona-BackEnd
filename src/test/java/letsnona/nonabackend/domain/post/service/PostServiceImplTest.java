@@ -1,12 +1,13 @@
 package letsnona.nonabackend.domain.post.service;
 
+import letsnona.nonabackend.domain.cataegory.repository.CategoryRepository;
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.file.repository.PostImgRepository;
 import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
 import letsnona.nonabackend.domain.post.dto.add.PostAddResponseDTO;
 import letsnona.nonabackend.domain.post.dto.read.PostReadResDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostResImgDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostResReviewDTO;
+import letsnona.nonabackend.domain.post.dto.read.PostReadResImgDTO;
+import letsnona.nonabackend.domain.post.dto.read.PostReadResReviewDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
 import letsnona.nonabackend.domain.review.entity.Review;
@@ -46,82 +47,83 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PostServiceImplTest {
 
     @Autowired
-     MemberRepository memberRepository;
+    MemberRepository memberRepository;
 
     @Autowired
-     PostRepository postRepository;
+    PostRepository postRepository;
 
     @Autowired
-     PostImgRepository imgRepository;
+    CategoryRepository categoryRepository;
+    @Autowired
+    PostImgRepository imgRepository;
     @Autowired
     PostService postService;
 
-@Test
-void setup (){
-    postRepository.deleteAll();
-}
-
-
-@Test
-@Transactional
-void getTest(){
-    Optional<Post> post = postRepository.findById(4L);
-    List<PostImg> images = post.get().getImages();
-
-    System.out.println("images.toString() = " + images.toString());
-}
-
-@Test
-@DisplayName("게시글 상세보기")
-@Transactional
-void getPostDetails(){
-    Optional<Post> byId = postRepository.findById(1L);
-    List<PostResReviewDTO> postResReviewDTOS = postService.getReviewEntityToDTO(byId.get().getReviews());
-    List<PostResImgDTO> postResImgDTOS = postService.getImageEntityToDTO(byId.get().getImages());
-
-    PostReadResDTO postReadResDTO = new PostReadResDTO
-            (byId.get(),postResImgDTOS, postResReviewDTOS);
-
-    assertThat(byId.get().getTitle()).isEqualTo(postReadResDTO.getTitle());
-    assertThat(postReadResDTO.getReviews()).isNotInstanceOf(Review.class);
-    System.out.println("postReadResDTO = " + postReadResDTO);
-}
-
-@Test
-@DisplayName("게시글 천개저장")
-@Disabled
-void setPost1000() throws IOException {
-    Member member = memberRepository.findByUsername("testId");
-
-    for (int i = 0; i < 100; i++) {
-        PostAddRequestDTO postAddRequestDTO = PostAddRequestDTO.builder()
-                .owner(member)
-                .title("test["+i+"]제목입니다")
-                .content("test["+i+"]내용입니다")
-                .category("test["+i+"]임시카테리고")
-                .tradePlace("test["+i+"]임시거래지역")
-                .price(10000)
-                .hashTag("test["+i+"]임시해쉬태그")
-                // .imgid("임시이미지ID")
-                .build();
-        List<MultipartFile> imgLists = new ArrayList<>();
-        int file_count = 4;
-
-        for (int j =1; j <= file_count; j++) {
-            File file = new ClassPathResource("/testimg/test" + j + "Img.jpg").getFile();
-            FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
-            InputStream input = new FileInputStream(file);
-            OutputStream os = fileItem.getOutputStream();
-            IOUtils.copy(input, os);
-            MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
-            imgLists.add(multipartFile);
-        }
-
-        //when
-
-        PostAddResponseDTO responseDTO = postService.savePost(postAddRequestDTO, imgLists);
+    @Test
+    void setup() {
+        postRepository.deleteAll();
     }
-}
+
+
+    @Test
+    @Transactional
+    void getTest() {
+        Optional<Post> post = postRepository.findById(4L);
+        List<PostImg> images = post.get().getImages();
+
+        System.out.println("images.toString() = " + images.toString());
+    }
+
+    @Test
+    @DisplayName("게시글 상세보기")
+    @Transactional
+    void getPostDetails() {
+        Optional<Post> byId = postRepository.findById(1L);
+        List<PostReadResReviewDTO> postReadResReviewDTOS = postService.getReviewEntityToDTO(byId.get().getReviews());
+        List<PostReadResImgDTO> postReadResImgDTOS = postService.getImageEntityToDTO(byId.get().getImages());
+
+        PostReadResDTO postReadResDTO = new PostReadResDTO
+                (byId.get(), postReadResImgDTOS, postReadResReviewDTOS);
+
+        assertThat(byId.get().getTitle()).isEqualTo(postReadResDTO.getTitle());
+        assertThat(postReadResDTO.getReviews()).isNotInstanceOf(Review.class);
+        System.out.println("postReadResDTO = " + postReadResDTO);
+    }
+
+    @Test
+    @DisplayName("게시글 천개저장")
+    @Disabled
+    void setPost1000() throws IOException {
+        Member member = memberRepository.findByUsername("testId");
+        for (int i = 0; i < 100; i++) {
+            PostAddRequestDTO postAddRequestDTO = PostAddRequestDTO.builder()
+                    .owner(member)
+                    .title("test[" + i + "]제목입니다")
+                    .content("test[" + i + "]내용입니다")
+                    .category("cg001")
+                    .tradePlace("test[" + i + "]임시거래지역")
+                    .price(10000)
+                    .hashTag("test[" + i + "]임시해쉬태그")
+                    // .imgid("임시이미지ID")
+                    .build();
+            List<MultipartFile> imgLists = new ArrayList<>();
+            int file_count = 4;
+
+            for (int j = 1; j <= file_count; j++) {
+                File file = new ClassPathResource("/testimg/test" + j + "Img.jpg").getFile();
+                FileItem fileItem = new DiskFileItem("file", Files.probeContentType(file.toPath()), false, file.getName(), (int) file.length(), file.getParentFile());
+                InputStream input = new FileInputStream(file);
+                OutputStream os = fileItem.getOutputStream();
+                IOUtils.copy(input, os);
+                MultipartFile multipartFile = new CommonsMultipartFile(fileItem);
+                imgLists.add(multipartFile);
+            }
+
+            //when
+
+            PostAddResponseDTO responseDTO = postService.savePost(postAddRequestDTO, imgLists);
+        }
+    }
 
     @Test
     @DisplayName("게시물 등록테스트")
@@ -140,7 +142,7 @@ void setPost1000() throws IOException {
                 .owner(member)
                 .title("test_제목입니다2")
                 .content("test_내용입니다2")
-                .category("임시카테리고2")
+                .category("cg001")
                 .tradePlace("임시거래지역2")
                 .price(10000)
                 .hashTag("임시해쉬태그2")
@@ -164,7 +166,7 @@ void setPost1000() throws IOException {
         PostAddResponseDTO responseDTO = postService.savePost(postAddRequestDTO, imgLists);
 
         //then
-    assertThat(responseDTO.getImages().size()).isEqualTo(4);
+        assertThat(responseDTO.getImages().size()).isEqualTo(4);
     }
 
     @Test
