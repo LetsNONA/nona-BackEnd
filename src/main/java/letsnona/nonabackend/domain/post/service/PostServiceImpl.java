@@ -74,17 +74,17 @@ public class PostServiceImpl implements PostService {
     public PostAddResponseDTO updatePost(PostAddRequestDTO postDTO) {
 
         /*TODO
-        *  -리팩토링 매우 필요 더러운 코드 **/
+         *  -리팩토링 매우 필요 더러운 코드 **/
         Optional<Post> byId = postRepository.findById(postDTO.getId());
         byId.ifPresent(post -> {
             if (isPostOwner(post, getRequestUser()))
                 post.updatePost(postDTO);
-            if (postDTO.getCategory() != post.getCategory().getCategoryCode()) {
+
+            if (postDTO.getCategory() != null) {
                 Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(postDTO.getCategory());
                 byCategoryCode.ifPresent(post::updateCategory);
             }
         });
-
         return new PostAddResponseDTO(byId.get());
 
     }
