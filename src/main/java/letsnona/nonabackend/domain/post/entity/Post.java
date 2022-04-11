@@ -22,7 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@NamedEntityGraph(name = "PostWithMember", attributeNodes = {
+@NamedEntityGraph(name = "PostWithMemberAndCategory", attributeNodes = {
         @NamedAttributeNode("owner"),
         @NamedAttributeNode("category")
 })
@@ -72,6 +72,10 @@ public class Post extends BaseTimeEntity {
     public void addImg(PostImg img) {
         img.setPost(this);
         this.getImages().add(img);
+    }
+
+    public void deletePost(){
+        this.flagDelete = true;
     }
 
     @Builder

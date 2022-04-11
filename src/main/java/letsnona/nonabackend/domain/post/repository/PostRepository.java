@@ -13,10 +13,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 Post findByOwner(Member owner);
 Optional<Post> findById(Long id);
 //@Query("select p from Post p left join fetch p.owner")
-@EntityGraph("PostWithMember")
+@EntityGraph("PostWithMemberAndCategory")
 Page<Post> findAll(Pageable pageable);
 
-@EntityGraph("PostWithMember")
+@EntityGraph("PostWithMemberAndCategory")
 //@EntityGraph(attributePaths = {"owner","images","reviews"})
     Page<Post> findAllByFlagDelete(Pageable pageable,boolean flagDelete);
 }

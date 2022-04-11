@@ -23,6 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -80,9 +81,10 @@ public class SettingTest {
 
     @Test
     @DisplayName("게시글 백개저장")
+    @WithUserDetails("admin")
     @Disabled
     void setPost1000() throws IOException {
-        Member member = memberRepository.findByUsername("testId");
+        Member member = memberRepository.findByUsername("admin");
 
         for (int i = 0; i < 1; i++) {
             PostAddRequestDTO postAddRequestDTO = PostAddRequestDTO.builder()

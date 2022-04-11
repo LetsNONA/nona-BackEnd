@@ -8,9 +8,11 @@ import letsnona.nonabackend.domain.post.dto.read.PostReadResImgDTO;
 import letsnona.nonabackend.domain.post.dto.read.PostReadResReviewDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.review.entity.Review;
+import letsnona.nonabackend.global.security.entity.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -30,7 +32,15 @@ public interface PostService {
     @Transactional
     ResponseEntity<byte[]> getRespIMG(String filePath) throws IOException;
 
+    @Transactional
+    boolean deletePost(@PathVariable long postIndex);
+
     List<PostReadResReviewDTO> getReviewEntityToDTO(List<Review> reviewList);
+
     List<PostReadResImgDTO> getImageEntityToDTO(List<PostImg> imgList);
 
+    boolean isPostOwner(Post post, Member requestMember);
+
+    @Transactional
+    Member getRequestUser();
 }

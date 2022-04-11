@@ -7,8 +7,6 @@ import letsnona.nonabackend.domain.post.dto.read.PostReadResDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
 import letsnona.nonabackend.domain.post.service.PostService;
-import letsnona.nonabackend.global.security.auth.PrincipalDetails;
-import letsnona.nonabackend.global.security.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,7 +23,6 @@ import java.util.List;
 public class PostController {
     /*
      * TODO
-     *  -게시글 추가
      *   게시글 삭제
      *   게시글 수정
      *   게시글 검색*/
@@ -38,10 +35,12 @@ public class PostController {
     void savePost(Authentication authentication
             , @RequestPart(value = "key") PostAddRequestDTO postDTO
             , @RequestPart(value = "file") List<MultipartFile> file) {
-        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-        Member user = principal.getUser();
-        postDTO.setOwner(user);
         PostAddResponseDTO responseDTO = postService.savePost(postDTO, file);
+    }
+
+    @DeleteMapping("user/api/post/{postIndex}")
+    boolean deletePost(@PathVariable long postIndex) {
+        return postService.deletePost(postIndex);
     }
 
 

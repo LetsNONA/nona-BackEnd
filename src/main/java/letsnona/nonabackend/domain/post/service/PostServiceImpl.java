@@ -15,11 +15,15 @@ import letsnona.nonabackend.domain.post.dto.read.PostReadResReviewDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
 import letsnona.nonabackend.domain.review.entity.Review;
+import letsnona.nonabackend.global.security.auth.PrincipalDetails;
+import letsnona.nonabackend.global.security.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,10 +42,13 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final PostImgRepository imgRepository;
     private final FileService fileService;
-private final CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public PostAddResponseDTO savePost(PostAddRequestDTO postDTO, List<MultipartFile> imgList) {
+        Member requestUser = getRequestUser();
+        postDTO.setOwner(requestUser);
+
         Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(postDTO.getCategory());
         Post post = postDTO.toEntity(byCategoryCode.get());
 
@@ -101,4 +108,32 @@ private final CategoryRepository categoryRepository;
         imageStream.close();
         return new ResponseEntity<byte[]>(imageByteArray, HttpStatus.OK);
     }
+
+    @Override
+    public boolean deletePost(long postIndex) {
+        /*TODO
+         *  테스트 코드 작성 필요*/
+        boolean flag = false;
+        Member requestUser = getRequestUser();
+        Optional<Post> byId = postRepository.findById(postIndex);
+
+        byId.ifPresent(post -> {
+            if (isPostOwner(post, requestUser)) post.deletePost();
+        });
+
+        return  byId.map(Post::isFlagDelete).orElse(false);
+    }
+
+    @Override
+    public boolean isPostOwner(Post post, Member requestMember) {
+        return post.getOwner().equals(requestMember);
+    }
+
+    @Override
+    public Member getRequestUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        return principal.getUser();
+    }
+
 }

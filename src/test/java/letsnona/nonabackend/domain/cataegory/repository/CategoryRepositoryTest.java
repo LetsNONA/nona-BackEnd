@@ -20,11 +20,12 @@ CategoryRepository categoryRepository;
     void InsertCategory() {
         //given
         Category category = Category.builder()
-                .categoryCode("cg001")
-                .categoryName("과일").build();
+                .categoryCode("cg002")
+                .categoryName("샐러드/기본채소").build();
 
         //when
-        Category save = categoryRepository.save(category);
+    Category save = categoryRepository.save(category);
+
         //then
         assertThat(save.getId()).isNotNull();
     }
