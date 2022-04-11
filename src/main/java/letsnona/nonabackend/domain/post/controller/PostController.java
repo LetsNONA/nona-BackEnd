@@ -4,7 +4,6 @@ import letsnona.nonabackend.domain.cataegory.repository.CategoryRepository;
 import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
 import letsnona.nonabackend.domain.post.dto.add.PostAddResponseDTO;
 import letsnona.nonabackend.domain.post.dto.read.PostReadResDTO;
-import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
 import letsnona.nonabackend.domain.post.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -43,24 +42,19 @@ public class PostController {
     }
 
 
-
     @GetMapping("user/api/post/{postIndex}")
     PostReadResDTO getPostDetail(@PathVariable long postIndex) {
         return postService.getPostDetails(postIndex);
     }
 
     @GetMapping("/posts/search")
-    Page<PostReadResDTO> getSearchPost(@RequestParam("keyword") String keyword,Pageable pageable) {
-//        Page<Post> byTitleContaining = postRepository.findAll(pageable);
-        Page<Post> byTitleContaining = postRepository.findByTitleContaining(pageable, keyword);
-        return postService.getSearchPost(byTitleContaining);
+    Page<PostReadResDTO> getSearchPost(@RequestParam("keyword") String keyword, Pageable pageable) {
+        return postService.getSearchPost(keyword, pageable);
     }
 
     @GetMapping("/posts")
     Page<PostReadResDTO> getAllPosts(Pageable pageable) {
-//        Page<Post> all = postRepository.findAll(pageable);
-        Page<Post> all = postRepository.findAllByFlagDelete(pageable, false);
-        return postService.getAllPost(all);
+        return postService.getAllPost(pageable);
     }
 
 }

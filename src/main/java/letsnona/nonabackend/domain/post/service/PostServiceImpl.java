@@ -20,6 +20,7 @@ import letsnona.nonabackend.global.security.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -32,7 +33,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -71,40 +71,30 @@ public class PostServiceImpl implements PostService {
         return new PostAddResponseDTO(post);
     }
 
-    @Override
-    public Page<PostReadResDTO> getSearchPost(Page<Post> postPage) {
+
+    public Page<PostReadResDTO> getPostReadResDTOS(Page<Post> postPage) {
         /*
          *  Response :  Entity -> DTO
          * */
-        return postPage.map(new Function<Post, PostReadResDTO>() {
-            @Override
-            public PostReadResDTO apply(Post post) {
-                // List<PostImg> -> List<PostResImgDTO>  { Entity -> DTO }
-                List<PostReadResImgDTO> imgDTOList = getImageEntityToDTO(post.getImages());
-                // List<Review> -> List<PostResReviewDTO>  { Entity -> DTO }
-                List<PostReadResReviewDTO> reviewDTOList = getReviewEntityToDTO(post.getReviews());
-                return new PostReadResDTO(post, imgDTOList, reviewDTOList);
-            }
+        return postPage.map(post -> {
+            List<PostReadResImgDTO> imgDTOList = getImageEntityToDTO(post.getImages());
+            List<PostReadResReviewDTO> reviewDTOList = getReviewEntityToDTO(post.getReviews());
+            return new PostReadResDTO(post, imgDTOList, reviewDTOList);
         });
     }
-
 
     @Override
-    public Page<PostReadResDTO> getAllPost(Page<Post> postPage) {
-        /*
-         *  Response :  Entity -> DTO
-         * */
-        return postPage.map(new Function<Post, PostReadResDTO>() {
-            @Override
-            public PostReadResDTO apply(Post post) {
-                // List<PostImg> -> List<PostResImgDTO>  { Entity -> DTO }
-                List<PostReadResImgDTO> imgDTOList = getImageEntityToDTO(post.getImages());
-                // List<Review> -> List<PostResReviewDTO>  { Entity -> DTO }
-                List<PostReadResReviewDTO> reviewDTOList = getReviewEntityToDTO(post.getReviews());
-                return new PostReadResDTO(post, imgDTOList, reviewDTOList);
-            }
-        });
+    public Page<PostReadResDTO> getAllPost(Pageable pageable) {
+        Page<Post> allByFlagDelete = postRepository.findAllByFlagDelete(pageable, false);
+        return getPostReadResDTOS(allByFlagDelete);
     }
+
+    @Override
+    public Page<PostReadResDTO> getSearchPost(String keyword, Pageable pageable) {
+        Page<Post> byTitleContaining = postRepository.findByTitleContaining(pageable, keyword);
+        return  getPostReadResDTOS(byTitleContaining);
+    }
+
 
     @Override
     public PostReadResDTO getPostDetails(long index) {
@@ -132,8 +122,8 @@ public class PostServiceImpl implements PostService {
     @Override
     public ResponseEntity<byte[]> getRespIMG(String filePath) throws IOException {
         /*
-        *  filePath -> Image(ByteCode)
-        * */
+         *  filePath -> Image(ByteCode)
+         * */
         InputStream imageStream = new FileInputStream(filePath);
         byte[] imageByteArray = IOUtils.toByteArray(imageStream);
         imageStream.close();
