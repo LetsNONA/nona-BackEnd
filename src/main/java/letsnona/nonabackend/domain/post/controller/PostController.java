@@ -23,8 +23,7 @@ import java.util.List;
 public class PostController {
     /*
      * TODO
-     *   게시글 삭제
-     *   게시글 수정
+     *   -게시글 수정
      *   게시글 검색*/
 
     private final PostService postService;
@@ -44,10 +43,12 @@ public class PostController {
     }
 
 
+
     @GetMapping("user/api/post/{postIndex}")
     PostReadResDTO getPostDetail(@PathVariable long postIndex) {
         return postService.getPostDetails(postIndex);
     }
+
 
     @GetMapping("/posts")
     Page<PostReadResDTO> getAllPosts(Pageable pageable) {

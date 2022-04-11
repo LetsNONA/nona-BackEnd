@@ -19,4 +19,7 @@ Page<Post> findAll(Pageable pageable);
 @EntityGraph("PostWithMemberAndCategory")
 //@EntityGraph(attributePaths = {"owner","images","reviews"})
     Page<Post> findAllByFlagDelete(Pageable pageable,boolean flagDelete);
+
+    @EntityGraph("PostWithMemberAndCategory")
+    Page<Post> findByTitleContaining(Pageable pageable,String title);
 }

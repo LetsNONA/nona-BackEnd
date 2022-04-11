@@ -49,6 +49,10 @@ public class PostServiceImpl implements PostService {
         Member requestUser = getRequestUser();
         postDTO.setOwner(requestUser);
 
+        /*TODO
+         *  Optional Refactoring **********
+         * */
+
         Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(postDTO.getCategory());
         Post post = postDTO.toEntity(byCategoryCode.get());
 
@@ -68,6 +72,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Page<PostReadResDTO> getAllPost(Page<Post> postPage) {
+        /*
+         *  Response :  Entity -> DTO
+         * */
         return postPage.map(new Function<Post, PostReadResDTO>() {
             @Override
             public PostReadResDTO apply(Post post) {
@@ -84,6 +91,8 @@ public class PostServiceImpl implements PostService {
     public PostReadResDTO getPostDetails(long index) {
         Optional<Post> byId = postRepository.findById(index);
 
+        /*TODO
+         *  Optional Refactoring ***********/
         List<PostReadResReviewDTO> postReadResReviewDTOS = getReviewEntityToDTO(byId.get().getReviews());
         List<PostReadResImgDTO> postReadResImgDTOS = getImageEntityToDTO(byId.get().getImages());
 
@@ -103,6 +112,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ResponseEntity<byte[]> getRespIMG(String filePath) throws IOException {
+        /*
+        *  filePath -> Image(ByteCode)
+        * */
         InputStream imageStream = new FileInputStream(filePath);
         byte[] imageByteArray = IOUtils.toByteArray(imageStream);
         imageStream.close();
@@ -113,15 +125,14 @@ public class PostServiceImpl implements PostService {
     public boolean deletePost(long postIndex) {
         /*TODO
          *  테스트 코드 작성 필요*/
-        boolean flag = false;
+
         Member requestUser = getRequestUser();
         Optional<Post> byId = postRepository.findById(postIndex);
 
         byId.ifPresent(post -> {
             if (isPostOwner(post, requestUser)) post.deletePost();
         });
-
-        return  byId.map(Post::isFlagDelete).orElse(false);
+        return byId.map(Post::isFlagDelete).orElse(false);
     }
 
     @Override
