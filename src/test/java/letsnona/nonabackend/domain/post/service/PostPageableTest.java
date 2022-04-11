@@ -1,8 +1,8 @@
 package letsnona.nonabackend.domain.post.service;
 
 import letsnona.nonabackend.domain.post.dto.read.PostReadResDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostResImgDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostResReviewDTO;
+import letsnona.nonabackend.domain.post.dto.read.PostReadResImgDTO;
+import letsnona.nonabackend.domain.post.dto.read.PostReadResReviewDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.domain.post.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -51,28 +51,14 @@ class PostPageableTest {
             @Override
             public PostReadResDTO apply(Post post) {
 
-                List<PostResImgDTO> imgDTOList = post.getImages().stream().map(PostResImgDTO::new).collect(Collectors.toList());
-                List<PostResReviewDTO> reviewDTOList = post.getReviews().stream().map(PostResReviewDTO::new).collect(Collectors.toList());
+                List<PostReadResImgDTO> imgDTOList = post.getImages().stream().map(PostReadResImgDTO::new).collect(Collectors.toList());
+                List<PostReadResReviewDTO> reviewDTOList = post.getReviews().stream().map(PostReadResReviewDTO::new).collect(Collectors.toList());
 
                 return new PostReadResDTO(post, imgDTOList, reviewDTOList);
-                /*PostReadResDTO dto = new PostReadResDTO(
-                        post.getId(),
-                        post.getOwner(),
-                        imgDTOList,
-                        reivewDTOList,
-                        post.getTitle(),
-                        post.getContent(),
-                        post.getCategory(),
-                        post.getTradePlace(),
-                        post.getPrice(),
-                        post.getHashTag(),
-                        post.getHit(),
-                        post.isFlagCourierFee()
-                );
-                return dto;*/
+
             }
         });
-       assertThat(all).isInstanceOf(Page.class);
+        assertThat(all).isInstanceOf(Page.class);
         assertThat(dtoPage).isInstanceOf(Page.class);
         assertThat(dtoPage.getContent().get(0)).isInstanceOf(PostReadResDTO.class);
 

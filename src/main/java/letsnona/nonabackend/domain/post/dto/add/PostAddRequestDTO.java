@@ -1,15 +1,12 @@
 package letsnona.nonabackend.domain.post.dto.add;
 
-import letsnona.nonabackend.domain.file.dto.PostImgRequestDTO;
+import letsnona.nonabackend.domain.cataegory.entity.Category;
 import letsnona.nonabackend.domain.post.entity.Post;
 import letsnona.nonabackend.global.security.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Builder
@@ -29,7 +26,7 @@ public class PostAddRequestDTO {
     //private List<PostImgRequestDTO> images = new ArrayList<>(); // 임시 이미지 아이디, join 필요
 
 
-    public Post toEntity(){
+    public Post toEntity(Category category){
         return Post.builder()
                 .id(id)
                 .owner(owner)
