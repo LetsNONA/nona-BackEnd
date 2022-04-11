@@ -49,6 +49,12 @@ public class PostController {
         return postService.getPostDetails(postIndex);
     }
 
+    @GetMapping("/posts/search")
+    Page<PostReadResDTO> getSearchPost(@RequestParam("keyword") String keyword,Pageable pageable) {
+//        Page<Post> byTitleContaining = postRepository.findAll(pageable);
+        Page<Post> byTitleContaining = postRepository.findByTitleContaining(pageable, keyword);
+        return postService.getSearchPost(byTitleContaining);
+    }
 
     @GetMapping("/posts")
     Page<PostReadResDTO> getAllPosts(Pageable pageable) {
@@ -56,4 +62,5 @@ public class PostController {
         Page<Post> all = postRepository.findAllByFlagDelete(pageable, false);
         return postService.getAllPost(all);
     }
+
 }

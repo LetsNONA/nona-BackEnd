@@ -27,6 +27,9 @@ public interface PostService {
     Page<PostReadResDTO> getAllPost(Page<Post> postPage);
 
     @Transactional
+    Page<PostReadResDTO> getSearchPost(Page<Post> postPage);
+
+    @Transactional
     PostReadResDTO getPostDetails(long index);
 
     @Transactional

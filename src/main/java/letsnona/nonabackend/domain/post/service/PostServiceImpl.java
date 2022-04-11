@@ -51,6 +51,7 @@ public class PostServiceImpl implements PostService {
 
         /*TODO
          *  Optional Refactoring **********
+         *  && Pageable -> 동일함수 리팩토링 해야함
          * */
 
         Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(postDTO.getCategory());
@@ -69,6 +70,24 @@ public class PostServiceImpl implements PostService {
 
         return new PostAddResponseDTO(post);
     }
+
+    @Override
+    public Page<PostReadResDTO> getSearchPost(Page<Post> postPage) {
+        /*
+         *  Response :  Entity -> DTO
+         * */
+        return postPage.map(new Function<Post, PostReadResDTO>() {
+            @Override
+            public PostReadResDTO apply(Post post) {
+                // List<PostImg> -> List<PostResImgDTO>  { Entity -> DTO }
+                List<PostReadResImgDTO> imgDTOList = getImageEntityToDTO(post.getImages());
+                // List<Review> -> List<PostResReviewDTO>  { Entity -> DTO }
+                List<PostReadResReviewDTO> reviewDTOList = getReviewEntityToDTO(post.getReviews());
+                return new PostReadResDTO(post, imgDTOList, reviewDTOList);
+            }
+        });
+    }
+
 
     @Override
     public Page<PostReadResDTO> getAllPost(Page<Post> postPage) {
