@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,10 +29,15 @@ public class PostController {
     private final CategoryRepository categoryRepository;
 
     @PostMapping("user/api/post")
-    void savePost(Authentication authentication
-            , @RequestPart(value = "key") PostAddRequestDTO postDTO
+    PostAddResponseDTO savePost(
+            @RequestPart(value = "key") PostAddRequestDTO postDTO
             , @RequestPart(value = "file") List<MultipartFile> file) {
-        PostAddResponseDTO responseDTO = postService.savePost(postDTO, file);
+        return postService.savePost(postDTO, file);
+    }
+
+    @PutMapping("user/api/post")
+    PostAddResponseDTO updatePost(@RequestPart(value = "key") PostAddRequestDTO postDTO) {
+        return postService.updatePost(postDTO);
     }
 
     @DeleteMapping("user/api/post/{postIndex}")
@@ -44,6 +48,8 @@ public class PostController {
 
     @GetMapping("user/api/post/{postIndex}")
     PostReadResDTO getPostDetail(@PathVariable long postIndex) {
+        /*todo
+         *  - 삭제 게시물 안뜨게해야함*/
         return postService.getPostDetails(postIndex);
     }
 

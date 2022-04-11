@@ -3,6 +3,7 @@ package letsnona.nonabackend.domain.post.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import letsnona.nonabackend.domain.cataegory.entity.Category;
 import letsnona.nonabackend.domain.file.entity.PostImg;
+import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
 import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.global.entity.BaseTimeEntity;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -77,6 +78,19 @@ public class Post extends BaseTimeEntity {
     public void deletePost(){
         this.flagDelete = true;
     }
+
+    public void updatePost(PostAddRequestDTO dto){
+         this.title = dto.getTitle();
+        this.content = dto.getContent();
+        this.tradePlace = dto.getTradePlace();
+        this.price= dto.getPrice();
+        this.hashTag= dto.getHashTag();
+        this.flagCourierFee= dto.isFlagCourierFee();
+    }
+    public void updateCategory( Category byCategoryCode){
+        this.category = byCategoryCode;
+    }
+
 
     @Builder
     public Post(Member owner, String title, String content, Category category, String tradePlace, int price, String hashTag) {

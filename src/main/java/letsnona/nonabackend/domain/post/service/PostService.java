@@ -31,6 +31,8 @@ public interface PostService {
     Page<PostReadResDTO> getAllPost(Pageable pageable);
 
     @Transactional
+    PostAddResponseDTO updatePost(PostAddRequestDTO postDTO);
+    @Transactional
     Page<PostReadResDTO> getSearchPost(String keyword, Pageable pageable);
 
     @Transactional

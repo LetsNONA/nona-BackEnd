@@ -50,8 +50,7 @@ public class PostServiceImpl implements PostService {
         postDTO.setOwner(requestUser);
 
         /*TODO
-         *  Optional Refactoring **********
-         *  && Pageable -> 동일함수 리팩토링 해야함
+         *  Optional Refactoring *********
          * */
 
         Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(postDTO.getCategory());
@@ -69,6 +68,25 @@ public class PostServiceImpl implements PostService {
         imgRepository.saveAll(postImgEntityList);
 
         return new PostAddResponseDTO(post);
+    }
+
+    @Override
+    public PostAddResponseDTO updatePost(PostAddRequestDTO postDTO) {
+
+        /*TODO
+        *  -리팩토링 매우 필요 더러운 코드 **/
+        Optional<Post> byId = postRepository.findById(postDTO.getId());
+        byId.ifPresent(post -> {
+            if (isPostOwner(post, getRequestUser()))
+                post.updatePost(postDTO);
+            if (postDTO.getCategory() != post.getCategory().getCategoryCode()) {
+                Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(postDTO.getCategory());
+                byCategoryCode.ifPresent(post::updateCategory);
+            }
+        });
+
+        return new PostAddResponseDTO(byId.get());
+
     }
 
 
@@ -91,8 +109,10 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Page<PostReadResDTO> getSearchPost(String keyword, Pageable pageable) {
+        /*Todo
+         *  -test code 필요*/
         Page<Post> byTitleContaining = postRepository.findByTitleContaining(pageable, keyword);
-        return  getPostReadResDTOS(byTitleContaining);
+        return getPostReadResDTOS(byTitleContaining);
     }
 
 
