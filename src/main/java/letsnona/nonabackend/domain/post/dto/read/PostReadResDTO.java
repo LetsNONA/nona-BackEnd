@@ -2,7 +2,6 @@ package letsnona.nonabackend.domain.post.dto.read;
 
 import letsnona.nonabackend.domain.cataegory.dto.PostReadResCategoryDTO;
 import letsnona.nonabackend.domain.post.entity.Post;
-import letsnona.nonabackend.global.security.dto.PostReadResUserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -13,7 +12,8 @@ import java.util.List;
 @Data
 public class PostReadResDTO {
     private long id;
-    private PostReadResUserDTO owner;
+//    private PostReadResUserDTO owner;
+   private String owner;
     private List<PostReadResImgDTO> images;
     private double averageReviewGrade;
     private List<PostReadResReviewDTO> reviews;
@@ -37,7 +37,8 @@ public class PostReadResDTO {
 
     public PostReadResDTO(Post post, List<PostReadResImgDTO> imgDTOList, List<PostReadResReviewDTO> resReviewDTOS) {
         this.id = post.getId();
-        this.owner = new PostReadResUserDTO(post.getOwner());
+//        this.owner = new PostReadResUserDTO(post.getOwner());
+        this.owner = post.getOwner().getUsername();
         this.images = imgDTOList;
         this.reviews = resReviewDTOS;
         this.title = post.getTitle();
