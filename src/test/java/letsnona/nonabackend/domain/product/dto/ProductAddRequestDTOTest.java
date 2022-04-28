@@ -1,9 +1,9 @@
-package letsnona.nonabackend.domain.post.dto;
+package letsnona.nonabackend.domain.product.dto;
 
 import letsnona.nonabackend.domain.cataegory.entity.Category;
 import letsnona.nonabackend.domain.cataegory.repository.CategoryRepository;
-import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
-import letsnona.nonabackend.domain.post.entity.Post;
+import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
+import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.global.security.entity.Member;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestPropertySource(properties = {"spring.config.location=classpath:application-test.yml"})
 */
 @SpringBootTest
-class PostAddRequestDTOTest {
+class ProductAddRequestDTOTest {
 
     @Autowired
     CategoryRepository categoryRepository;
@@ -42,7 +42,7 @@ class PostAddRequestDTOTest {
                 .email("test@naver.com")
                 .roles("ROLE_USER")
                 .build();
-        PostAddRequestDTO post = PostAddRequestDTO.builder()
+        ProductAddRequestDTO post = ProductAddRequestDTO.builder()
                 .owner(member)
                 .title("test_제목입니다")
                 .content("test_내용입니다")
@@ -53,7 +53,7 @@ class PostAddRequestDTOTest {
                 .build();
 
         Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(post.getCategory());
-        Post entity = post.toEntity(byCategoryCode.get());
+        Product entity = post.toEntity(byCategoryCode.get());
 
         assertThat(post.getOwner()).isEqualTo(entity.getOwner());
         assertThat(post.getTitle()).isEqualTo(entity.getTitle());

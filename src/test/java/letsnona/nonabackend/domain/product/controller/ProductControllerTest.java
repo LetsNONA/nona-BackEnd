@@ -1,11 +1,9 @@
-package letsnona.nonabackend.domain.post.controller;
+package letsnona.nonabackend.domain.product.controller;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class PostControllerTest {
+class ProductControllerTest {
 
 @Test
     @DisplayName("사진갖고오기")

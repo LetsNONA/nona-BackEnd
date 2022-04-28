@@ -1,10 +1,10 @@
-package letsnona.nonabackend.domain.post.service;
+package letsnona.nonabackend.domain.product.service;
 
-import letsnona.nonabackend.domain.post.dto.read.PostReadResDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostReadResImgDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostReadResReviewDTO;
-import letsnona.nonabackend.domain.post.entity.Post;
-import letsnona.nonabackend.domain.post.repository.PostRepository;
+import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
+import letsnona.nonabackend.domain.product.dto.read.ProductReadResImgDTO;
+import letsnona.nonabackend.domain.product.dto.read.ProductReadResReviewDTO;
+import letsnona.nonabackend.domain.product.entity.Product;
+import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +24,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class PostPageableTest {
+class ProductPageableTest {
 
     @Autowired
     MockMvc mockMvc;
     @Autowired
-    PostRepository postRepository;
+    ProductRepository productRepository;
 
 
     @Test
     void setup() {
-        postRepository.deleteAll();
+        productRepository.deleteAll();
     }
 
     @Test
@@ -46,21 +46,21 @@ class PostPageableTest {
                 .andDo(print());*/
         Pageable pageable = PageRequest.of(0, 10);
 
-        Page<Post> all = postRepository.findAll(pageable);
-        Page<PostReadResDTO> dtoPage = all.map(new Function<Post, PostReadResDTO>() {
+        Page<Product> all = productRepository.findAll(pageable);
+        Page<ProductReadResDTO> dtoPage = all.map(new Function<Product, ProductReadResDTO>() {
             @Override
-            public PostReadResDTO apply(Post post) {
+            public ProductReadResDTO apply(Product post) {
 
-                List<PostReadResImgDTO> imgDTOList = post.getImages().stream().map(PostReadResImgDTO::new).collect(Collectors.toList());
-                List<PostReadResReviewDTO> reviewDTOList = post.getReviews().stream().map(PostReadResReviewDTO::new).collect(Collectors.toList());
+                List<ProductReadResImgDTO> imgDTOList = post.getImages().stream().map(ProductReadResImgDTO::new).collect(Collectors.toList());
+                List<ProductReadResReviewDTO> reviewDTOList = post.getReviews().stream().map(ProductReadResReviewDTO::new).collect(Collectors.toList());
 
-                return new PostReadResDTO(post, imgDTOList, reviewDTOList);
+                return new ProductReadResDTO(post, imgDTOList, reviewDTOList);
 
             }
         });
         assertThat(all).isInstanceOf(Page.class);
         assertThat(dtoPage).isInstanceOf(Page.class);
-        assertThat(dtoPage.getContent().get(0)).isInstanceOf(PostReadResDTO.class);
+        assertThat(dtoPage.getContent().get(0)).isInstanceOf(ProductReadResDTO.class);
 
     }
 }

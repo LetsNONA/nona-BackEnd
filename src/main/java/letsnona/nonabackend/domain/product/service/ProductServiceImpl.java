@@ -1,4 +1,4 @@
-package letsnona.nonabackend.domain.post.service;
+package letsnona.nonabackend.domain.product.service;
 
 
 import letsnona.nonabackend.domain.cataegory.entity.Category;
@@ -7,13 +7,13 @@ import letsnona.nonabackend.domain.file.dto.PostImgRequestDTO;
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.file.repository.PostImgRepository;
 import letsnona.nonabackend.domain.file.service.FileService;
-import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
-import letsnona.nonabackend.domain.post.dto.add.PostAddResponseDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostReadResDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostReadResImgDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostReadResReviewDTO;
-import letsnona.nonabackend.domain.post.entity.Post;
-import letsnona.nonabackend.domain.post.repository.PostRepository;
+import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
+import letsnona.nonabackend.domain.product.dto.add.ProductAddResponseDTO;
+import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
+import letsnona.nonabackend.domain.product.dto.read.ProductReadResImgDTO;
+import letsnona.nonabackend.domain.product.dto.read.ProductReadResReviewDTO;
+import letsnona.nonabackend.domain.product.entity.Product;
+import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.global.security.auth.PrincipalDetails;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -37,15 +37,15 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class PostServiceImpl implements PostService {
+public class ProductServiceImpl implements ProductService {
 
-    private final PostRepository postRepository;
+    private final ProductRepository productRepository;
     private final PostImgRepository imgRepository;
     private final FileService fileService;
     private final CategoryRepository categoryRepository;
 
     @Override
-    public PostAddResponseDTO savePost(PostAddRequestDTO postDTO, List<MultipartFile> imgList) {
+    public ProductAddResponseDTO savePost(ProductAddRequestDTO postDTO, List<MultipartFile> imgList) {
         Member requestUser = getRequestUser();
         postDTO.setOwner(requestUser);
 
@@ -54,7 +54,7 @@ public class PostServiceImpl implements PostService {
          * */
 
         Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(postDTO.getCategory());
-        Post post = postDTO.toEntity(byCategoryCode.get());
+        Product product = postDTO.toEntity(byCategoryCode.get());
 
         List<PostImgRequestDTO> postImgRequestDTOList = fileService.saveImage(imgList);
         List<PostImg> postImgEntityList = postImgRequestDTOList.stream()
@@ -62,20 +62,20 @@ public class PostServiceImpl implements PostService {
 
         for (PostImg img : postImgEntityList
         ) {
-            post.addImg(img);
+            product.addImg(img);
         }
 
         imgRepository.saveAll(postImgEntityList);
 
-        return new PostAddResponseDTO(post);
+        return new ProductAddResponseDTO(product);
     }
 
     @Override
-    public PostAddResponseDTO updatePost(PostAddRequestDTO postDTO) {
+    public ProductAddResponseDTO updatePost(ProductAddRequestDTO postDTO) {
 
         /*TODO
          *  -리팩토링 매우 필요 더러운 코드 **/
-        Optional<Post> byId = postRepository.findById(postDTO.getId());
+        Optional<Product> byId = productRepository.findById(postDTO.getId());
         byId.ifPresent(post -> {
             if (isPostOwner(post, getRequestUser()))
                 post.updatePost(postDTO);
@@ -85,58 +85,58 @@ public class PostServiceImpl implements PostService {
                 byCategoryCode.ifPresent(post::updateCategory);
             }
         });
-        return new PostAddResponseDTO(byId.get());
+        return new ProductAddResponseDTO(byId.get());
 
     }
 
 
-    public Page<PostReadResDTO> getPostReadResDTOS(Page<Post> postPage) {
+    public Page<ProductReadResDTO> getPostReadResDTOS(Page<Product> postPage) {
         /*
          *  Response :  Entity -> DTO
          * */
         return postPage.map(post -> {
-            List<PostReadResImgDTO> imgDTOList = getImageEntityToDTO(post.getImages());
-            List<PostReadResReviewDTO> reviewDTOList = getReviewEntityToDTO(post.getReviews());
-            return new PostReadResDTO(post, imgDTOList, reviewDTOList);
+            List<ProductReadResImgDTO> imgDTOList = getImageEntityToDTO(post.getImages());
+            List<ProductReadResReviewDTO> reviewDTOList = getReviewEntityToDTO(post.getReviews());
+            return new ProductReadResDTO(post, imgDTOList, reviewDTOList);
         });
     }
 
     @Override
-    public Page<PostReadResDTO> getAllPost(Pageable pageable) {
-        Page<Post> allByFlagDelete = postRepository.findAllByFlagDelete(pageable, false);
+    public Page<ProductReadResDTO> getAllPost(Pageable pageable) {
+        Page<Product> allByFlagDelete = productRepository.findAllByFlagDelete(pageable, false);
         return getPostReadResDTOS(allByFlagDelete);
     }
 
     @Override
-    public Page<PostReadResDTO> getSearchPost(String keyword, Pageable pageable) {
+    public Page<ProductReadResDTO> getSearchPost(String keyword, Pageable pageable) {
         /*Todo
          *  -test code 필요*/
-        Page<Post> byTitleContaining = postRepository.findByTitleContaining(pageable, keyword);
+        Page<Product> byTitleContaining = productRepository.findByTitleContaining(pageable, keyword);
         return getPostReadResDTOS(byTitleContaining);
     }
 
 
     @Override
-    public PostReadResDTO getPostDetails(long index) {
-        Optional<Post> byId = postRepository.findById(index);
+    public ProductReadResDTO getPostDetails(long index) {
+        Optional<Product> byId = productRepository.findById(index);
 
         /*TODO
          *  Optional Refactoring ***********/
-        List<PostReadResReviewDTO> postReadResReviewDTOS = getReviewEntityToDTO(byId.get().getReviews());
-        List<PostReadResImgDTO> postReadResImgDTOS = getImageEntityToDTO(byId.get().getImages());
+        List<ProductReadResReviewDTO> productReadResReviewDTOS = getReviewEntityToDTO(byId.get().getReviews());
+        List<ProductReadResImgDTO> productReadResImgDTOS = getImageEntityToDTO(byId.get().getImages());
 
-        return new PostReadResDTO
-                (byId.get(), postReadResImgDTOS, postReadResReviewDTOS);
+        return new ProductReadResDTO
+                (byId.get(), productReadResImgDTOS, productReadResReviewDTOS);
     }
 
     @Override
-    public List<PostReadResReviewDTO> getReviewEntityToDTO(List<Review> reviewList) {
-        return reviewList.stream().map(PostReadResReviewDTO::new).collect(Collectors.toList());
+    public List<ProductReadResReviewDTO> getReviewEntityToDTO(List<Review> reviewList) {
+        return reviewList.stream().map(ProductReadResReviewDTO::new).collect(Collectors.toList());
     }
 
     @Override
-    public List<PostReadResImgDTO> getImageEntityToDTO(List<PostImg> imgList) {
-        return imgList.stream().map(PostReadResImgDTO::new).collect(Collectors.toList());
+    public List<ProductReadResImgDTO> getImageEntityToDTO(List<PostImg> imgList) {
+        return imgList.stream().map(ProductReadResImgDTO::new).collect(Collectors.toList());
     }
 
     @Override
@@ -156,17 +156,17 @@ public class PostServiceImpl implements PostService {
          *  테스트 코드 작성 필요*/
 
         Member requestUser = getRequestUser();
-        Optional<Post> byId = postRepository.findById(postIndex);
+        Optional<Product> byId = productRepository.findById(postIndex);
 
         byId.ifPresent(post -> {
             if (isPostOwner(post, requestUser)) post.deletePost();
         });
-        return byId.map(Post::isFlagDelete).orElse(false);
+        return byId.map(Product::isFlagDelete).orElse(false);
     }
 
     @Override
-    public boolean isPostOwner(Post post, Member requestMember) {
-        return post.getOwner().equals(requestMember);
+    public boolean isPostOwner(Product product, Member requestMember) {
+        return product.getOwner().equals(requestMember);
     }
 
     @Override

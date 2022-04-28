@@ -1,7 +1,7 @@
 package letsnona.nonabackend.domain.review.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import letsnona.nonabackend.domain.post.entity.Post;
+import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.global.entity.BaseTimeEntity;
 import letsnona.nonabackend.global.security.entity.Member;
 import lombok.AllArgsConstructor;
@@ -26,14 +26,14 @@ public class Review extends BaseTimeEntity {
 
     @JsonBackReference
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Post post;
+    private Product product;
 
     private double grade;
     @Column(columnDefinition = "TEXT")
     private String content;
 
 
-    public void setPost(Post post) {
-        this.post = post;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

@@ -1,9 +1,9 @@
-package letsnona.nonabackend.domain.post.entity;
+package letsnona.nonabackend.domain.product.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import letsnona.nonabackend.domain.cataegory.entity.Category;
 import letsnona.nonabackend.domain.file.entity.PostImg;
-import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
+import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
 import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.global.entity.BaseTimeEntity;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -27,7 +27,7 @@ import java.util.List;
         @NamedAttributeNode("owner"),
         @NamedAttributeNode("category")
 })
-public class Post extends BaseTimeEntity {
+public class Product extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,12 +41,12 @@ public class Post extends BaseTimeEntity {
     private Category category;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<PostImg> images = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<Review> reviews = new ArrayList<>();
 
@@ -66,12 +66,12 @@ public class Post extends BaseTimeEntity {
     private boolean flagDelete;
 
     public void addReview(Review review) {
-        review.setPost(this);
+        review.setProduct(this);
         this.getReviews().add(review);
     }
 
     public void addImg(PostImg img) {
-        img.setPost(this);
+        img.setProduct(this);
         this.getImages().add(img);
     }
 
@@ -79,7 +79,7 @@ public class Post extends BaseTimeEntity {
         this.flagDelete = true;
     }
 
-    public void updatePost(PostAddRequestDTO dto){
+    public void updatePost(ProductAddRequestDTO dto){
          this.title = dto.getTitle();
         this.content = dto.getContent();
         this.tradePlace = dto.getTradePlace();
@@ -93,7 +93,7 @@ public class Post extends BaseTimeEntity {
 
 
     @Builder
-    public Post(Member owner, String title, String content, Category category, String tradePlace, int price, String hashTag) {
+    public Product(Member owner, String title, String content, Category category, String tradePlace, int price, String hashTag) {
         this.owner = owner;
         this.title = title;
         this.content = content;

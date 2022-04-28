@@ -1,6 +1,6 @@
 package letsnona.nonabackend.domain.file.controller;
 
-import letsnona.nonabackend.domain.post.service.PostService;
+import letsnona.nonabackend.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,13 +14,13 @@ import java.nio.charset.StandardCharsets;
 @Controller
 @RequiredArgsConstructor
 public class FileController {
-    private final PostService postService;
+    private final ProductService productService;
 
     @GetMapping("/images")
     ResponseEntity<byte[]> showImage(@RequestParam("img_path") String filePath) throws IOException {
         String decodeFilePath = URLDecoder.decode(filePath, StandardCharsets.UTF_8);
         System.out.println("decodeFilePath = " + decodeFilePath);
-        return postService.getRespIMG(decodeFilePath);
+        return productService.getRespIMG(decodeFilePath);
     }
 
 

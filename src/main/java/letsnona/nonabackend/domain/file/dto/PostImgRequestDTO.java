@@ -1,7 +1,7 @@
 package letsnona.nonabackend.domain.file.dto;
 
 import letsnona.nonabackend.domain.file.entity.PostImg;
-import letsnona.nonabackend.domain.post.entity.Post;
+import letsnona.nonabackend.domain.product.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PostImgRequestDTO {
     private long id;
-    private Post post;
+    private Product product;
     private String originalImgSrc;
     private String thumbImgSrc;
     private String originalName;
@@ -21,7 +21,7 @@ public class PostImgRequestDTO {
     public PostImg toEntity() {
         PostImg postImg = PostImg.builder()
                 .id(id)
-                .post(post)
+                .post(product)
                 .originalImgSrc(originalImgSrc)
                 .thumbImgSrc(thumbImgSrc)
                 .originalName(originalName)

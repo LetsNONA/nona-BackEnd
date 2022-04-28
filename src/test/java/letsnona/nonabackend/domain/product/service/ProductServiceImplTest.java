@@ -1,15 +1,15 @@
-package letsnona.nonabackend.domain.post.service;
+package letsnona.nonabackend.domain.product.service;
 
 import letsnona.nonabackend.domain.cataegory.repository.CategoryRepository;
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.file.repository.PostImgRepository;
-import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
-import letsnona.nonabackend.domain.post.dto.add.PostAddResponseDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostReadResDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostReadResImgDTO;
-import letsnona.nonabackend.domain.post.dto.read.PostReadResReviewDTO;
-import letsnona.nonabackend.domain.post.entity.Post;
-import letsnona.nonabackend.domain.post.repository.PostRepository;
+import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
+import letsnona.nonabackend.domain.product.dto.add.ProductAddResponseDTO;
+import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
+import letsnona.nonabackend.domain.product.dto.read.ProductReadResImgDTO;
+import letsnona.nonabackend.domain.product.dto.read.ProductReadResReviewDTO;
+import letsnona.nonabackend.domain.product.entity.Product;
+import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.global.security.entity.Member;
 import letsnona.nonabackend.global.security.repository.MemberRepository;
@@ -44,31 +44,31 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @TestPropertySource(properties = {"spring.config.location=classpath:application-test.yml"})
 */
-class PostServiceImplTest {
+class ProductServiceImplTest {
 
     @Autowired
     MemberRepository memberRepository;
 
     @Autowired
-    PostRepository postRepository;
+    ProductRepository productRepository;
 
     @Autowired
     CategoryRepository categoryRepository;
     @Autowired
     PostImgRepository imgRepository;
     @Autowired
-    PostService postService;
+    ProductService productService;
 
     @Test
     void setup() {
-        postRepository.deleteAll();
+        productRepository.deleteAll();
     }
 
 
     @Test
     @Transactional
     void getTest() {
-        Optional<Post> post = postRepository.findById(4L);
+        Optional<Product> post = productRepository.findById(4L);
         List<PostImg> images = post.get().getImages();
 
         System.out.println("images.toString() = " + images.toString());
@@ -78,16 +78,16 @@ class PostServiceImplTest {
     @DisplayName("게시글 상세보기")
     @Transactional
     void getPostDetails() {
-        Optional<Post> byId = postRepository.findById(1L);
-        List<PostReadResReviewDTO> postReadResReviewDTOS = postService.getReviewEntityToDTO(byId.get().getReviews());
-        List<PostReadResImgDTO> postReadResImgDTOS = postService.getImageEntityToDTO(byId.get().getImages());
+        Optional<Product> byId = productRepository.findById(1L);
+        List<ProductReadResReviewDTO> productReadResReviewDTOS = productService.getReviewEntityToDTO(byId.get().getReviews());
+        List<ProductReadResImgDTO> productReadResImgDTOS = productService.getImageEntityToDTO(byId.get().getImages());
 
-        PostReadResDTO postReadResDTO = new PostReadResDTO
-                (byId.get(), postReadResImgDTOS, postReadResReviewDTOS);
+        ProductReadResDTO productReadResDTO = new ProductReadResDTO
+                (byId.get(), productReadResImgDTOS, productReadResReviewDTOS);
 
-        assertThat(byId.get().getTitle()).isEqualTo(postReadResDTO.getTitle());
-        assertThat(postReadResDTO.getReviews()).isNotInstanceOf(Review.class);
-        System.out.println("postReadResDTO = " + postReadResDTO);
+        assertThat(byId.get().getTitle()).isEqualTo(productReadResDTO.getTitle());
+        assertThat(productReadResDTO.getReviews()).isNotInstanceOf(Review.class);
+        System.out.println("postReadResDTO = " + productReadResDTO);
     }
 
     @Test
@@ -96,7 +96,7 @@ class PostServiceImplTest {
     void setPost1000() throws IOException {
         Member member = memberRepository.findByUsername("testId");
         for (int i = 0; i < 100; i++) {
-            PostAddRequestDTO postAddRequestDTO = PostAddRequestDTO.builder()
+            ProductAddRequestDTO productAddRequestDTO = ProductAddRequestDTO.builder()
                     .owner(member)
                     .title("test[" + i + "]제목입니다")
                     .content("test[" + i + "]내용입니다")
@@ -121,7 +121,7 @@ class PostServiceImplTest {
 
             //when
 
-            PostAddResponseDTO responseDTO = postService.savePost(postAddRequestDTO, imgLists);
+            ProductAddResponseDTO responseDTO = productService.savePost(productAddRequestDTO, imgLists);
         }
     }
 
@@ -138,7 +138,7 @@ class PostServiceImplTest {
                 .roles("ROLE_USER")
                 .build();
 
-        PostAddRequestDTO postAddRequestDTO = PostAddRequestDTO.builder()
+        ProductAddRequestDTO productAddRequestDTO = ProductAddRequestDTO.builder()
                 .owner(member)
                 .title("test_제목입니다2")
                 .content("test_내용입니다2")
@@ -163,7 +163,7 @@ class PostServiceImplTest {
 
         //when
         memberRepository.save(member);
-        PostAddResponseDTO responseDTO = postService.savePost(postAddRequestDTO, imgLists);
+        ProductAddResponseDTO responseDTO = productService.savePost(productAddRequestDTO, imgLists);
 
         //then
         assertThat(responseDTO.getImages().size()).isEqualTo(4);
