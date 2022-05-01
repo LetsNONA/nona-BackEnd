@@ -45,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public ProductAddResponseDTO savePost(ProductAddRequestDTO postDTO, List<MultipartFile> imgList) {
+    public ProductAddResponseDTO saveProduct(ProductAddRequestDTO postDTO, List<MultipartFile> imgList) {
         Member requestUser = getRequestUser();
         postDTO.setOwner(requestUser);
 
@@ -53,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
          *  Optional Refactoring *********
          * */
 
-        Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(postDTO.getCategory());
+        Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(postDTO.getCategoryCode());
         Product product = postDTO.toEntity(byCategoryCode.get());
 
         List<PostImgRequestDTO> postImgRequestDTOList = fileService.saveImage(imgList);
@@ -71,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductAddResponseDTO updatePost(ProductAddRequestDTO postDTO) {
+    public ProductAddResponseDTO updateProduct(ProductAddRequestDTO postDTO) {
 
         /*TODO
          *  -리팩토링 매우 필요 더러운 코드 **/
@@ -80,8 +80,8 @@ public class ProductServiceImpl implements ProductService {
             if (isPostOwner(post, getRequestUser()))
                 post.updatePost(postDTO);
 
-            if (postDTO.getCategory() != null) {
-                Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(postDTO.getCategory());
+            if (postDTO.getCategoryCode() != null) {
+                Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(postDTO.getCategoryCode());
                 byCategoryCode.ifPresent(post::updateCategory);
             }
         });
@@ -90,7 +90,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-    public Page<ProductReadResDTO> getPostReadResDTOS(Page<Product> postPage) {
+    public Page<ProductReadResDTO> getProductReadResDTOS(Page<Product> postPage) {
         /*
          *  Response :  Entity -> DTO
          * */
@@ -102,22 +102,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductReadResDTO> getAllPost(Pageable pageable) {
+    public Page<ProductReadResDTO> getAllProduct(Pageable pageable) {
         Page<Product> allByFlagDelete = productRepository.findAllByFlagDelete(pageable, false);
-        return getPostReadResDTOS(allByFlagDelete);
+        return getProductReadResDTOS(allByFlagDelete);
     }
 
     @Override
-    public Page<ProductReadResDTO> getSearchPost(String keyword, Pageable pageable) {
+    public Page<ProductReadResDTO> getSearchProduct(String keyword, Pageable pageable) {
         /*Todo
          *  -test code 필요*/
         Page<Product> byTitleContaining = productRepository.findByTitleContaining(pageable, keyword);
-        return getPostReadResDTOS(byTitleContaining);
+        return getProductReadResDTOS(byTitleContaining);
     }
 
 
     @Override
-    public ProductReadResDTO getPostDetails(long index) {
+    public ProductReadResDTO getProductDetails(long index) {
         Optional<Product> byId = productRepository.findById(index);
 
         /*TODO
@@ -151,7 +151,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean deletePost(long postIndex) {
+    public boolean deleteProduct(long postIndex) {
         /*TODO
          *  테스트 코드 작성 필요*/
 

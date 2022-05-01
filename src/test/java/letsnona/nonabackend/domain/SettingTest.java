@@ -91,7 +91,7 @@ public class SettingTest {
                     .owner(member)
                     .title("test[" + i + "]제목입니다")
                     .content("test[" + i + "]내용입니다")
-                    .category("cg001")
+                    .categoryCode("cg001")
                     .tradePlace("test[" + i + "]임시거래지역")
                     .price(10000)
                     .hashTag("test[" + i + "]임시해쉬태그")
@@ -112,7 +112,7 @@ public class SettingTest {
 
             //when
 
-            ProductAddResponseDTO responseDTO = productService.savePost(productAddRequestDTO, imgLists);
+            ProductAddResponseDTO responseDTO = productService.saveProduct(productAddRequestDTO, imgLists);
         }
     }
 

@@ -22,27 +22,27 @@ import java.util.List;
 
 public interface ProductService {
     @Transactional
-    ProductAddResponseDTO savePost(ProductAddRequestDTO productAddRequestDTO, List<MultipartFile> imgList);
+    ProductAddResponseDTO saveProduct(ProductAddRequestDTO productAddRequestDTO, List<MultipartFile> imgList);
 
     @Transactional
-     Page<ProductReadResDTO> getPostReadResDTOS(Page<Product> postPage);
+     Page<ProductReadResDTO> getProductReadResDTOS(Page<Product> postPage);
 
     @Transactional
-    Page<ProductReadResDTO> getAllPost(Pageable pageable);
+    Page<ProductReadResDTO> getAllProduct(Pageable pageable);
 
     @Transactional
-    ProductAddResponseDTO updatePost(ProductAddRequestDTO postDTO);
+    ProductAddResponseDTO updateProduct(ProductAddRequestDTO postDTO);
     @Transactional
-    Page<ProductReadResDTO> getSearchPost(String keyword, Pageable pageable);
+    Page<ProductReadResDTO> getSearchProduct(String keyword, Pageable pageable);
 
     @Transactional
-    ProductReadResDTO getPostDetails(long index);
+    ProductReadResDTO getProductDetails(long index);
 
     @Transactional
     ResponseEntity<byte[]> getRespIMG(String filePath) throws IOException;
 
     @Transactional
-    boolean deletePost(@PathVariable long postIndex);
+    boolean deleteProduct(@PathVariable long postIndex);
 
     List<ProductReadResReviewDTO> getReviewEntityToDTO(List<Review> reviewList);
 

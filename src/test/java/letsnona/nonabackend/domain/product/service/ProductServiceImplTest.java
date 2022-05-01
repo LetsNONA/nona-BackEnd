@@ -100,7 +100,7 @@ class ProductServiceImplTest {
                     .owner(member)
                     .title("test[" + i + "]제목입니다")
                     .content("test[" + i + "]내용입니다")
-                    .category("cg001")
+                    .categoryCode("cg001")
                     .tradePlace("test[" + i + "]임시거래지역")
                     .price(10000)
                     .hashTag("test[" + i + "]임시해쉬태그")
@@ -121,7 +121,7 @@ class ProductServiceImplTest {
 
             //when
 
-            ProductAddResponseDTO responseDTO = productService.savePost(productAddRequestDTO, imgLists);
+            ProductAddResponseDTO responseDTO = productService.saveProduct(productAddRequestDTO, imgLists);
         }
     }
 
@@ -142,7 +142,7 @@ class ProductServiceImplTest {
                 .owner(member)
                 .title("test_제목입니다2")
                 .content("test_내용입니다2")
-                .category("cg001")
+                .categoryCode("cg001")
                 .tradePlace("임시거래지역2")
                 .price(10000)
                 .hashTag("임시해쉬태그2")
@@ -163,7 +163,7 @@ class ProductServiceImplTest {
 
         //when
         memberRepository.save(member);
-        ProductAddResponseDTO responseDTO = productService.savePost(productAddRequestDTO, imgLists);
+        ProductAddResponseDTO responseDTO = productService.saveProduct(productAddRequestDTO, imgLists);
 
         //then
         assertThat(responseDTO.getImages().size()).isEqualTo(4);

@@ -21,7 +21,7 @@ public class PostImgRequestDTO {
     public PostImg toEntity() {
         PostImg postImg = PostImg.builder()
                 .id(id)
-                .post(product)
+                .product(product)
                 .originalImgSrc(originalImgSrc)
                 .thumbImgSrc(thumbImgSrc)
                 .originalName(originalName)

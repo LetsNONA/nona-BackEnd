@@ -46,13 +46,13 @@ class ProductAddRequestDTOTest {
                 .owner(member)
                 .title("test_제목입니다")
                 .content("test_내용입니다")
-                .category("cg001")
+                .categoryCode("cg001")
                 .tradePlace("임시거래지역")
                 .price(10000)
                 .hashTag("임시해쉬태그")
                 .build();
 
-        Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(post.getCategory());
+        Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(post.getCategoryCode());
         Product entity = post.toEntity(byCategoryCode.get());
 
         assertThat(post.getOwner()).isEqualTo(entity.getOwner());

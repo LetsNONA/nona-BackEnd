@@ -1,5 +1,6 @@
 package letsnona.nonabackend.domain.cataegory.entity;
 
+import letsnona.nonabackend.domain.cataegory.dto.RequestAddCategory;
 import letsnona.nonabackend.global.entity.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,5 +24,9 @@ public class Category extends BaseTimeEntity {
     private String categoryCode;
     private String categoryName;
 
+    public Category(RequestAddCategory requestAddCategory) {
+        this.categoryCode = requestAddCategory.getCategoryCode();
+        this.categoryName = requestAddCategory.getCategoryName();
+    }
 }
 

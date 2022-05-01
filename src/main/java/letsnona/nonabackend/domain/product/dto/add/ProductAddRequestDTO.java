@@ -18,7 +18,7 @@ public class ProductAddRequestDTO {
     private Member owner;
     private String title;
     private String content;
-    private String category;
+    private String categoryCode;
     private String tradePlace;
     private int price;
     private String hashTag;

@@ -1,26 +1,11 @@
 package letsnona.nonabackend.domain.file.service;
 
-import letsnona.nonabackend.domain.file.service.FileServiceImpl;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @SpringBootTest
@@ -29,9 +14,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class FileServiceImplIntegrationTest {
 
     /*Todo
-    *  -현재 시나리오 테스트로 작성되어있어,
-    *  유닛테스트 추가해야됩니다
-    *   또한 resources 폴더에서 사진 입출력 필요 */
+     *  -현재 시나리오 테스트로 작성되어있어,
+     *  유닛테스트 추가해야됩니다
+     *   또한 resources 폴더에서 사진 입출력 필요 */
 
     @Autowired
     MockMvc mockMvc;
@@ -40,6 +25,10 @@ class FileServiceImplIntegrationTest {
     @Autowired
     FileServiceImpl service;
 
+    @Test
+    void dirTest() {
+    service.getSaveDirectoryPath();
+    }
 
 /*
     @Test

@@ -1,66 +1,30 @@
 package letsnona.nonabackend.domain.product.controller;
 
-import letsnona.nonabackend.domain.cataegory.repository.CategoryRepository;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddResponseDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
-import letsnona.nonabackend.domain.product.repository.ProductRepository;
-import letsnona.nonabackend.domain.product.service.ProductService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@RestController
-@RequiredArgsConstructor
-@Slf4j
-public class ProductController {
-    /*
-     * TODO
-     *   -게시글 수정
-     *   게시글 검색*/
+public interface ProductController {
 
-    private final ProductService productService;
-    private final ProductRepository productRepository;
-    private final CategoryRepository categoryRepository;
+    ProductAddResponseDTO saveProduct(@RequestPart(value = "key") ProductAddRequestDTO postDTO
+            , @RequestPart(value = "file") List<MultipartFile> file);
 
-    @PostMapping("user/api/post")
-    ProductAddResponseDTO savePost(
-            @RequestPart(value = "key") ProductAddRequestDTO postDTO
-            , @RequestPart(value = "file") List<MultipartFile> file) {
-        return productService.savePost(postDTO, file);
-    }
+    ProductAddResponseDTO updateProduct(@RequestPart(value = "key") ProductAddRequestDTO postDTO);
 
-    @PutMapping("user/api/post")
-    ProductAddResponseDTO updatePost(@RequestPart(value = "key") ProductAddRequestDTO postDTO) {
-        return productService.updatePost(postDTO);
-    }
+    boolean deleteProduct(@PathVariable long postIndex);
 
-    @DeleteMapping("user/api/post/{postIndex}")
-    boolean deletePost(@PathVariable long postIndex) {
-        return productService.deletePost(postIndex);
-    }
+    ProductReadResDTO getProductDetail(@PathVariable long postIndex);
 
+    Page<ProductReadResDTO> getSearchProduct(@RequestParam("keyword") String keyword, Pageable pageable);
 
-    @GetMapping("user/api/post/{postIndex}")
-    ProductReadResDTO getPostDetail(@PathVariable long postIndex) {
-        /*todo
-         *  - 삭제 게시물 안뜨게해야함*/
-        return productService.getPostDetails(postIndex);
-    }
-
-    @GetMapping("/posts/search")
-    Page<ProductReadResDTO> getSearchPost(@RequestParam("keyword") String keyword, Pageable pageable) {
-        return productService.getSearchPost(keyword, pageable);
-    }
-
-    @GetMapping("/posts")
-    Page<ProductReadResDTO> getAllPosts(Pageable pageable) {
-        return productService.getAllPost(pageable);
-    }
+    Page<ProductReadResDTO> getAllProducts(Pageable pageable);
 
 }

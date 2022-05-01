@@ -30,6 +30,8 @@ public class Member extends BaseTimeEntity {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String email;
+    private String zipCode;
+    private String phoneNumber;
     @Column(columnDefinition = "varchar(255) default 'ROLE_USER'")
     private String roles;
 
