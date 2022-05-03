@@ -29,6 +29,7 @@ public class Member extends BaseTimeEntity {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+    private String nickName;
     private String email;
     private String zipCode;
     private String phoneNumber;
