@@ -1,11 +1,11 @@
 package letsnona.nonabackend.domain;
 
 import letsnona.nonabackend.domain.file.repository.PostImgRepository;
-import letsnona.nonabackend.domain.post.dto.add.PostAddRequestDTO;
-import letsnona.nonabackend.domain.post.dto.add.PostAddResponseDTO;
-import letsnona.nonabackend.domain.post.entity.Post;
-import letsnona.nonabackend.domain.post.repository.PostRepository;
-import letsnona.nonabackend.domain.post.service.PostService;
+import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
+import letsnona.nonabackend.domain.product.dto.add.ProductAddResponseDTO;
+import letsnona.nonabackend.domain.product.entity.Product;
+import letsnona.nonabackend.domain.product.repository.ProductRepository;
+import letsnona.nonabackend.domain.product.service.ProductService;
 import letsnona.nonabackend.domain.review.dto.ReviewDTO;
 import letsnona.nonabackend.domain.review.dto.ReviewRequestDTO;
 import letsnona.nonabackend.domain.review.entity.Review;
@@ -45,7 +45,7 @@ public class SettingTest {
     MemberRepository memberRepository;
 
     @Autowired
-    PostRepository postRepository;
+    ProductRepository productRepository;
 
     @Autowired
     PostImgRepository imgRepository;
@@ -53,7 +53,7 @@ public class SettingTest {
     ReviewRepository reviewRepository;
 
     @Autowired
-    PostService postService;
+    ProductService productService;
 
 
     @Test
@@ -86,12 +86,12 @@ public class SettingTest {
     void setPost1000() throws IOException {
         Member member = memberRepository.findByUsername("admin");
 
-        for (int i = 0; i < 1; i++) {
-            PostAddRequestDTO postAddRequestDTO = PostAddRequestDTO.builder()
+        for (int i = 0; i < 100; i++) {
+            ProductAddRequestDTO productAddRequestDTO = ProductAddRequestDTO.builder()
                     .owner(member)
                     .title("test[" + i + "]제목입니다")
                     .content("test[" + i + "]내용입니다")
-                    .category("cg001")
+                    .categoryCode("cg001")
                     .tradePlace("test[" + i + "]임시거래지역")
                     .price(10000)
                     .hashTag("test[" + i + "]임시해쉬태그")
@@ -112,7 +112,7 @@ public class SettingTest {
 
             //when
 
-            PostAddResponseDTO responseDTO = postService.savePost(postAddRequestDTO, imgLists);
+            ProductAddResponseDTO responseDTO = productService.saveProduct(productAddRequestDTO, imgLists);
         }
     }
 
@@ -129,11 +129,11 @@ public class SettingTest {
                 .build();
         //when
         Member member = memberRepository.findByUsername("testId");
-        Optional<Post> byId = postRepository.findById(requestDTO.getPostId());
+        Optional<Product> byId = productRepository.findById(requestDTO.getPostId());
 
         ReviewDTO reviewDTO = ReviewDTO.builder()
                 .owner(member)
-                .post(byId.get())
+                .product(byId.get())
                 .content(requestDTO.getContent())
                 .grade(requestDTO.getGrade())
                 .build();

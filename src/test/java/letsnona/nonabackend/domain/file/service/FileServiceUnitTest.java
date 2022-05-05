@@ -1,7 +1,7 @@
 package letsnona.nonabackend.domain.file.service;
 
-import letsnona.nonabackend.domain.post.entity.Post;
-import letsnona.nonabackend.domain.post.repository.PostRepository;
+import letsnona.nonabackend.domain.product.entity.Product;
+import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.IOUtils;
@@ -25,7 +25,7 @@ public class FileServiceUnitTest {
     @Autowired
     FileService service;
     @Autowired
-    PostRepository postRepository;
+    ProductRepository productRepository;
 
     @Test
     @DisplayName("이미지저장")
@@ -34,7 +34,7 @@ public class FileServiceUnitTest {
         String path = directory.substring(0,directory.length()-13);
         int file_count = 0;
         File dir = new File(path);*/
-        Post post = new Post();
+        Product product = new Product();
         List<MultipartFile> imgLists = new ArrayList<>();
        int file_count = 4;
 

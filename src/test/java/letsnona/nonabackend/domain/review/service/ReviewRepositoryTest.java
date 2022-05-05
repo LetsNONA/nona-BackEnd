@@ -1,8 +1,8 @@
 package letsnona.nonabackend.domain.review.service;
 
-import letsnona.nonabackend.domain.post.entity.Post;
-import letsnona.nonabackend.domain.post.repository.PostRepository;
-import letsnona.nonabackend.domain.post.service.PostService;
+import letsnona.nonabackend.domain.product.entity.Product;
+import letsnona.nonabackend.domain.product.repository.ProductRepository;
+import letsnona.nonabackend.domain.product.service.ProductService;
 import letsnona.nonabackend.domain.review.dto.ReviewDTO;
 import letsnona.nonabackend.domain.review.dto.ReviewRequestDTO;
 import letsnona.nonabackend.domain.review.entity.Review;
@@ -27,10 +27,10 @@ class ReviewRepositoryTest {
     @Autowired
     ReviewRepository reviewRepository;
     @Autowired
-    PostService postService;
+    ProductService productService;
 
     @Autowired
-    PostRepository postRepository;
+    ProductRepository productRepository;
 
 
 
@@ -48,11 +48,11 @@ class ReviewRepositoryTest {
                 .build();
         //when
         Member member = memberRepository.findByUsername("testId");
-        Optional<Post> byId = postRepository.findById(requestDTO.getPostId());
+        Optional<Product> byId = productRepository.findById(requestDTO.getPostId());
 
         ReviewDTO reviewDTO = ReviewDTO.builder()
                 .owner(member)
-                .post(byId.get())
+                .product(byId.get())
                 .content(requestDTO.getContent())
                 .grade(requestDTO.getGrade())
                 .build();

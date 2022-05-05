@@ -1,7 +1,7 @@
 package letsnona.nonabackend.domain.review.service;
 
-import letsnona.nonabackend.domain.post.entity.Post;
-import letsnona.nonabackend.domain.post.repository.PostRepository;
+import letsnona.nonabackend.domain.product.entity.Product;
+import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import letsnona.nonabackend.domain.review.dto.ReviewDTO;
 import letsnona.nonabackend.domain.review.dto.ReviewRequestDTO;
 import letsnona.nonabackend.domain.review.entity.Review;
@@ -15,16 +15,16 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
-    private final PostRepository postRepository;
+    private final ProductRepository productRepository;
     private final ReviewRepository reviewRepository;
 
     @Override
     public Review  saveReview(Member user, ReviewRequestDTO requestDTO) {
-        Optional<Post> post = postRepository.findById(requestDTO.getPostId());
+        Optional<Product> post = productRepository.findById(requestDTO.getPostId());
 
         ReviewDTO reviewDTO = ReviewDTO.builder()
                 .owner(user)
-                .post(post.get())
+                .product(post.get())
                 .content(requestDTO.getContent())
                 .grade(requestDTO.getGrade())
                 .build();

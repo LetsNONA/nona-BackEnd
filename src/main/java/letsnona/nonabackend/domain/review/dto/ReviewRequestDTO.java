@@ -1,7 +1,5 @@
 package letsnona.nonabackend.domain.review.dto;
 
-import letsnona.nonabackend.domain.post.entity.Post;
-import letsnona.nonabackend.global.security.entity.Member;
 import lombok.Builder;
 import lombok.Data;
 

@@ -3,7 +3,6 @@ package letsnona.nonabackend.domain.file.service;
 import letsnona.nonabackend.domain.file.dto.PostImgRequestDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.imgscalr.Scalr;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,27 +10,26 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
 
 @Slf4j
 @Service
 public class FileServiceImpl implements FileService {
-
-
-    @Value("${file.path}")
-    private String filePath;
-
+     /* @Value("${file.path}")
+      private String filePath;*/
+//    private final String filePath = File.separator + "storage";
 
     @Override
     public String getSaveDirectoryPath() {
+        String filePath = getFilePath();
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         String str = sdf.format(date);
@@ -43,6 +41,15 @@ public class FileServiceImpl implements FileService {
         }
 
         return uploadPath.toString();
+    }
+
+    private String getFilePath() {
+        String osHomePath = System.getProperty("user.home");
+        String OsFilePath = osHomePath.replaceAll("/", Matcher.quoteReplacement(File.separator));
+        String reverseSlashPath = OsFilePath.replaceAll(Matcher.quoteReplacement(File.separator), "/");
+
+        return reverseSlashPath+File.separator+"storage"+File.separator;
+
     }
 
     @Override
@@ -68,7 +75,8 @@ public class FileServiceImpl implements FileService {
         // crop된 이미지로 썸네일을 생성합니다.
         BufferedImage destImg = Scalr.resize(cropImg, tumbImg_width, tumbImg_height);
 
-        String cropImgName = getSaveDirectoryPath() + "\\s_" + originalFile.getName();
+//        String cropImgName = getSaveDirectoryPath() + "\\s_" + originalFile.getName();
+        String cropImgName = getSaveDirectoryPath() + File.separator+"s_" + originalFile.getName();
         try {
             File tumbImg = new File(cropImgName);
             ImageIO.write(destImg, "jpg", tumbImg);
@@ -96,13 +104,16 @@ public class FileServiceImpl implements FileService {
 
             String saveFileName = uuid.toString() + "_" + file.getOriginalFilename();
             String savePath = getSaveDirectoryPath();
-            File target = new File(getSaveDirectoryPath(), saveFileName);
+//            File target = new File(getSaveDirectoryPath(), saveFileName);
+                        File target = new File(savePath, saveFileName);
             try {
                 file.transferTo(target);
                 //postImgResponseDTO
-                String originalSrc = (getSaveDirectoryPath() + "\\" + saveFileName).toString();
-                String encode = URLEncoder.encode(originalSrc, StandardCharsets.UTF_8);
-                postImgRequestDTO.setOriginalImgSrc(encode);
+             //   String originalSrc = (getSaveDirectoryPath() + "\\" + saveFileName).toString();
+                //String originalSrc = (getSaveDirectoryPath() + File.separator + saveFileName).toString();
+                String originalSrc = (savePath + File.separator + saveFileName).toString();
+                String encodeOriginalSrc = URLEncoder.encode(originalSrc, StandardCharsets.UTF_8);
+                postImgRequestDTO.setOriginalImgSrc(encodeOriginalSrc);
                 makeTumbnail(target, postImgRequestDTO);
                 //responseDTOList
                 requestDTOList.add(postImgRequestDTO);

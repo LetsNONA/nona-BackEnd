@@ -1,7 +1,7 @@
 package letsnona.nonabackend.domain.file.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import letsnona.nonabackend.domain.post.entity.Post;
+import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.global.entity.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,21 +21,21 @@ public class PostImg extends BaseTimeEntity {
     @JsonBackReference
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
-    private Post post;
+    private Product product;
 
     private String originalImgSrc;
     private String thumbImgSrc;
     private String originalName;
 
 
-    public void setPost(Post post) {
-        this.post = post;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     @Builder
-    public PostImg(long id, Post post, String originalImgSrc, String thumbImgSrc,String originalName) {
+    public PostImg(long id, Product product, String originalImgSrc, String thumbImgSrc, String originalName) {
         this.id = id;
-        this.post = post;
+        this.product = product;
         this.originalImgSrc = originalImgSrc;
         this.thumbImgSrc = thumbImgSrc;
         this.originalName = originalName;
