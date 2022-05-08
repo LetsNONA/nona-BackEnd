@@ -1,3 +1,4 @@
+/*
 package letsnona.nonabackend.domain.chat.handler;
 
 import com.auth0.jwt.JWT;
@@ -14,8 +15,10 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
+@Component
 public class ChatPreHandler implements ChannelInterceptor {
     private final MemberRepository memberRepository;
 
@@ -54,3 +57,4 @@ public class ChatPreHandler implements ChannelInterceptor {
 
     }
 }
+*/

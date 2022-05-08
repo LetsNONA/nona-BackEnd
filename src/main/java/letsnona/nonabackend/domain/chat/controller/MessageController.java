@@ -1,3 +1,4 @@
+/*
 package letsnona.nonabackend.domain.chat.controller;
 
 import letsnona.nonabackend.domain.chat.dto.ChatMessageDTO;
@@ -21,3 +22,4 @@ public class MessageController {
         simpMessageSendingOperations.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
 }
+*/

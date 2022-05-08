@@ -2,6 +2,7 @@ package letsnona.nonabackend.domain.product.dto.read;
 
 import letsnona.nonabackend.domain.cataegory.dto.PostReadResCategoryDTO;
 import letsnona.nonabackend.domain.product.entity.Product;
+import letsnona.nonabackend.domain.product.enums.ProductState;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -25,6 +26,7 @@ public class ProductReadResDTO {
     private String hashTag;
     private int hit;
     private boolean flagCourierFee;
+    private ProductState productState;
 
     double getAverageReviewsGrade(List<ProductReadResReviewDTO> reviewDTOList){
         double sum = 0 ;
@@ -50,5 +52,6 @@ public class ProductReadResDTO {
         this.hit = product.getHit();
         this.flagCourierFee = product.isFlagCourierFee();
         this.averageReviewGrade = getAverageReviewsGrade(resReviewDTOS);
+        this.productState = product.getProductState();
     }
 }

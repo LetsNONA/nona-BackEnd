@@ -13,6 +13,7 @@ import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResImgDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResReviewDTO;
 import letsnona.nonabackend.domain.product.entity.Product;
+import letsnona.nonabackend.domain.product.enums.ProductState;
 import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.global.security.auth.PrincipalDetails;
@@ -103,7 +104,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductReadResDTO> getAllProduct(Pageable pageable) {
-        Page<Product> allByFlagDelete = productRepository.findAllByFlagDelete(pageable, false);
+        Page<Product> allByFlagDelete = productRepository.findAllByProductState(pageable, ProductState.SELL);
         return getProductReadResDTOS(allByFlagDelete);
     }
 
@@ -151,7 +152,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean deleteProduct(long postIndex) {
+    public String deleteProduct(long postIndex) {
         /*TODO
          *  테스트 코드 작성 필요*/
 
@@ -161,12 +162,13 @@ public class ProductServiceImpl implements ProductService {
         byId.ifPresent(post -> {
             if (isPostOwner(post, requestUser)) post.deletePost();
         });
-        return byId.map(Product::isFlagDelete).orElse(false);
+        return byId.map(Product::getProductState).get().toString();
     }
 
     @Override
     public boolean isPostOwner(Product product, Member requestMember) {
-        return product.getOwner().equals(requestMember);
+//        return product.getOwner().equals(requestMember);
+        return product.getOwner().getUsername().equals(requestMember.getUsername());
     }
 
     @Override

@@ -19,7 +19,7 @@ public interface ProductController {
 
     ProductAddResponseDTO updateProduct(@RequestPart(value = "key") ProductAddRequestDTO postDTO);
 
-    boolean deleteProduct(@PathVariable long postIndex);
+    String deleteProduct(@PathVariable long postIndex);
 
     ProductReadResDTO getProductDetail(@PathVariable long postIndex);
 

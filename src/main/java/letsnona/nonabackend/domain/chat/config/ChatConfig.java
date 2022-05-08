@@ -1,3 +1,4 @@
+/*
 package letsnona.nonabackend.domain.chat.config;
 
 import letsnona.nonabackend.domain.chat.handler.ChatPreHandler;
@@ -14,10 +15,12 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @RequiredArgsConstructor
 public class ChatConfig implements WebSocketMessageBrokerConfigurer {
     private final ChatPreHandler chatPreHandler;
-    /*
+    */
+/*
     메세지 플로우를 모으기 위한 설정
 
-    * */
+    * *//*
+
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // CORS 설정 및 소켓을 지원하지 않으면 SockJs 이용
@@ -41,3 +44,4 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
         registration.interceptors(chatPreHandler);
     }
 }
+*/

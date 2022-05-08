@@ -42,7 +42,7 @@ public interface ProductService {
     ResponseEntity<byte[]> getRespIMG(String filePath) throws IOException;
 
     @Transactional
-    boolean deleteProduct(@PathVariable long postIndex);
+    String deleteProduct(@PathVariable long postIndex);
 
     List<ProductReadResReviewDTO> getReviewEntityToDTO(List<Review> reviewList);
 

@@ -1,6 +1,7 @@
 package letsnona.nonabackend.domain.product.repository;
 
 import letsnona.nonabackend.domain.product.entity.Product;
+import letsnona.nonabackend.domain.product.enums.ProductState;
 import letsnona.nonabackend.global.security.entity.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,7 @@ Page<Product> findAll(Pageable pageable);
 
 @EntityGraph("PostWithMemberAndCategory")
 //@EntityGraph(attributePaths = {"owner","images","reviews"})
-    Page<Product> findAllByFlagDelete(Pageable pageable, boolean flagDelete);
+    Page<Product> findAllByProductState(Pageable pageable, ProductState productState);
 
     @EntityGraph("PostWithMemberAndCategory")
     Page<Product> findByTitleContaining(Pageable pageable, String title);

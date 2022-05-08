@@ -2,10 +2,7 @@ package letsnona.nonabackend.global.security.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import letsnona.nonabackend.global.entity.BaseTimeEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,7 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
