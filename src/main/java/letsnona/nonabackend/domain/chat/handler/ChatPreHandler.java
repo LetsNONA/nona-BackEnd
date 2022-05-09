@@ -1,4 +1,3 @@
-/*
 package letsnona.nonabackend.domain.chat.handler;
 
 import com.auth0.jwt.JWT;
@@ -57,4 +56,3 @@ public class ChatPreHandler implements ChannelInterceptor {
 
     }
 }
-*/
