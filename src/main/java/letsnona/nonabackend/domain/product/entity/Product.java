@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import letsnona.nonabackend.domain.cataegory.entity.Category;
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
+import letsnona.nonabackend.domain.product.enums.ProductState;
 import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.global.entity.BaseTimeEntity;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -62,8 +63,10 @@ public class Product extends BaseTimeEntity {
     @Column(columnDefinition = "boolean default 0")
     private boolean flagCourierFee;
 
-    @Column(columnDefinition = "boolean default 0")
-    private boolean flagDelete;
+    @Builder.Default
+    @Column(length = 15, columnDefinition = "varchar(15) default 'SELL'")
+    @Enumerated(value = EnumType.STRING)
+    private ProductState productState = ProductState.SELL;
 
     public void addReview(Review review) {
         review.setProduct(this);
@@ -76,7 +79,7 @@ public class Product extends BaseTimeEntity {
     }
 
     public void deletePost(){
-        this.flagDelete = true;
+        this.productState = ProductState.DELETE;
     }
 
     public void updatePost(ProductAddRequestDTO dto){

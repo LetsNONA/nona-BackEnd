@@ -5,7 +5,6 @@ import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.global.security.entity.Member;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +15,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+
 public class ProductAddResponseDTO {
     private long id;
     private Member owner;

@@ -41,7 +41,7 @@ public class ProductControllerImpl implements ProductController {
 
     @Override
     @DeleteMapping("user/api/product/{productIndex}")
-    public boolean deleteProduct(@PathVariable long productIndex) {
+    public String deleteProduct(@PathVariable long productIndex) {
         return productService.deleteProduct(productIndex);
     }
 
