@@ -1,9 +1,9 @@
 package letsnona.nonabackend.domain.chat.config;
 
 import letsnona.nonabackend.domain.chat.handler.ChatPreHandler;
+import letsnona.nonabackend.domain.chat.interceptor.HttpHandshakeInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -14,14 +14,17 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @RequiredArgsConstructor
 public class ChatConfig implements WebSocketMessageBrokerConfigurer {
     private final ChatPreHandler chatPreHandler;
-   // 메세지 플로우를 모으기 위한 설정
-
+    // 메세지 플로우를 모으기 위한 설정
 
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // CORS 설정 및 소켓을 지원하지 않으면 SockJs 이용
-        registry.addEndpoint("/api/websocket").setAllowedOriginPatterns("*").withSockJS();
+        // CORS 설정 및 소켓을 지원하지 않으면 SockJs 이용x`
+        System.out.println("stomp 실행되었습니다");
+        registry.addEndpoint("/api/websocket").setAllowedOriginPatterns(
+                "/api/websocket")
+                .addInterceptors(new HttpHandshakeInterceptor())
+                .withSockJS();
 
     }
 
@@ -36,8 +39,8 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
         // -> broker
     }
 
-    @Override
+/*    @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
         registration.interceptors(chatPreHandler);
-    }
+    }*/
 }
