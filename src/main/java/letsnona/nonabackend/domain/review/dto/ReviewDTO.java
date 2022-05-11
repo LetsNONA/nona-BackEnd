@@ -2,6 +2,7 @@ package letsnona.nonabackend.domain.review.dto;
 
 import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.domain.review.entity.Review;
+import letsnona.nonabackend.domain.review.enums.TradeState;
 import letsnona.nonabackend.global.security.entity.Member;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +15,7 @@ public class ReviewDTO {
     private Product product;
     private double grade;
     private String content;
+    private TradeState tradeState;
 
     public Review toEntity() {
     return  Review.builder()
@@ -21,6 +23,7 @@ public class ReviewDTO {
             .product(this.product)
             .grade(this.grade)
             .content(this.content)
+            .tradeState(this.tradeState)
             .build();
     }
 }

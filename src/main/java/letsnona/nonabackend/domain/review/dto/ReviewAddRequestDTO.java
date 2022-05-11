@@ -5,9 +5,11 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ReviewRequestDTO {
+public class ReviewAddRequestDTO {
    // private Member owner;
-    private long  postId;
+    private long productId;
     private double grade;
     private String content;
+
+
 }

@@ -1,23 +1,20 @@
 package letsnona.nonabackend.domain.review.controller;
 
-import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
-import letsnona.nonabackend.global.security.auth.PrincipalDetails;
-import letsnona.nonabackend.global.security.entity.Member;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
+import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
+import letsnona.nonabackend.domain.review.dto.ReviewUpdateRequestDTO;
+import letsnona.nonabackend.domain.review.entity.Review;
+import letsnona.nonabackend.domain.review.enums.TradeState;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
+public interface ReviewController {
+    TradeState updateReviewState(@PathVariable long reviewIndex, @RequestParam String tradeState);
 
-@RestController
-public class ReviewController {
-    void savePost(Authentication authentication
-            , @RequestPart(value = "key") ProductAddRequestDTO postDTO
-            , @RequestPart(value = "file") List<MultipartFile> file) {
-        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-        Member user = principal.getUser();
+    Review requestTrade(long productIndex);
 
-    }
+    Review updateReview(@PathVariable long reviewIndex, @RequestParam ReviewUpdateRequestDTO dto);
 
+    Page<ProductReadResDTO> getProductReviews(@PathVariable long productId, Pageable pageable);
 }

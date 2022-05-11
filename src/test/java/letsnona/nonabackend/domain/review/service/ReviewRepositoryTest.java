@@ -4,7 +4,7 @@ import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import letsnona.nonabackend.domain.product.service.ProductService;
 import letsnona.nonabackend.domain.review.dto.ReviewDTO;
-import letsnona.nonabackend.domain.review.dto.ReviewRequestDTO;
+import letsnona.nonabackend.domain.review.dto.ReviewAddRequestDTO;
 import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.domain.review.repository.ReviewRepository;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -41,14 +41,14 @@ class ReviewRepositoryTest {
     void saveReview() throws IOException {
 
         //given
-        ReviewRequestDTO requestDTO = ReviewRequestDTO.builder()
-                .postId(1L)
+        ReviewAddRequestDTO requestDTO = ReviewAddRequestDTO.builder()
+                .productId(1L)
                 .grade(4)
                 .content("댓글 4")
                 .build();
         //when
         Member member = memberRepository.findByUsername("testId");
-        Optional<Product> byId = productRepository.findById(requestDTO.getPostId());
+        Optional<Product> byId = productRepository.findById(requestDTO.getProductId());
 
         ReviewDTO reviewDTO = ReviewDTO.builder()
                 .owner(member)

@@ -50,6 +50,5 @@ public interface ProductService {
 
     boolean isPostOwner(Product product, Member requestMember);
 
-    @Transactional
-    Member getRequestUser();
+
 }

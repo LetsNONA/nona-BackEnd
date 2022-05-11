@@ -11,13 +11,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-Product findByOwner(Member owner);
-Optional<Product> findById(Long id);
-//@Query("select p from Post p left join fetch p.owner")
-@EntityGraph("PostWithMemberAndCategory")
-Page<Product> findAll(Pageable pageable);
+    Product findByOwner(Member owner);
 
-@EntityGraph("PostWithMemberAndCategory")
+    Optional<Product> findById(Long id);
+
+    //@Query("select p from Post p left join fetch p.owner")
+    @EntityGraph("PostWithMemberAndCategory")
+    Page<Product> findAll(Pageable pageable);
+
+    @EntityGraph("PostWithMemberAndCategory")
 //@EntityGraph(attributePaths = {"owner","images","reviews"})
     Page<Product> findAllByProductState(Pageable pageable, ProductState productState);
 
