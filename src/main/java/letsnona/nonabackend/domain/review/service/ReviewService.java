@@ -1,6 +1,7 @@
 package letsnona.nonabackend.domain.review.service;
 
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
+import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
 import letsnona.nonabackend.domain.review.dto.ReviewAddRequestDTO;
 import letsnona.nonabackend.domain.review.dto.ReviewUpdateRequestDTO;
 import letsnona.nonabackend.domain.review.entity.Review;
@@ -11,8 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface ReviewService {
     @Transactional
-    Review saveReview(ReviewAddRequestDTO requestDTO);
+    Review requestTrade(ReviewAddRequestDTO requestDTO);
 
+    Page<ProductReadResReviewDTO> getProductReadResDTOS(Page<Review> review);
     @Transactional
     TradeState updateReviewState(long reviewIndex, String tradeState);
 

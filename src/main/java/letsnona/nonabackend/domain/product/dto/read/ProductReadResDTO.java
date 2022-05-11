@@ -3,6 +3,7 @@ package letsnona.nonabackend.domain.product.dto.read;
 import letsnona.nonabackend.domain.cataegory.dto.PostReadResCategoryDTO;
 import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.domain.product.enums.ProductState;
+import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

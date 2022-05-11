@@ -36,7 +36,7 @@ public class ReviewControllerImpl implements ReviewController {
         ReviewAddRequestDTO reviewAddRequestDTO = ReviewAddRequestDTO.builder()
                 .productId(productIndex)
                 .build();
-        return reviewService.saveReview(reviewAddRequestDTO);
+        return reviewService.requestTrade(reviewAddRequestDTO);
 
     }
 
