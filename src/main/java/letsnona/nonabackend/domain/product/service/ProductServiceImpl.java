@@ -11,21 +11,19 @@ import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddResponseDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResImgDTO;
-import letsnona.nonabackend.domain.product.dto.read.ProductReadResReviewDTO;
+import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
 import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.domain.product.enums.ProductState;
 import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import letsnona.nonabackend.domain.review.entity.Review;
-import letsnona.nonabackend.global.security.auth.PrincipalDetails;
 import letsnona.nonabackend.global.security.entity.Member;
+import letsnona.nonabackend.global.security.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,10 +42,11 @@ public class ProductServiceImpl implements ProductService {
     private final PostImgRepository imgRepository;
     private final FileService fileService;
     private final CategoryRepository categoryRepository;
+    private final MemberService memberService;
 
     @Override
     public ProductAddResponseDTO saveProduct(ProductAddRequestDTO postDTO, List<MultipartFile> imgList) {
-        Member requestUser = getRequestUser();
+        Member requestUser = memberService.getRequestUser();
         postDTO.setOwner(requestUser);
 
         /*TODO
@@ -78,7 +77,7 @@ public class ProductServiceImpl implements ProductService {
          *  -리팩토링 매우 필요 더러운 코드 **/
         Optional<Product> byId = productRepository.findById(postDTO.getId());
         byId.ifPresent(post -> {
-            if (isPostOwner(post, getRequestUser()))
+            if (isPostOwner(post, memberService.getRequestUser()))
                 post.updatePost(postDTO);
 
             if (postDTO.getCategoryCode() != null) {
@@ -156,7 +155,7 @@ public class ProductServiceImpl implements ProductService {
         /*TODO
          *  테스트 코드 작성 필요*/
 
-        Member requestUser = getRequestUser();
+        Member requestUser = memberService.getRequestUser();
         Optional<Product> byId = productRepository.findById(postIndex);
 
         byId.ifPresent(post -> {
@@ -171,11 +170,5 @@ public class ProductServiceImpl implements ProductService {
         return product.getOwner().getUsername().equals(requestMember.getUsername());
     }
 
-    @Override
-    public Member getRequestUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-        return principal.getUser();
-    }
 
 }

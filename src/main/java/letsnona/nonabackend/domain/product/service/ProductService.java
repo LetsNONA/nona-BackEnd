@@ -5,7 +5,7 @@ import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddResponseDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResImgDTO;
-import letsnona.nonabackend.domain.product.dto.read.ProductReadResReviewDTO;
+import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
 import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -50,6 +50,5 @@ public interface ProductService {
 
     boolean isPostOwner(Product product, Member requestMember);
 
-    @Transactional
-    Member getRequestUser();
+
 }

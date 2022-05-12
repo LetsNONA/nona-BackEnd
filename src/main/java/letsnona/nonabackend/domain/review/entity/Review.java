@@ -2,6 +2,8 @@ package letsnona.nonabackend.domain.review.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import letsnona.nonabackend.domain.product.entity.Product;
+import letsnona.nonabackend.domain.review.dto.ReviewUpdateRequestDTO;
+import letsnona.nonabackend.domain.review.enums.TradeState;
 import letsnona.nonabackend.global.entity.BaseTimeEntity;
 import letsnona.nonabackend.global.security.entity.Member;
 import lombok.AllArgsConstructor;
@@ -32,8 +34,17 @@ public class Review extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Builder.Default
+    @Column(length = 15, columnDefinition = "varchar(15) default 'TRADING'")
+    @Enumerated(value = EnumType.STRING)
+    private TradeState tradeState = TradeState.TRADING;
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+    public void updateTradeState(TradeState tradeState) { this.tradeState = tradeState;}
+    public void updateReview(ReviewUpdateRequestDTO dto){
+       this.grade = dto.getGrade();
+        this.content = dto.getContent();
     }
 }
