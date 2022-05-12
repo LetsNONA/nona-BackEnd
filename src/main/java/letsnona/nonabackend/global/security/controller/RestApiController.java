@@ -3,6 +3,7 @@ package letsnona.nonabackend.global.security.controller;
 import letsnona.nonabackend.global.security.auth.PrincipalDetails;
 import letsnona.nonabackend.global.security.entity.Member;
 import letsnona.nonabackend.global.security.repository.MemberRepository;
+import letsnona.nonabackend.global.security.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,7 +17,8 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor 
 public class RestApiController {
-	
+
+	private final MemberService memberService;
 	private final MemberRepository memberRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
@@ -56,6 +58,8 @@ public class RestApiController {
 	public String join(@RequestBody Member member) {
 		member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
 		member.setRoles("ROLE_USER");
+
+		member.updateAge(memberService.calculateAge(member.getBirthday()));
 		memberRepository.save(member);
 		return "회원가입완료";
 	}

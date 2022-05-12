@@ -6,6 +6,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 public class MemberServiceImpl  implements  MemberService{
    public Member getRequestUser(){
@@ -13,4 +15,13 @@ public class MemberServiceImpl  implements  MemberService{
        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
        return principal.getUser();
    }
+
+    @Override
+    public int calculateAge(LocalDate birthday) {
+        LocalDate currentDate = LocalDate.now();
+        int currentYear = currentDate.getYear();
+
+        int bornYear = birthday.getYear();
+        return (currentYear - bornYear) + 1;
+    }
 }
