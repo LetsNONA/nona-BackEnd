@@ -10,4 +10,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Review findById(long id);
 
     Page<Review> findAll(Pageable pageable);
+    Page<Review> findByProductId(long productId,Pageable pageable);
 }

@@ -1,6 +1,5 @@
 package letsnona.nonabackend.domain.review.service;
 
-import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
 import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
 import letsnona.nonabackend.domain.review.dto.ReviewAddRequestDTO;
 import letsnona.nonabackend.domain.review.dto.ReviewUpdateRequestDTO;
@@ -24,5 +23,5 @@ public interface ReviewService {
     @Transactional
     Review updateReview(long reviewIndex, ReviewUpdateRequestDTO dto);
 
-    Page<ProductReadResDTO> getProductReviews(long productId, Pageable pageable);
+    Page<ProductReadResReviewDTO> getProductReviews(long productId, Pageable pageable);
 }

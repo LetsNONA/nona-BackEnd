@@ -1,6 +1,6 @@
 package letsnona.nonabackend.domain.review.controller;
 
-import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
+import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
 import letsnona.nonabackend.domain.review.dto.ReviewUpdateRequestDTO;
 import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.domain.review.enums.TradeState;
@@ -16,5 +16,5 @@ public interface ReviewController {
 
     Review updateReview(@PathVariable long reviewIndex, @RequestParam ReviewUpdateRequestDTO dto);
 
-    Page<ProductReadResDTO> getProductReviews(@PathVariable long productId, Pageable pageable);
+    Page<ProductReadResReviewDTO> getProductReviews(@PathVariable long productId, Pageable pageable);
 }

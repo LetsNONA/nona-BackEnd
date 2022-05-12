@@ -1,6 +1,5 @@
 package letsnona.nonabackend.domain.review.service;
 
-import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
 import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
@@ -55,30 +54,30 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public Review updateReview(long reviewIndex, ReviewUpdateRequestDTO dto) {
         Review byId = reviewRepository.findById(reviewIndex);
-       if(isReviewOwner(byId) && byId.getTradeState()== TradeState.COMPLETED)
+        if (isReviewOwner(byId) && byId.getTradeState() == TradeState.COMPLETED)
             byId.updateReview(dto);
         return byId;
     }
 
     @Override
-    public Page<ProductReadResDTO> getProductReviews(long productId, Pageable pageable) {
-        return null;
+    public Page<ProductReadResReviewDTO> getProductReviews(long productId, Pageable pageable) {
+        Page<Review> byProductId = reviewRepository.findByProductId(productId, pageable);
+        return getProductReadResDTOS(byProductId);
     }
 
-@Override
+    @Override
     public Page<ProductReadResReviewDTO> getProductReadResDTOS(Page<Review> review) {
         /*
          *  Response :  Entity -> DTO
          * */
-
-    return review.map (ProductReadResReviewDTO::new);
+        return review.map(ProductReadResReviewDTO::new);
     }
 
 
     @Override
     public boolean isReviewOwner(Review review) {
 //        return product.getOwner().equals(requestMember);
-        return  memberService.getRequestUser().equals(review.getOwner());
+        return memberService.getRequestUser().equals(review.getOwner());
     }
 
 }

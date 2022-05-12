@@ -1,6 +1,6 @@
 package letsnona.nonabackend.domain.review.controller;
 
-import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
+import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
 import letsnona.nonabackend.domain.review.dto.ReviewAddRequestDTO;
 import letsnona.nonabackend.domain.review.dto.ReviewUpdateRequestDTO;
 import letsnona.nonabackend.domain.review.entity.Review;
@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ReviewControllerImpl implements ReviewController {
     private ReviewService reviewService;
+    /*TODO
+    *  - updateReview 해야함*/
 
     @Override
     @PutMapping("/user/api/review/{reviewIndex}")
@@ -42,8 +44,8 @@ public class ReviewControllerImpl implements ReviewController {
 
     @Override
     @GetMapping("/user/api/review/{productId}")
-    public Page<ProductReadResDTO> getProductReviews(@PathVariable long productId,Pageable pageable) {
-        return reviewService.getProductReviews(productId,pageable);
+    public Page<ProductReadResReviewDTO> getProductReviews(@PathVariable long productId, Pageable pageable) {
+        return reviewService.getProductReviews(productId, pageable);
     }
 
 }
