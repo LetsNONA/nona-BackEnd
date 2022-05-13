@@ -44,6 +44,8 @@ dependencies {
     //h2 test scope
     runtimeOnly 'com.h2database:h2'
 
+// https://mvnrepository.com/artifact/org.qlrm/qlrm
+    implementation group: 'org.qlrm', name: 'qlrm', version: '3.0.4'
     // https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
     implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
 

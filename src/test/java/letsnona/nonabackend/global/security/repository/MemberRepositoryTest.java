@@ -1,13 +1,20 @@
 package letsnona.nonabackend.global.security.repository;
 
+import letsnona.nonabackend.global.security.dto.GenderDTO;
 import letsnona.nonabackend.global.security.entity.Member;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.qlrm.mapper.JpaResultMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.transaction.Transactional;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -17,19 +24,37 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
+    @PersistenceContext
+    EntityManager em;
 
-/*    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;*/
+    @Test
+    @DisplayName("QLRM TEST")
+    @Transactional
+    void testQLRM() {
+        //given
+        JpaResultMapper jpaResultMapper = new JpaResultMapper();
+        Query nativeQuery = em.createNativeQuery("select gender, count(*) as cnt from member group by gender");
+        //when
 
-    @BeforeEach
-    void setup(){
-        memberRepository.deleteAll();
+        List<GenderDTO> list = jpaResultMapper.list(nativeQuery, GenderDTO.class);
+        //then
+
+        assertThat(list).isNotEmpty();
     }
+
+/*
+    @Test
+    @DisplayName("성별 통계")
+    void groupByGender() {
+        List<Object[]>> genderDTOS = memberRepository.groupByGender();
+        System.out.println("genderDTOS = " + genderDTOS);
+    }
+*/
 
 
     @Test
     @DisplayName("유저가입")
-    void insertUser(){
+    void insertUser() {
         //given
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         Member member = Member.builder()
