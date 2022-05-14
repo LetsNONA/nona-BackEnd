@@ -1,6 +1,6 @@
 package letsnona.nonabackend.domain.admin.controller;
 
-import letsnona.nonabackend.domain.admin.dto.BarChartDTO;
+import letsnona.nonabackend.domain.admin.dto.PieChartDTO;
 import letsnona.nonabackend.domain.admin.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +14,7 @@ public class AdminControllerImpl {
     private  final AdminService adminService;
 
     @GetMapping("/api/genderRatio")
-    public List<BarChartDTO> getGenderRatio() {
-     return adminService.getBarChatData();
+    public List<PieChartDTO> getGenderRatio() {
+     return adminService.getPieChartData();
     }
 }

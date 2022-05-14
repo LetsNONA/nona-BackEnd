@@ -1,6 +1,8 @@
 package letsnona.nonabackend.domain.admin.service;
 
 import letsnona.nonabackend.domain.admin.dto.BarChartDTO;
+import letsnona.nonabackend.domain.admin.dto.PieChartDTO;
+import letsnona.nonabackend.global.security.dto.chart.AgeRatioDTO;
 import letsnona.nonabackend.global.security.dto.chart.GenderRatioDTO;
 import letsnona.nonabackend.global.security.repository.CustomMemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,45 +14,81 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
-   private final CustomMemberRepository customMemberRepository;
+    private final CustomMemberRepository customMemberRepository;
 
     @Override
-    public List<BarChartDTO> getBarChatData(){
+    public List<PieChartDTO> getPieChartData() {
         List<GenderRatioDTO> genderRatioDTOS = customMemberRepository.getGenderRatio();
-        return parseBarChart(genderRatioDTOS);
+        return parseRespPieChartDTO(genderRatioDTOS);
     }
 
-
+    @Override
+    public List<BarChartDTO> getBarChartData() {
+        List<AgeRatioDTO> ageRatioDTOS = customMemberRepository.getAgeRatio();
+        return parseRespBarChartDTO(ageRatioDTOS);
+    }
 
     @Override
-    public List<BarChartDTO> parseBarChart(List<GenderRatioDTO> dtoList) {
+    public List<PieChartDTO> parseRespPieChartDTO(List<GenderRatioDTO> dtoList) {
         /*Todo
         - 어마무시하게 더러운 코드 제발 리펙토링!
          */
-        List<BarChartDTO> barChartDTOList = new ArrayList<>();
+        List<PieChartDTO> pieChartDTOList = new ArrayList<>();
 
         for (GenderRatioDTO dto : dtoList
         ) {
-            if (dto.getGender().charAt(0) == 'M') {
-                BarChartDTO parse = BarChartDTO.builder()
-                        .id("Male")
-                        .label("Male")
-                        .value(dto.getCnt())
-                        .color("hsl(67, 70%, 50%)")
-                        .build();
-                barChartDTOList.add(parse);
-            } else {
-                if (dto.getGender().charAt(0) == 'F') {
-                    BarChartDTO parse = BarChartDTO.builder()
-                            .id("Female")
-                            .label("Feale")
-                            .value(dto.getCnt())
-                            .color("hsl(213, 70%, 50%)")
-                            .build();
-                    barChartDTOList.add(parse);
-                }
-            }
+            PieChartDTO parse = new PieChartDTO();
+            if (isMale(dto))
+                parse = initMaleRespPieChartDTO(dto);
+
+            if (isFeMale(dto))
+                parse = initFemaleRespPieChartDTO(dto);
+
+            pieChartDTOList.add(parse);
         }
-        return barChartDTOList;
+        return pieChartDTOList;
     }
+
+    @Override
+    public List<BarChartDTO> parseRespBarChartDTO(List<AgeRatioDTO> dtoList) {
+        /*Todo
+        - 어마무시하게 더러운 코드 제발 리펙토링!
+         */
+        List<BarChartDTO> pieChartDTOList = new ArrayList<>();
+
+        for (AgeRatioDTO dto : dtoList
+        ) {
+            pieChartDTOList.add(new BarChartDTO(dto));
+        }
+        return pieChartDTOList;
+    }
+
+    private PieChartDTO initMaleRespPieChartDTO(GenderRatioDTO dto) {
+        return PieChartDTO.builder()
+                .id("Male")
+                .label("Male")
+                .value(dto.getCnt())
+                .color("hsl(67, 70%, 50%)")
+                .build();
+
+    }
+
+    private PieChartDTO initFemaleRespPieChartDTO(GenderRatioDTO dto) {
+        return PieChartDTO.builder()
+                .id("Female")
+                .label("Female")
+                .value(dto.getCnt())
+                .color("hsl(213, 70%, 50%)")
+                .build();
+
+    }
+
+    private boolean isMale(GenderRatioDTO dto) {
+        return dto.getGender().charAt(0) == 'M';
+    }
+
+    private boolean isFeMale(GenderRatioDTO dto) {
+        return dto.getGender().charAt(0) == 'F';
+    }
+
 }

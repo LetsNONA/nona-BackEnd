@@ -1,12 +1,16 @@
 package letsnona.nonabackend.domain.admin.service;
 
 import letsnona.nonabackend.domain.admin.dto.BarChartDTO;
+import letsnona.nonabackend.domain.admin.dto.PieChartDTO;
+import letsnona.nonabackend.global.security.dto.chart.AgeRatioDTO;
 import letsnona.nonabackend.global.security.dto.chart.GenderRatioDTO;
 
 import java.util.List;
 
 public interface AdminService {
-    List<BarChartDTO> getBarChatData();
+    List<PieChartDTO> getPieChartData();
 
-    List<BarChartDTO> parseBarChart(List<GenderRatioDTO> dtoList);
+    List<PieChartDTO> parseRespPieChartDTO(List<GenderRatioDTO> dtoList);
+    List<BarChartDTO> getBarChartData();
+    List<BarChartDTO> parseRespBarChartDTO(List<AgeRatioDTO> dtoList);
 }
