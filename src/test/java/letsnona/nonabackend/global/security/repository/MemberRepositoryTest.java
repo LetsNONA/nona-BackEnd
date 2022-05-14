@@ -1,6 +1,6 @@
 package letsnona.nonabackend.global.security.repository;
 
-import letsnona.nonabackend.global.security.dto.GenderDTO;
+import letsnona.nonabackend.global.security.dto.chart.GenderRatioDTO;
 import letsnona.nonabackend.global.security.entity.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ class MemberRepositoryTest {
         Query nativeQuery = em.createNativeQuery("select gender, count(*) as cnt from member group by gender");
         //when
 
-        List<GenderDTO> list = jpaResultMapper.list(nativeQuery, GenderDTO.class);
+        List<GenderRatioDTO> list = jpaResultMapper.list(nativeQuery, GenderRatioDTO.class);
         //then
 
         assertThat(list).isNotEmpty();

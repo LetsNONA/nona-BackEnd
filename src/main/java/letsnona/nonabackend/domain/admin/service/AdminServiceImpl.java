@@ -1,7 +1,7 @@
 package letsnona.nonabackend.domain.admin.service;
 
 import letsnona.nonabackend.domain.admin.dto.BarChartDTO;
-import letsnona.nonabackend.global.security.dto.GenderDTO;
+import letsnona.nonabackend.global.security.dto.chart.GenderRatioDTO;
 import letsnona.nonabackend.global.security.repository.CustomMemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,20 +16,20 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<BarChartDTO> getBarChatData(){
-        List<GenderDTO> genderDTOS = customMemberRepository.countMemberGender();
-        return parseBarChart(genderDTOS);
+        List<GenderRatioDTO> genderRatioDTOS = customMemberRepository.getGenderRatio();
+        return parseBarChart(genderRatioDTOS);
     }
 
 
 
     @Override
-    public List<BarChartDTO> parseBarChart(List<GenderDTO> dtoList) {
+    public List<BarChartDTO> parseBarChart(List<GenderRatioDTO> dtoList) {
         /*Todo
-        -어마무시하게 더러운 코드 제발 리펙토링!
+        - 어마무시하게 더러운 코드 제발 리펙토링!
          */
         List<BarChartDTO> barChartDTOList = new ArrayList<>();
 
-        for (GenderDTO dto : dtoList
+        for (GenderRatioDTO dto : dtoList
         ) {
             if (dto.getGender().charAt(0) == 'M') {
                 BarChartDTO parse = BarChartDTO.builder()
