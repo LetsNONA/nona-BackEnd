@@ -5,6 +5,7 @@ import letsnona.nonabackend.global.entity.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,10 +16,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 //@EntityListeners(AuditingEntityListener.class) /* JPA에게 해당 Entity는 Auditiong 기능을 사용함을 알립니다. */
 public class Member extends BaseTimeEntity {
-
+/*TODO - Setter 지워야함*/
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -31,9 +31,11 @@ public class Member extends BaseTimeEntity {
     private String email;
     private String zipCode;
     private String phoneNumber;
+    private String gender;
+    private LocalDate birthday;
+    private int age;
     @Column(columnDefinition = "varchar(255) default 'ROLE_USER'")
     private String roles;
-
     private String providerId;
     private String provider;
 
@@ -51,4 +53,9 @@ public class Member extends BaseTimeEntity {
         }
         return new ArrayList<>();
     }
+
+    public void updateAge(int age){
+        this.age = age;
+    }
+
 }
