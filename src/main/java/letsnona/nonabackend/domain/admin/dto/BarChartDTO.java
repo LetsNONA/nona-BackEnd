@@ -10,7 +10,7 @@ import lombok.ToString;
 public class BarChartDTO {
     private String age_group;
     private int cnt;
-    private static final String color = "hsl(217, 70%, 50%)";
+    private static final String color = "hsl(63, 70%, 50%)";
 
 
     public BarChartDTO(AgeRatioDTO dto) {

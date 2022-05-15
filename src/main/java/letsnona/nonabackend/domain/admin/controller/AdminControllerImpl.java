@@ -1,5 +1,6 @@
 package letsnona.nonabackend.domain.admin.controller;
 
+import letsnona.nonabackend.domain.admin.dto.BarChartDTO;
 import letsnona.nonabackend.domain.admin.dto.PieChartDTO;
 import letsnona.nonabackend.domain.admin.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -16,5 +17,10 @@ public class AdminControllerImpl {
     @GetMapping("/api/genderRatio")
     public List<PieChartDTO> getGenderRatio() {
      return adminService.getPieChartData();
+    }
+
+    @GetMapping("/api/ageRatio")
+    public List<BarChartDTO> getAgeRatio() {
+        return adminService.getBarChartData();
     }
 }
