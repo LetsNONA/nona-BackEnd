@@ -2,13 +2,19 @@ package letsnona.nonabackend.domain.review.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
 public class ReviewUpdateRequestDTO {
-   // private Member owner;
-    private long productId;
-    private double grade;
-    private String content;
+
+    String grade;
+    String content;
+
+    public ReviewUpdateRequestDTO(String grade, String content) {
+        this.grade = grade;
+        this.content = content;
+    }
 
 }

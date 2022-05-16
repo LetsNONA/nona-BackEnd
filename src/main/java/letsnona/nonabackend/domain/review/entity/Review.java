@@ -2,7 +2,7 @@ package letsnona.nonabackend.domain.review.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import letsnona.nonabackend.domain.product.entity.Product;
-import letsnona.nonabackend.domain.review.dto.ReviewUpdateRequestDTO;
+import letsnona.nonabackend.domain.review.dto.ReviewDTO;
 import letsnona.nonabackend.domain.review.enums.TradeState;
 import letsnona.nonabackend.global.entity.BaseTimeEntity;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -42,7 +42,7 @@ public class Review extends BaseTimeEntity {
         this.product = product;
     }
     public void updateTradeState(TradeState tradeState) { this.tradeState = tradeState;}
-    public void updateReview(ReviewUpdateRequestDTO dto){
+    public void updateReview(ReviewDTO dto){
        this.grade = dto.getGrade();
         this.content = dto.getContent();
     }

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,8 +21,8 @@ public class ReviewControllerImpl implements ReviewController {
 
     @Override
     @PutMapping("/user/api/review/{reviewIndex}")
-    public Review updateReview(@PathVariable long reviewIndex, @RequestParam ReviewUpdateRequestDTO dto) {
-        return null;
+    public Review updateReview(@PathVariable long reviewIndex, @RequestBody ReviewUpdateRequestDTO dto) {
+        return reviewService.updateReview(reviewIndex,dto);
 
     }
 

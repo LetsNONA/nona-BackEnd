@@ -47,7 +47,7 @@ public class ReviewServiceImpl implements ReviewService {
     public TradeState updateReviewState(long reviewIndex, String tradeState) {
         Review byId = reviewRepository.findById(reviewIndex);
         TradeState state = TradeState.valueOf(tradeState.toUpperCase(Locale.ROOT));
-        if (memberService.getRequestUser().equals(byId.getOwner()))
+        if (memberService.getRequestUser().getUsername().equals(byId.getOwner().getUsername()))
             byId.updateTradeState(state);
         return byId.getTradeState();
     }
@@ -55,8 +55,12 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public Review updateReview(long reviewIndex, ReviewUpdateRequestDTO dto) {
         Review byId = reviewRepository.findById(reviewIndex);
+        ReviewDTO reviewDTO = ReviewDTO.builder()
+                .grade(Double.parseDouble(dto.getGrade()))
+                .content(dto.getContent())
+                .build();
         if (isReviewOwner(byId) && byId.getTradeState() == TradeState.COMPLETED)
-            byId.updateReview(dto);
+            byId.updateReview(reviewDTO);
         return byId;
     }
 
@@ -78,7 +82,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public boolean isReviewOwner(Review review) {
 //        return product.getOwner().equals(requestMember);
-        return memberService.getRequestUser().equals(review.getOwner());
+        return memberService.getRequestUser().getUsername().equals(review.getOwner().getUsername());
     }
 
 }
