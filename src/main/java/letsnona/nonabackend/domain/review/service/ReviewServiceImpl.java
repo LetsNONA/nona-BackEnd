@@ -2,10 +2,7 @@ package letsnona.nonabackend.domain.review.service;
 
 import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.domain.product.repository.ProductRepository;
-import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
-import letsnona.nonabackend.domain.review.dto.ReviewAddRequestDTO;
-import letsnona.nonabackend.domain.review.dto.ReviewDTO;
-import letsnona.nonabackend.domain.review.dto.ReviewUpdateRequestDTO;
+import letsnona.nonabackend.domain.review.dto.*;
 import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.domain.review.enums.TradeState;
 import letsnona.nonabackend.domain.review.repository.ReviewRepository;
@@ -72,10 +69,10 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Page<ProductReadResReviewDTO> getUserPurchase(Pageable pageable) {
+    public Page<MyReviewRespDTO> getUserPurchase(Pageable pageable) {
         Member requestUser = memberService.getRequestUser();
         Page<Review> byProductId = reviewRepository.findByOwner(requestUser, pageable);
-        return getProductReadResDTOS(byProductId);
+        return getMyReviewsDTOS(byProductId);
     }
 
     @Override
@@ -85,6 +82,15 @@ public class ReviewServiceImpl implements ReviewService {
          * */
         return review.map(ProductReadResReviewDTO::new);
     }
+
+    @Override
+    public Page<MyReviewRespDTO> getMyReviewsDTOS(Page<Review> review) {
+        /*
+         *  Response :  Entity -> DTO
+         * */
+        return review.map(MyReviewRespDTO::new);
+    }
+
 
 
     @Override

@@ -1,5 +1,6 @@
 package letsnona.nonabackend.domain.review.controller;
 
+import letsnona.nonabackend.domain.review.dto.MyReviewRespDTO;
 import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
 import letsnona.nonabackend.domain.review.dto.ReviewAddRequestDTO;
 import letsnona.nonabackend.domain.review.dto.ReviewUpdateRequestDTO;
@@ -46,7 +47,7 @@ public class ReviewControllerImpl implements ReviewController {
 
     @Override
     @GetMapping("/user/api/review/purchase")
-    public Page<ProductReadResReviewDTO> getUserPurchase(Pageable pageable) {
+    public Page<MyReviewRespDTO> getUserPurchase(Pageable pageable) {
         return reviewService.getUserPurchase(pageable);
     }
 
