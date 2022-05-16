@@ -13,7 +13,12 @@ public interface ReviewService {
     @Transactional
     Review requestTrade(ReviewAddRequestDTO requestDTO);
 
+    @Transactional
     Page<ProductReadResReviewDTO> getProductReadResDTOS(Page<Review> review);
+
+    @Transactional
+    Page<ProductReadResReviewDTO> getUserPurchase( Pageable pageable);
+
     @Transactional
     TradeState updateReviewState(long reviewIndex, String tradeState);
 

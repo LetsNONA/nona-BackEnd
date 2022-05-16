@@ -9,6 +9,7 @@ import letsnona.nonabackend.domain.review.dto.ReviewUpdateRequestDTO;
 import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.domain.review.enums.TradeState;
 import letsnona.nonabackend.domain.review.repository.ReviewRepository;
+import letsnona.nonabackend.global.security.entity.Member;
 import letsnona.nonabackend.global.security.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -67,6 +68,13 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public Page<ProductReadResReviewDTO> getProductReviews(long productId, Pageable pageable) {
         Page<Review> byProductId = reviewRepository.findByProductId(productId, pageable);
+        return getProductReadResDTOS(byProductId);
+    }
+
+    @Override
+    public Page<ProductReadResReviewDTO> getUserPurchase(Pageable pageable) {
+        Member requestUser = memberService.getRequestUser();
+        Page<Review> byProductId = reviewRepository.findByOwner(requestUser, pageable);
         return getProductReadResDTOS(byProductId);
     }
 

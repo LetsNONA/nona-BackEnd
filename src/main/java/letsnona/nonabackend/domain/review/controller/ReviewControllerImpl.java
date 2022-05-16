@@ -45,6 +45,12 @@ public class ReviewControllerImpl implements ReviewController {
     }
 
     @Override
+    @GetMapping("/user/api/review/purchase")
+    public Page<ProductReadResReviewDTO> getUserPurchase(Pageable pageable) {
+        return reviewService.getUserPurchase(pageable);
+    }
+
+    @Override
     @GetMapping("/user/api/review/{productId}")
     public Page<ProductReadResReviewDTO> getProductReviews(@PathVariable long productId, Pageable pageable) {
         return reviewService.getProductReviews(productId, pageable);

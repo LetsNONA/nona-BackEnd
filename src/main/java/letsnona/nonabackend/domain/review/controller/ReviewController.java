@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface ReviewController {
     TradeState updateReviewState(@PathVariable long reviewIndex, @RequestParam String tradeState);
 
-    Review requestTrade(long productIndex);
-
     Review updateReview(@PathVariable long reviewIndex, @RequestBody ReviewUpdateRequestDTO dto);
 
+    Review requestTrade(long productIndex);
+
+    Page<ProductReadResReviewDTO> getUserPurchase(Pageable pageable);
     Page<ProductReadResReviewDTO> getProductReviews(@PathVariable long productId, Pageable pageable);
 }
