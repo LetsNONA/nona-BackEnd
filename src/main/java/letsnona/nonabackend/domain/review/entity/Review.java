@@ -34,10 +34,9 @@ public class Review extends BaseTimeEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Builder.Default
-    @Column(length = 15, columnDefinition = "varchar(15) default 'TRADING'")
+
     @Enumerated(value = EnumType.STRING)
-    private TradeState tradeState = TradeState.TRADING;
+    private TradeState tradeState;
 
     public void setProduct(Product product) {
         this.product = product;

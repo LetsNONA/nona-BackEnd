@@ -13,6 +13,7 @@ import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.global.security.entity.Member;
 import letsnona.nonabackend.global.security.repository.MemberRepository;
+import letsnona.nonabackend.global.security.service.MemberService;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.IOUtils;
@@ -24,6 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,7 +53,8 @@ class ProductServiceImplTest {
 
     @Autowired
     ProductRepository productRepository;
-
+@Autowired
+    MemberService memberService;
     @Autowired
     CategoryRepository categoryRepository;
     @Autowired
@@ -92,12 +95,14 @@ class ProductServiceImplTest {
 
     @Test
     @DisplayName("게시글 천개저장")
+    @WithUserDetails("admin")
     @Disabled
     void setPost1000() throws IOException {
-        Member member = memberRepository.findByUsername("testId");
-        for (int i = 0; i < 100; i++) {
+        //Member member = memberRepository.findByUsername("admin");
+        Member requestUser = memberService.getRequestUser();
+        for (int i = 0; i < 10; i++) {
             ProductAddRequestDTO productAddRequestDTO = ProductAddRequestDTO.builder()
-                    .owner(member)
+                    .owner(requestUser)
                     .title("test[" + i + "]제목입니다")
                     .content("test[" + i + "]내용입니다")
                     .categoryCode("cg001")

@@ -9,13 +9,12 @@ import letsnona.nonabackend.domain.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class ReviewControllerImpl implements ReviewController {
-    private ReviewService reviewService;
+    private final ReviewService reviewService;
     /*TODO
     *  - updateReview 해야함*/
 
@@ -37,6 +36,8 @@ public class ReviewControllerImpl implements ReviewController {
     public Review requestTrade(@PathVariable long productIndex) {
         ReviewAddRequestDTO reviewAddRequestDTO = ReviewAddRequestDTO.builder()
                 .productId(productIndex)
+                .content("")
+                .tradeState(TradeState.TRADING)
                 .build();
         return reviewService.requestTrade(reviewAddRequestDTO);
 

@@ -34,6 +34,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .product(product.get())
                 .content(requestDTO.getContent())
                 .grade(requestDTO.getGrade())
+                .tradeState(requestDTO.getTradeState())
                 .build();
 
         Review review = reviewDTO.toEntity();
