@@ -119,6 +119,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductReadResDTO getProductDetails(long index) {
         Optional<Product> byId = productRepository.findById(index);
+        byId.ifPresent(Product::increaseHit);
 
         /*TODO
          *  Optional Refactoring ***********/

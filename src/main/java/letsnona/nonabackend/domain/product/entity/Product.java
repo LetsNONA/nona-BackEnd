@@ -78,19 +78,24 @@ public class Product extends BaseTimeEntity {
         this.getImages().add(img);
     }
 
-    public void deletePost(){
+    public void increaseHit() {
+        this.hit++;
+    }
+
+    public void deletePost() {
         this.productState = ProductState.DELETE;
     }
 
-    public void updatePost(ProductAddRequestDTO dto){
-         this.title = dto.getTitle();
+    public void updatePost(ProductAddRequestDTO dto) {
+        this.title = dto.getTitle();
         this.content = dto.getContent();
         this.tradePlace = dto.getTradePlace();
-        this.price= dto.getPrice();
-        this.hashTag= dto.getHashTag();
-        this.flagCourierFee= dto.isFlagCourierFee();
+        this.price = dto.getPrice();
+        this.hashTag = dto.getHashTag();
+        this.flagCourierFee = dto.isFlagCourierFee();
     }
-    public void updateCategory( Category byCategoryCode){
+
+    public void updateCategory(Category byCategoryCode) {
         this.category = byCategoryCode;
     }
 

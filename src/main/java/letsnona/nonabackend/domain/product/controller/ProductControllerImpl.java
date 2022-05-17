@@ -61,7 +61,7 @@ public class ProductControllerImpl implements ProductController {
 
     @Override
     @GetMapping("/products")
-    public Page<ProductReadResDTO> getAllProducts(Pageable pageable) {
+    public Page<ProductReadResDTO> getAllProducts( Pageable pageable) {
         return productService.getAllProduct(pageable);
     }
 

@@ -32,6 +32,7 @@ public class ProductAddRequestDTO {
                 .owner(owner)
                 .title(title)
                 .content(content)
+                .tradePlace(tradePlace)
                 .category(category)
                 .price(price)
                 .hashTag(hashTag)
