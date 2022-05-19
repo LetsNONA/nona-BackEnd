@@ -1,5 +1,6 @@
 package letsnona.nonabackend.domain.product.repository;
 
+import letsnona.nonabackend.domain.cataegory.entity.Category;
 import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.domain.product.enums.ProductState;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -25,4 +26,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @EntityGraph("PostWithMemberAndCategory")
     Page<Product> findByTitleContaining(Pageable pageable, String title);
+
+    @EntityGraph("PostWithMemberAndCategory")
+    Page<Product> findByCategory(Pageable pageable, Category category);
 }

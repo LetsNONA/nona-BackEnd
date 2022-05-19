@@ -5,8 +5,8 @@ import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddResponseDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResImgDTO;
-import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
 import letsnona.nonabackend.domain.product.entity.Product;
+import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
 import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.global.security.entity.Member;
 import org.springframework.data.domain.Page;
@@ -25,13 +25,17 @@ public interface ProductService {
     ProductAddResponseDTO saveProduct(ProductAddRequestDTO productAddRequestDTO, List<MultipartFile> imgList);
 
     @Transactional
-     Page<ProductReadResDTO> getProductReadResDTOS(Page<Product> postPage);
+    Page<ProductReadResDTO> getProductReadResDTOS(Page<Product> postPage);
 
     @Transactional
     Page<ProductReadResDTO> getAllProduct(Pageable pageable);
 
     @Transactional
+    Page<ProductReadResDTO> getProductByCategory(String categoryCode, Pageable pageable);
+
+    @Transactional
     ProductAddResponseDTO updateProduct(ProductAddRequestDTO postDTO);
+
     @Transactional
     Page<ProductReadResDTO> getSearchProduct(String keyword, Pageable pageable);
 

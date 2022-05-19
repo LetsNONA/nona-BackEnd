@@ -59,6 +59,12 @@ public class ProductControllerImpl implements ProductController {
         return productService.getSearchProduct(keyword, pageable);
     }
 
+
+    @GetMapping("/products/category")
+    public Page<ProductReadResDTO> getProductByCategory(@RequestParam("keyword") String category, Pageable pageable) {
+        return productService.getProductByCategory(category, pageable);
+    }
+
     @Override
     @GetMapping("/products")
     public Page<ProductReadResDTO> getAllProducts( Pageable pageable) {

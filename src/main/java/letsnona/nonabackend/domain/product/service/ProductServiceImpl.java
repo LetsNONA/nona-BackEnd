@@ -11,11 +11,12 @@ import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddResponseDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResImgDTO;
-import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
 import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.domain.product.enums.ProductState;
 import letsnona.nonabackend.domain.product.repository.ProductRepository;
+import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
 import letsnona.nonabackend.domain.review.entity.Review;
+import letsnona.nonabackend.domain.review.enums.TradeState;
 import letsnona.nonabackend.global.security.entity.Member;
 import letsnona.nonabackend.global.security.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -115,6 +116,12 @@ public class ProductServiceImpl implements ProductService {
         return getProductReadResDTOS(byTitleContaining);
     }
 
+    @Override
+    public Page<ProductReadResDTO> getProductByCategory(String categoryCode, Pageable pageable) {
+        Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(categoryCode);
+        Page<Product> byCategory = productRepository.findByCategory(pageable, byCategoryCode.get());
+        return getProductReadResDTOS(byCategory);
+    }
 
     @Override
     public ProductReadResDTO getProductDetails(long index) {
@@ -132,7 +139,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductReadResReviewDTO> getReviewEntityToDTO(List<Review> reviewList) {
-        return reviewList.stream().map(ProductReadResReviewDTO::new).collect(Collectors.toList());
+        return reviewList.stream()
+                .filter(review -> review.getTradeState().equals(TradeState.COMPLETED))
+                .map(ProductReadResReviewDTO::new).collect(Collectors.toList());
     }
 
     @Override
