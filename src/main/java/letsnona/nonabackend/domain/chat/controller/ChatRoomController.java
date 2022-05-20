@@ -1,11 +1,11 @@
 package letsnona.nonabackend.domain.chat.controller;
 
-import letsnona.nonabackend.domain.chat.dto.ChatRoomDTO;
-import letsnona.nonabackend.domain.chat.repository.ChatRoomRepository;
+import letsnona.nonabackend.domain.chat.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -14,20 +14,9 @@ public class ChatRoomController {
     /*TODO-
     *  채팅방 개설시 JWT 토큰 만들어서 반환 그 후
     * queryParam 으로 보낸 후 인증해야함*/
-    private final ChatRoomRepository chatRoomRepository;
-
-    @GetMapping("/rooms")
-    public List<ChatRoomDTO> room(){
-        return  chatRoomRepository.findAllRooms();
-    }
-
-    @PostMapping("/room")
-    public ChatRoomDTO createRoom(@RequestParam String name) {
-        return chatRoomRepository.createChatRoomDTO(name);
-    }
-
-    @GetMapping("/room/{roomId}")
-    public ChatRoomDTO roomInfo(@PathVariable String roomId) {
-        return chatRoomRepository.findRoomById(roomId);
-    }
+    private final ChatRoomService chatRoomService;
+@GetMapping("/Room/uuid")
+  public String requestConnect(@RequestParam String req,@RequestParam String resp){
+      return chatRoomService.getChatRoomUUID(req,resp);
+  }
 }

@@ -21,8 +21,9 @@ public class ChatConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // CORS 설정 및 소켓을 지원하지 않으면 SockJs 이용x`
         System.out.println("stomp 실행되었습니다");
-        registry.addEndpoint("/api/websocket").setAllowedOriginPatterns(
-                "/api/websocket")
+        registry.addEndpoint("/api/websocket")
+                .setAllowedOriginPatterns("*")
+               // .setAllowedOrigins("*")
                 .addInterceptors(new HttpHandshakeInterceptor())
                 .withSockJS();
 

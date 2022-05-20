@@ -19,13 +19,11 @@ public class ChatJWTControllerImpl implements ChatJWTController{
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         Member user = principal.getUser();
 
-        String jwtToken = JWT.create()
+        return JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRATION_TIME))
                 .withClaim("id", user.getId())
                 .withClaim("username", user.getUsername())
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
-
-        return jwtToken;
     }
 }
