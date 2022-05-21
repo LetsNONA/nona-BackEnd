@@ -2,10 +2,14 @@ package letsnona.nonabackend.domain.chat.entity;
 
 import letsnona.nonabackend.global.security.entity.Member;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
+@NoArgsConstructor
+@Getter
 public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

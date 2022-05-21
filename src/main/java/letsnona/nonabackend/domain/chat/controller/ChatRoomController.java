@@ -1,7 +1,9 @@
 package letsnona.nonabackend.domain.chat.controller;
 
+import letsnona.nonabackend.domain.chat.dto.ChatRoomRespDTO;
 import letsnona.nonabackend.domain.chat.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +18,7 @@ public class ChatRoomController {
     * queryParam 으로 보낸 후 인증해야함*/
     private final ChatRoomService chatRoomService;
 @GetMapping("/Room/uuid")
-  public String requestConnect(@RequestParam String req,@RequestParam String resp){
-      return chatRoomService.getChatRoomUUID(req,resp);
+  public ChatRoomRespDTO requestConnect(@RequestParam String req, @RequestParam String resp, Pageable pageable){
+      return chatRoomService.getChatRoomMessage(req,resp,pageable);
   }
 }
