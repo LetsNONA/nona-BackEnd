@@ -23,11 +23,12 @@ public class MessageServiceImpl implements MessageService {
     public void sendMsg(ChatMessageDTO message) {
         ChatRoom byRoomUUID = chatRoomRepository.findByRoomUUID(message.getRoomUUID());
         Member writer = memberRepository.findByUsername(message.getWriter());
-
+        Member receiver = memberRepository.findByUsername(message.getReceiver());
         ChatMessage chatMessage = ChatMessage.builder()
                 .chatRoom(byRoomUUID)
                 .content(message.getContent())
                 .writer(writer)
+                .receiver(receiver)
                 .build();
 
         chatMessageRepository.save(chatMessage);

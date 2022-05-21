@@ -5,6 +5,7 @@ import letsnona.nonabackend.domain.chat.dto.ChatRoomDTO;
 import letsnona.nonabackend.domain.chat.dto.ChatRoomRespDTO;
 import letsnona.nonabackend.domain.chat.entity.ChatMessage;
 import letsnona.nonabackend.domain.chat.entity.ChatRoom;
+import letsnona.nonabackend.domain.chat.msgState.MessageState;
 import letsnona.nonabackend.domain.chat.repository.ChatMessageRepository;
 import letsnona.nonabackend.domain.chat.repository.ChatRoomRepository;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -27,8 +28,20 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         String chatRoomUUID = getChatRoomUUID(req, reps);
 
         Page<ChatMessage> byChatRoomRoomUUID = chatMessageRepository.findByChatRoomRoomUUID(chatRoomUUID, pageable);
+        updateMessageState(req,byChatRoomRoomUUID);
         return new ChatRoomRespDTO(chatRoomUUID, parseChatRoomEntityToDTO(byChatRoomRoomUUID));
 
+    }
+
+    public void updateMessageState(String req,Page<ChatMessage> entity) {
+        Member byUsername = memberRepository.findByUsername(req);
+        for (ChatMessage msg: entity
+             ) {
+            if (msg.getReceiver().getUsername().equals(byUsername.getUsername())) {
+                msg.updateMessageState(MessageState.READ);
+                chatMessageRepository.save(msg);
+            }
+        }
     }
 
     public Page<ChatMessageDTO> parseChatRoomEntityToDTO(Page<ChatMessage> entity) {
