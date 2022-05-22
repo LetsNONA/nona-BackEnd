@@ -21,4 +21,5 @@ public class ChatRoomController {
   public ChatRoomRespDTO requestConnect(@RequestParam String req, @RequestParam String resp, Pageable pageable){
       return chatRoomService.getChatRoomMessage(req,resp,pageable);
   }
+
 }
