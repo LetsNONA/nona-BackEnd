@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import letsnona.nonabackend.global.security.auth.PrincipalDetails;
 import letsnona.nonabackend.global.security.dto.LoginRequestDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -85,6 +84,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .sign(Algorithm.HMAC512(JwtProperties.SECRET));
 
         response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX+jwtToken);
+        response.addHeader("username",principalDetailis.getUsername());
     }
 
 }

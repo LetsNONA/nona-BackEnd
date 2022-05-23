@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,13 +29,26 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         String chatRoomUUID = getChatRoomUUID(req, reps);
 
         Page<ChatMessage> byChatRoomRoomUUID = chatMessageRepository.findByChatRoomRoomUUID(chatRoomUUID, pageable);
-        updateMessageState(req,byChatRoomRoomUUID);
+        updateMessageState(req);
         return new ChatRoomRespDTO(chatRoomUUID, parseChatRoomEntityToDTO(byChatRoomRoomUUID));
 
     }
 
-    public void updateMessageState(String req,Page<ChatMessage> entity) {
+    public void updateMessageState(String req) {
         Member byUsername = memberRepository.findByUsername(req);
+
+        List<ChatMessage> entityList = chatMessageRepository.findByMessageStateAndReceiver(MessageState.NOT_READ, byUsername);
+        for (ChatMessage msg: entityList
+        ) {
+            if (msg.getReceiver().getUsername().equals(byUsername.getUsername())) {
+                msg.updateMessageState(MessageState.READ);
+                chatMessageRepository.save(msg);
+            }
+        }
+    }
+   /* public void updateMessageState(String req,Page<ChatMessage> entity) {
+        Member byUsername = memberRepository.findByUsername(req);
+
         for (ChatMessage msg: entity
              ) {
             if (msg.getReceiver().getUsername().equals(byUsername.getUsername())) {
@@ -42,7 +56,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
                 chatMessageRepository.save(msg);
             }
         }
-    }
+    }*/
 
     public Page<ChatMessageDTO> parseChatRoomEntityToDTO(Page<ChatMessage> entity) {
         return entity.map(ChatMessageDTO::new);
