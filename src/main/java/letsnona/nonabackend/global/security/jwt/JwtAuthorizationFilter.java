@@ -51,7 +51,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         if (username != null) {
             Member member = memberRepository.findByUsername(username);
-            if (member.getMemberState().equals(MemberState.LOCKED)) {
+            if (!member.getMemberState().equals(MemberState.SUCCESS)) {
                 chain.doFilter(request, response);
                 return;
             }

@@ -4,9 +4,13 @@ import letsnona.nonabackend.domain.admin.dto.BarChartDTO;
 import letsnona.nonabackend.domain.admin.dto.PieChartDTO;
 import letsnona.nonabackend.global.security.dto.chart.AgeRatioDTO;
 import letsnona.nonabackend.global.security.dto.chart.GenderRatioDTO;
+import letsnona.nonabackend.global.security.entity.Member;
+import letsnona.nonabackend.global.security.entity.enums.MemberState;
 import letsnona.nonabackend.global.security.repository.CustomMemberRepository;
+import letsnona.nonabackend.global.security.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +19,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
     private final CustomMemberRepository customMemberRepository;
+    private final MemberRepository memberRepository;
+
+    @Override
+    public List<Member> findByLockedMember() {
+        return memberRepository.findByMemberState(MemberState.LOCKED);
+    }
+
+    @Override
+    @Transactional
+    public Member changeMemberState(String username) {
+        Member byUsername = memberRepository.findByUsername(username);
+        byUsername.updateMemberSate(MemberState.SUCCESS);
+        return byUsername;
+    }
 
     @Override
     public List<PieChartDTO> getPieChartData() {

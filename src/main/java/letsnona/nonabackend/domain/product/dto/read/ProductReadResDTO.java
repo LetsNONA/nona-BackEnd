@@ -4,6 +4,7 @@ import letsnona.nonabackend.domain.cataegory.dto.PostReadResCategoryDTO;
 import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.domain.product.enums.ProductState;
 import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
+import letsnona.nonabackend.global.security.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public class ProductReadResDTO {
     private long id;
 //    private PostReadResUserDTO owner;
-   private String owner;
+   private Member owner;
     private List<ProductReadResImgDTO> images;
     private double averageReviewGrade;
     private List<ProductReadResReviewDTO> reviews;
@@ -41,7 +42,7 @@ public class ProductReadResDTO {
     public ProductReadResDTO(Product product, List<ProductReadResImgDTO> imgDTOList, List<ProductReadResReviewDTO> resReviewDTOS) {
         this.id = product.getId();
 //        this.owner = new PostReadResUserDTO(post.getOwner());
-        this.owner = product.getOwner().getUsername();
+        this.owner = product.getOwner();
         this.images = imgDTOList;
         this.reviews = resReviewDTOS;
         this.title = product.getTitle();
