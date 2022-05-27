@@ -2,6 +2,7 @@ package letsnona.nonabackend.global.security.controller;
 
 import letsnona.nonabackend.global.security.auth.PrincipalDetails;
 import letsnona.nonabackend.global.security.entity.Member;
+import letsnona.nonabackend.global.security.entity.enums.MemberState;
 import letsnona.nonabackend.global.security.repository.MemberRepository;
 import letsnona.nonabackend.global.security.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +59,7 @@ public class RestApiController {
 	public String join(@RequestBody Member member) {
 		member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
 		member.setRoles("ROLE_USER");
-
+		member.setMemberState(MemberState.LOCKED);
 		member.updateAge(memberService.calculateAge(member.getBirthday()));
 		memberRepository.save(member);
 		return "회원가입완료";
