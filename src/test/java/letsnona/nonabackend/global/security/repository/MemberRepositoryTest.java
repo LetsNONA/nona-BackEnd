@@ -73,6 +73,13 @@ class MemberRepositoryTest {
         assertThat(getDbMember).isEqualTo(member);
 
     }
+    @Test
+    @DisplayName("멤버갖고오기")
+    void getUser() {
+        Member test3 = memberRepository.findByUsername("test3");
+        System.out.println("test3 = " + test3);
+
+    }
 
 
 }

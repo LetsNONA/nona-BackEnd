@@ -1,6 +1,9 @@
 package letsnona.nonabackend.global.security.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import letsnona.nonabackend.domain.file.entity.MemberImg;
+import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.review.enums.TradeState;
 import letsnona.nonabackend.global.entity.BaseTimeEntity;
 import letsnona.nonabackend.global.security.entity.enums.MemberState;
@@ -27,6 +30,13 @@ public class Member extends BaseTimeEntity {
     private long id;
     @Column(unique = true)
     private String username;
+
+
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "MEMBERIMG_ID")
+    @Builder.Default
+    private MemberImg image = new MemberImg();
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
@@ -71,6 +81,10 @@ public class Member extends BaseTimeEntity {
 
     public void updatePoint(int point) {
         this.point = point;
+    }
+
+    public void addImg(MemberImg img) {
+        this.image = img;
     }
 
     public void updateMemberSate(MemberState memberState) {

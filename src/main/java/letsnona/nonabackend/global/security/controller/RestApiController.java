@@ -1,5 +1,7 @@
 package letsnona.nonabackend.global.security.controller;
 
+import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
+import letsnona.nonabackend.domain.product.dto.add.ProductAddResponseDTO;
 import letsnona.nonabackend.global.security.auth.PrincipalDetails;
 import letsnona.nonabackend.global.security.entity.Member;
 import letsnona.nonabackend.global.security.entity.enums.MemberState;
@@ -8,10 +10,8 @@ import letsnona.nonabackend.global.security.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -55,7 +55,7 @@ public class RestApiController {
 		return memberRepository.findAll();
 	}
 	
-	@PostMapping("join")
+/*	@PostMapping("join")
 	public String join(@RequestBody Member member) {
 		member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
 		member.setRoles("ROLE_USER");
@@ -63,6 +63,13 @@ public class RestApiController {
 		member.updateAge(memberService.calculateAge(member.getBirthday()));
 		memberRepository.save(member);
 		return "회원가입완료";
+	}*/
+
+	@PostMapping("/join")
+	public void joinMember(
+			@RequestPart(value = "key") Member member
+			, @RequestPart(value = "file",required = false) List<MultipartFile> file) {
+		memberService.JoinMember(member, file);
 	}
 	
 }
