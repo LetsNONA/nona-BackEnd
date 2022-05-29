@@ -41,7 +41,7 @@ public class ProductReadResDTO {
 
     public ProductReadResDTO(Product product, List<ProductReadResImgDTO> imgDTOList, List<ProductReadResReviewDTO> resReviewDTOS) {
         this.id = product.getId();
-//        this.owner = new PostReadResUserDTO(post.getOwner());
+      //this.owner = new PostReadResUserDTO(post.getOwner());
         this.owner = product.getOwner();
         this.images = imgDTOList;
         this.reviews = resReviewDTOS;

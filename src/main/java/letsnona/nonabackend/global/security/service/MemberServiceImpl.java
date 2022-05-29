@@ -48,8 +48,9 @@ public class MemberServiceImpl implements MemberService {
         //  memberRepository.save(member);
         MemberImgRequestDTO memberImgRequestDTO = fileService.saveMemberImg(file);
 
-        MemberImg memberImg = memberImgRequestDTO.toEntity();
-        member.addImg(memberImg);
+        member.setOriginalName(memberImgRequestDTO.getOriginalName());
+        member.setOriginalImgSrc(memberImgRequestDTO.getOriginalImgSrc());
+        member.setThumbImgSrc(memberImgRequestDTO.getThumbImgSrc());
 
         memberRepository.save(member);
     }

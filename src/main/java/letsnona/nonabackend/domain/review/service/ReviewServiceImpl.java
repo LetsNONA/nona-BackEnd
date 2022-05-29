@@ -1,5 +1,9 @@
 package letsnona.nonabackend.domain.review.service;
 
+import letsnona.nonabackend.domain.point.dto.PointRequestDTO;
+import letsnona.nonabackend.domain.point.entity.Point;
+import letsnona.nonabackend.domain.point.enums.PointState;
+import letsnona.nonabackend.domain.point.repository.PointRepository;
 import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import letsnona.nonabackend.domain.review.dto.*;
@@ -7,6 +11,7 @@ import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.domain.review.enums.TradeState;
 import letsnona.nonabackend.domain.review.repository.ReviewRepository;
 import letsnona.nonabackend.global.security.entity.Member;
+import letsnona.nonabackend.global.security.repository.MemberRepository;
 import letsnona.nonabackend.global.security.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,13 +27,23 @@ public class ReviewServiceImpl implements ReviewService {
     private final ProductRepository productRepository;
     private final ReviewRepository reviewRepository;
     private final MemberService memberService;
+    private final MemberRepository  memberRepository;
+    private final PointRepository pointRepository;
 
+    /*TODO
+    *  -리팩토링 해야함...*/
     @Override
     public Review requestTrade(ReviewAddRequestDTO requestDTO) {
         Optional<Product> product = productRepository.findById(requestDTO.getProductId());
 
+        int productFee = product.get().getPrice();
+        Member requestUser = memberService.getRequestUser();
+
+        if (requestUser.getPoint() < productFee)
+            return new Review();
+
         ReviewDTO reviewDTO = ReviewDTO.builder()
-                .owner(memberService.getRequestUser())
+                .owner(requestUser)
                 .product(product.get())
                 .content(requestDTO.getContent())
                 .grade(requestDTO.getGrade())
@@ -37,8 +52,19 @@ public class ReviewServiceImpl implements ReviewService {
 
         Review review = reviewDTO.toEntity();
 
+        PointRequestDTO pointRequestDTO = new PointRequestDTO();
+        pointRequestDTO.setOwner(requestUser);
+        pointRequestDTO.setReview(review);
+        pointRequestDTO.setPointState(PointState.DECREASE);
+
+        Point point = pointRequestDTO.toEntity();
+        requestUser.decreasePoint(productFee);
         product.get().addReview(review);
-        return reviewRepository.save(review);
+
+        memberRepository.save(requestUser);
+        reviewRepository.save(review);
+        pointRepository.save(point);
+        return review;
     }
 
     @Override
@@ -90,7 +116,6 @@ public class ReviewServiceImpl implements ReviewService {
          * */
         return review.map(MyReviewRespDTO::new);
     }
-
 
 
     @Override

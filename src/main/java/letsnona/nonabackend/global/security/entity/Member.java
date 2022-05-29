@@ -29,14 +29,19 @@ public class Member extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column(unique = true)
-       private String username;
+    private String username;
 
 
+//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinColumn(name = "MEMBERIMG_ID")
+//    @Builder.Default
+//
+//    private MemberImg image = new MemberImg();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "MEMBERIMG_ID")
-    @Builder.Default
-    private MemberImg image = new MemberImg();
+    private String originalImgSrc;
+    private String thumbImgSrc;
+    private String originalName;
+
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
@@ -83,11 +88,18 @@ public class Member extends BaseTimeEntity {
         this.point = point;
     }
 
-    public void addImg(MemberImg img) {
+ /*   public void addImg(MemberImg img) {
         this.image = img;
-    }
+    }*/
 
     public void updateMemberSate(MemberState memberState) {
         this.memberState = memberState;
+    }
+
+    public void decreasePoint(int fee) {
+        this.point = this.point - fee;
+    }
+    public void increasePoint(int fee) {
+        this.point = this.point + fee;
     }
 }

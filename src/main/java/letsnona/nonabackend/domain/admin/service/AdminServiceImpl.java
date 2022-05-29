@@ -26,6 +26,7 @@ public class AdminServiceImpl implements AdminService {
         return memberRepository.findByMemberState(MemberState.LOCKED);
     }
 
+
     @Override
     @Transactional
     public Member changeMemberState(String username) {
