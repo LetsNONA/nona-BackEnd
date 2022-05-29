@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -68,11 +69,37 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    @Transactional
     public TradeState updateReviewState(long reviewIndex, String tradeState) {
         Review byId = reviewRepository.findById(reviewIndex);
         TradeState state = TradeState.valueOf(tradeState.toUpperCase(Locale.ROOT));
         if (memberService.getRequestUser().getUsername().equals(byId.getOwner().getUsername()))
             byId.updateTradeState(state);
+
+        if(byId.getTradeState() == TradeState.COMPLETED) {
+            Product product = byId.getProduct();
+            product.getOwner().increasePoint(product.getPrice());
+            byId.updateTradeCompletedDate();
+
+            PointRequestDTO pointRequestDTO = new PointRequestDTO();
+            pointRequestDTO.setOwner(product.getOwner());
+            pointRequestDTO.setReview(byId);
+            pointRequestDTO.setPointState(PointState.INCREASE);
+
+            pointRepository.save(pointRequestDTO.toEntity());
+        }
+
+        if(byId.getTradeState() == TradeState.CANCEL) {
+            Member owner = byId.getOwner();
+            owner.increasePoint(byId.getProduct().getPrice());
+
+            PointRequestDTO pointRequestDTO = new PointRequestDTO();
+            pointRequestDTO.setOwner(owner);
+            pointRequestDTO.setReview(byId);
+            pointRequestDTO.setPointState(PointState.INCREASE);
+
+            pointRepository.save(pointRequestDTO.toEntity());
+        }
         return byId.getTradeState();
     }
 

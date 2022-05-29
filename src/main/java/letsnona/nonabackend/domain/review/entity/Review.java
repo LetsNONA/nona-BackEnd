@@ -12,6 +12,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -38,10 +40,13 @@ public class Review extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     private TradeState tradeState;
 
+    private LocalDate tradeCompletedDate;
+
     public void setProduct(Product product) {
         this.product = product;
     }
     public void updateTradeState(TradeState tradeState) { this.tradeState = tradeState;}
+    public void updateTradeCompletedDate() { this.tradeCompletedDate = LocalDate.now();}
     public void updateReview(ReviewDTO dto){
        this.grade = dto.getGrade();
         this.content = dto.getContent();
