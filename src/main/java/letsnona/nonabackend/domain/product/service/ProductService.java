@@ -40,6 +40,8 @@ public interface ProductService {
     Page<ProductReadResDTO> getSearchProduct(String keyword, Pageable pageable);
 
     @Transactional
+    Page<ProductReadResDTO> getSearchForOwner(Pageable pageable);
+    @Transactional
     ProductReadResDTO getProductDetails(long index);
 
     @Transactional

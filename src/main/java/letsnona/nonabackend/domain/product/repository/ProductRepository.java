@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -28,5 +29,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findByTitleContaining(Pageable pageable, String title);
 
     @EntityGraph("PostWithMemberAndCategory")
-    Page<Product> findByCategory(Pageable pageable, Category category);
+    Page<Product> findByOwner(Pageable pageable, Member owner);
+
+    @EntityGraph("PostWithMemberAndCategory")
+    Page<Product> findByCategoryAndProductState(Pageable pageable, Category category, ProductState productState);
+
+
+    int countProductByProductState(ProductState productState);
+
+    int countProductByCreatedDateLike(LocalDate localDate);
 }

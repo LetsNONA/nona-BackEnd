@@ -13,5 +13,5 @@ public interface MemberService {
 
     int calculateAge(LocalDate birthday);
 
-    void JoinMember(Member member, List<MultipartFile> file);
+    Member JoinMember(Member member, List<MultipartFile> file);
 }

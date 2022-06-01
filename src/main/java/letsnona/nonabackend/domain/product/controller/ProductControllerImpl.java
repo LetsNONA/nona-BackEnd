@@ -1,9 +1,12 @@
 package letsnona.nonabackend.domain.product.controller;
 
 import letsnona.nonabackend.domain.cataegory.repository.CategoryRepository;
+import letsnona.nonabackend.domain.product.dto.CreateDateProductCountDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddResponseDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
+import letsnona.nonabackend.domain.product.enums.ProductState;
+import letsnona.nonabackend.domain.product.repository.CustomProductRepositoryImpl;
 import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import letsnona.nonabackend.domain.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,7 @@ import java.util.List;
 public class ProductControllerImpl implements ProductController {
     private final ProductService productService;
     private final ProductRepository productRepository;
+    private final CustomProductRepositoryImpl customProductRepository;
     private final CategoryRepository categoryRepository;
 
     @Override
@@ -59,6 +63,22 @@ public class ProductControllerImpl implements ProductController {
         return productService.getSearchProduct(keyword, pageable);
     }
 
+    /*TODO
+    *  -서비스에 넘겨야함*/
+    @GetMapping("/products/count")
+    public int getAllProductCount(){
+        return productRepository.countProductByProductState(ProductState.SELL);
+    }
+
+    @GetMapping("/products/createDateCount")
+    public CreateDateProductCountDTO getCreateDateProductCount(){
+        return customProductRepository.getCreateDateProductCount();
+    }
+
+    @GetMapping("/user/api/products/sellList")
+    public Page<ProductReadResDTO> getSearchForOwner(Pageable pageable) {
+        return productService.getSearchForOwner(pageable);
+    }
 
     @GetMapping("/products/category")
     public Page<ProductReadResDTO> getProductByCategory(@RequestParam("keyword") String category, Pageable pageable) {

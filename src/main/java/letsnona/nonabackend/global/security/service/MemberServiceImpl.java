@@ -1,7 +1,6 @@
 package letsnona.nonabackend.global.security.service;
 
 import letsnona.nonabackend.domain.file.dto.MemberImgRequestDTO;
-import letsnona.nonabackend.domain.file.entity.MemberImg;
 import letsnona.nonabackend.domain.file.service.FileService;
 import letsnona.nonabackend.global.security.auth.PrincipalDetails;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -40,7 +39,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void JoinMember(Member member, List<MultipartFile> file) {
+    public Member JoinMember(Member member, List<MultipartFile> file) {
         member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
         member.setRoles("ROLE_USER");
         member.setMemberState(MemberState.LOCKED);
@@ -52,6 +51,6 @@ public class MemberServiceImpl implements MemberService {
         member.setOriginalImgSrc(memberImgRequestDTO.getOriginalImgSrc());
         member.setThumbImgSrc(memberImgRequestDTO.getThumbImgSrc());
 
-        memberRepository.save(member);
+         return memberRepository.save(member);
     }
 }

@@ -117,9 +117,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<ProductReadResDTO> getSearchForOwner(Pageable pageable) {
+        Member requestUser = memberService.getRequestUser();
+        Page<Product> byOwner = productRepository.findByOwner(pageable, requestUser);
+        return getProductReadResDTOS(byOwner);
+    }
+
+
+
+    @Override
     public Page<ProductReadResDTO> getProductByCategory(String categoryCode, Pageable pageable) {
         Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(categoryCode);
-        Page<Product> byCategory = productRepository.findByCategory(pageable, byCategoryCode.get());
+        Page<Product> byCategory = productRepository.findByCategoryAndProductState(pageable, byCategoryCode.get(),ProductState.SELL);
         return getProductReadResDTOS(byCategory);
     }
 

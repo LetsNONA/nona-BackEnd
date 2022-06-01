@@ -66,10 +66,10 @@ public class RestApiController {
 	}*/
 
 	@PostMapping("/join")
-	public void joinMember(
+	public Member joinMember(
 			@RequestPart(value = "key") Member member
 			, @RequestPart(value = "file",required = false) List<MultipartFile> file) {
-		memberService.JoinMember(member, file);
+		 return memberService.JoinMember(member, file);
 	}
 	
 }
