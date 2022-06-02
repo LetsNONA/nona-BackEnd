@@ -2,6 +2,7 @@ package letsnona.nonabackend.global.security.controller;
 
 import letsnona.nonabackend.domain.product.dto.SellProductRatioDTO;
 import letsnona.nonabackend.global.security.auth.PrincipalDetails;
+import letsnona.nonabackend.global.security.dto.TotalNonaDataDTO;
 import letsnona.nonabackend.global.security.entity.Member;
 import letsnona.nonabackend.global.security.repository.MemberRepository;
 import letsnona.nonabackend.global.security.service.MemberService;
@@ -57,6 +58,11 @@ public class MemberController {
 public SellProductRatioDTO getSellRatio (){
 		return memberService.getSellProductRatio();
 }
+
+	@GetMapping("/today")
+	public TotalNonaDataDTO getTodayData (){
+		return memberService.getCountMemberAndTotalProductAndTodayProduct();
+	}
 
 	@PostMapping("/join")
 	public Member joinMember(

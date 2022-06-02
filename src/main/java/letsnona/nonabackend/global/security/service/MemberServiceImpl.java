@@ -3,10 +3,13 @@ package letsnona.nonabackend.global.security.service;
 import letsnona.nonabackend.domain.file.dto.MemberImgRequestDTO;
 import letsnona.nonabackend.domain.file.service.FileService;
 import letsnona.nonabackend.domain.product.dto.CountOfProductSellListAndPriceDTO;
+import letsnona.nonabackend.domain.product.dto.CreateDateProductCountDTO;
 import letsnona.nonabackend.domain.product.dto.ProductStateCountDTO;
 import letsnona.nonabackend.domain.product.dto.SellProductRatioDTO;
 import letsnona.nonabackend.domain.product.repository.CustomProductRepositoryImpl;
+import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import letsnona.nonabackend.global.security.auth.PrincipalDetails;
+import letsnona.nonabackend.global.security.dto.TotalNonaDataDTO;
 import letsnona.nonabackend.global.security.entity.Member;
 import letsnona.nonabackend.global.security.entity.enums.MemberState;
 import letsnona.nonabackend.global.security.repository.MemberRepository;
@@ -27,6 +30,7 @@ public class MemberServiceImpl implements MemberService {
     public final CustomProductRepositoryImpl customProductRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final MemberRepository memberRepository;
+    private final ProductRepository productRepository;
 
     public Member getRequestUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -43,6 +47,19 @@ public class MemberServiceImpl implements MemberService {
         return (currentYear - bornYear) + 1;
     }
 
+   @Override
+    public TotalNonaDataDTO getCountMemberAndTotalProductAndTodayProduct(){
+        int total_member = memberRepository.countAllBy();
+        CreateDateProductCountDTO createDateProductCount = customProductRepository.getCreateDateProductCount();
+        int total_product = productRepository.countAllBy();
+
+        TotalNonaDataDTO totalNonaDataDTO = new TotalNonaDataDTO();
+        totalNonaDataDTO.setTotalMemberCount(total_member);
+        totalNonaDataDTO.setTotalProductCount(total_product);
+        totalNonaDataDTO.setTotalTodayProductCount(createDateProductCount.getCnt().intValue());
+
+        return totalNonaDataDTO;
+    }
     @Override
     public SellProductRatioDTO getSellProductRatio(){
         Member requestUser = getRequestUser();

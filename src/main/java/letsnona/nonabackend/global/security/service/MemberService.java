@@ -1,6 +1,7 @@
 package letsnona.nonabackend.global.security.service;
 
 import letsnona.nonabackend.domain.product.dto.SellProductRatioDTO;
+import letsnona.nonabackend.global.security.dto.TotalNonaDataDTO;
 import letsnona.nonabackend.global.security.entity.Member;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,7 +14,8 @@ public interface MemberService {
     Member getRequestUser();
 
     int calculateAge(LocalDate birthday);
-
+    @Transactional
+    public TotalNonaDataDTO getCountMemberAndTotalProductAndTodayProduct();
     @Transactional
     public SellProductRatioDTO getSellProductRatio();
 

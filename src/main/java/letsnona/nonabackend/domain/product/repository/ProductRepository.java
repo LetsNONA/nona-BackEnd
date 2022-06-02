@@ -38,4 +38,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     int countProductByProductState(ProductState productState);
 
     int countProductByCreatedDateLike(LocalDate localDate);
+
+    int countAllBy();
 }
