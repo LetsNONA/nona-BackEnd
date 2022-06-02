@@ -80,6 +80,8 @@ public class ProductControllerImpl implements ProductController {
         return productService.getSearchForOwner(pageable);
     }
 
+
+
     @GetMapping("/products/category")
     public Page<ProductReadResDTO> getProductByCategory(@RequestParam("keyword") String category, Pageable pageable) {
         return productService.getProductByCategory(category, pageable);

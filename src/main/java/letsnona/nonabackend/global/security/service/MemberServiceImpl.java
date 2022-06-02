@@ -2,6 +2,10 @@ package letsnona.nonabackend.global.security.service;
 
 import letsnona.nonabackend.domain.file.dto.MemberImgRequestDTO;
 import letsnona.nonabackend.domain.file.service.FileService;
+import letsnona.nonabackend.domain.product.dto.CountOfProductSellListAndPriceDTO;
+import letsnona.nonabackend.domain.product.dto.ProductStateCountDTO;
+import letsnona.nonabackend.domain.product.dto.SellProductRatioDTO;
+import letsnona.nonabackend.domain.product.repository.CustomProductRepositoryImpl;
 import letsnona.nonabackend.global.security.auth.PrincipalDetails;
 import letsnona.nonabackend.global.security.entity.Member;
 import letsnona.nonabackend.global.security.entity.enums.MemberState;
@@ -20,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
     public final FileService fileService;
+    public final CustomProductRepositoryImpl customProductRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final MemberRepository memberRepository;
 
@@ -36,6 +41,29 @@ public class MemberServiceImpl implements MemberService {
 
         int bornYear = birthday.getYear();
         return (currentYear - bornYear) + 1;
+    }
+
+    @Override
+    public SellProductRatioDTO getSellProductRatio(){
+        Member requestUser = getRequestUser();
+        ProductStateCountDTO trading = customProductRepository.getCountProductStateOfProduct("TRADING", requestUser.getUsername());
+        ProductStateCountDTO completed = customProductRepository.getCountProductStateOfProduct("COMPLETED", requestUser.getUsername());
+        List<CountOfProductSellListAndPriceDTO> countOfProductSellList = customProductRepository.getCountOfProductSellList(requestUser.getUsername());
+
+        int totalPrice = 0 ;
+        SellProductRatioDTO sellProductRatioDTO = new SellProductRatioDTO();
+
+        for (CountOfProductSellListAndPriceDTO list: countOfProductSellList
+             ) {
+            totalPrice += (list.getPrice().intValue()*list.getCnt().intValue());
+        }
+
+        sellProductRatioDTO.setTrading(trading);
+        sellProductRatioDTO.setCompleted(completed);
+        sellProductRatioDTO.setTotalPrice(totalPrice);
+        sellProductRatioDTO.setSellList(countOfProductSellList);
+
+        return sellProductRatioDTO;
     }
 
     @Override
