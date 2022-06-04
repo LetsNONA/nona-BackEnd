@@ -4,14 +4,15 @@ import lombok.Data;
 
 import java.math.BigInteger;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
-public class BrokenChartData {
+public class BrokenChartTradingData {
     private String x;
     private int y;
 
-    public BrokenChartData(Date x, BigInteger y) {
-        this.x = x.toString();
+    public BrokenChartTradingData(String x, BigInteger y) {
+        this.x = x;
         this.y = y.intValue();
     }
 }

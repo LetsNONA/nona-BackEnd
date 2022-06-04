@@ -10,5 +10,5 @@ import java.util.List;
 public class BrokenChartDTO {
     private String id;
     private String color;
-    private List<BrokenChartData> data;
+    private List<BrokenChartCompletedData> data;
 }

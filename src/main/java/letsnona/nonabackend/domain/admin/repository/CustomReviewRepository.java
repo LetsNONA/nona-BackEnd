@@ -1,9 +1,12 @@
 package letsnona.nonabackend.domain.admin.repository;
 
-import letsnona.nonabackend.domain.admin.dto.BrokenChartData;
+import letsnona.nonabackend.domain.admin.dto.BrokenChartCompletedData;
+import letsnona.nonabackend.domain.admin.dto.BrokenChartTradingData;
 
 import java.util.List;
 
 public interface CustomReviewRepository {
-    List<BrokenChartData> getReviewBrokenChartData(String reviewState);
+    List<BrokenChartCompletedData> getReviewBrokenCompletedChartData(String reviewState);
+
+    List<BrokenChartTradingData> getReviewBrokenChartTradingData();
 }

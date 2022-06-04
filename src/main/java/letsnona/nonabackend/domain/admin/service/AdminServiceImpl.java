@@ -1,10 +1,9 @@
 package letsnona.nonabackend.domain.admin.service;
 
-import letsnona.nonabackend.domain.admin.dto.BarChartDTO;
-import letsnona.nonabackend.domain.admin.dto.BrokenChartDTO;
-import letsnona.nonabackend.domain.admin.dto.BrokenChartData;
-import letsnona.nonabackend.domain.admin.dto.PieChartDTO;
+import letsnona.nonabackend.domain.admin.dto.*;
 import letsnona.nonabackend.domain.admin.repository.CustomReviewRepository;
+import letsnona.nonabackend.domain.review.dto.MyReviewRespDTO;
+import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.global.security.dto.chart.AgeRatioDTO;
 import letsnona.nonabackend.global.security.dto.chart.GenderRatioDTO;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -12,11 +11,13 @@ import letsnona.nonabackend.global.security.entity.enums.MemberState;
 import letsnona.nonabackend.global.security.repository.CustomMemberRepository;
 import letsnona.nonabackend.global.security.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -67,8 +68,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public List<BrokenChartDTO> getBrokenChartData() {
-        List<BrokenChartData> completed = customReviewRepository.getReviewBrokenChartData("COMPLETED");
-        List<BrokenChartData> trading = customReviewRepository.getReviewBrokenChartData("TRADING");
+        List<BrokenChartCompletedData> completed = customReviewRepository.getReviewBrokenCompletedChartData("COMPLETED");
+        List<BrokenChartTradingData> trading = customReviewRepository.getReviewBrokenChartTradingData();
 
         List<BrokenChartDTO> result = new ArrayList<>();
         BrokenChartDTO completedDTO = BrokenChartDTO.builder()
@@ -77,16 +78,25 @@ public class AdminServiceImpl implements AdminService {
                 .data(completed)
                 .build();
 
+
+
         BrokenChartDTO tradingDTO = BrokenChartDTO.builder()
                 .id("거래중")
                 .color("hsl(219, 70%, 50%)")
-                .data(trading)
+                .data(getTradingDataToChardDTO(trading))
                 .build();
 
         result.add(completedDTO);
         result.add(tradingDTO);
 
         return result;
+    }
+
+    public List<BrokenChartCompletedData> getTradingDataToChardDTO(List<BrokenChartTradingData> trading) {
+        /*
+         *  Response :  Entity -> DTO
+         * */
+        return trading.stream().map(BrokenChartCompletedData::new).collect(Collectors.toList());
     }
 
     @Override
