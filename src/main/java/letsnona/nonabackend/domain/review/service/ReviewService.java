@@ -27,6 +27,9 @@ public interface ReviewService {
     boolean isReviewOwner(Review review);
 
     @Transactional
+    public Page<ProductReadResReviewDTO> getAllReviews(Pageable pageable);
+
+    @Transactional
     Review updateReview(long reviewIndex, ReviewUpdateRequestDTO dto);
 
     Page<MyReviewRespDTO> getMyReviewsDTOS(Page<Review> review);

@@ -57,4 +57,10 @@ public class ReviewControllerImpl implements ReviewController {
         return reviewService.getProductReviews(productId, pageable);
     }
 
+    @GetMapping("/reviews")
+    public Page<ProductReadResReviewDTO> getAllReviews(Pageable pageable) {
+        return reviewService.getAllReviews(pageable);
+    }
+
+
 }

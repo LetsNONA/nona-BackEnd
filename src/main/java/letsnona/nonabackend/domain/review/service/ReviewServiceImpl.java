@@ -145,7 +145,11 @@ public class ReviewServiceImpl implements ReviewService {
          * */
         return review.map(MyReviewRespDTO::new);
     }
-
+@Override
+    public Page<ProductReadResReviewDTO> getAllReviews(Pageable pageable){
+        Page<Review> all = reviewRepository.findAll(pageable);
+        return getProductReadResDTOS(all);
+    }
 
     @Override
     public boolean isReviewOwner(Review review) {
