@@ -5,6 +5,7 @@ import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddResponseDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResImgDTO;
+import letsnona.nonabackend.domain.product.dto.update.ProductUpdateRequestDTO;
 import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
 import letsnona.nonabackend.domain.review.entity.Review;
@@ -34,7 +35,7 @@ public interface ProductService {
     Page<ProductReadResDTO> getProductByCategory(String categoryCode, Pageable pageable);
 
     @Transactional
-    ProductAddResponseDTO updateProduct(ProductAddRequestDTO postDTO);
+    ProductAddResponseDTO updateProduct(ProductUpdateRequestDTO postDTO);
 
     @Transactional
     Page<ProductReadResDTO> getSearchProduct(String keyword, Pageable pageable);

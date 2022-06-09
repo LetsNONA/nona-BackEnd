@@ -5,6 +5,7 @@ import letsnona.nonabackend.domain.product.dto.CreateDateProductCountDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddResponseDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
+import letsnona.nonabackend.domain.product.dto.update.ProductUpdateRequestDTO;
 import letsnona.nonabackend.domain.product.enums.ProductState;
 import letsnona.nonabackend.domain.product.repository.CustomProductRepositoryImpl;
 import letsnona.nonabackend.domain.product.repository.ProductRepository;
@@ -23,13 +24,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Controller
-public class ProductControllerImpl implements ProductController {
+public class ProductControllerImpl  {
     private final ProductService productService;
     private final ProductRepository productRepository;
     private final CustomProductRepositoryImpl customProductRepository;
     private final CategoryRepository categoryRepository;
 
-    @Override
     @PostMapping("/user/api/product")
     public ProductAddResponseDTO saveProduct(
             @RequestPart(value = "key") ProductAddRequestDTO postDTO
@@ -37,19 +37,16 @@ public class ProductControllerImpl implements ProductController {
         return productService.saveProduct(postDTO, file);
     }
 
-    @Override
-    @PutMapping("user/api/product")
-    public ProductAddResponseDTO updateProduct(@RequestPart(value = "key") ProductAddRequestDTO postDTO) {
+    @PutMapping("/user/api/product")
+    public ProductAddResponseDTO updateProduct(@RequestBody ProductUpdateRequestDTO postDTO) {
         return productService.updateProduct(postDTO);
     }
 
-    @Override
     @DeleteMapping("user/api/product/{productIndex}")
     public String deleteProduct(@PathVariable long productIndex) {
         return productService.deleteProduct(productIndex);
     }
 
-    @Override
     @GetMapping("user/api/product/{productIndex}")
     public ProductReadResDTO getProductDetail(@PathVariable long productIndex) {
         /*todo
@@ -57,7 +54,6 @@ public class ProductControllerImpl implements ProductController {
         return productService.getProductDetails(productIndex);
     }
 
-    @Override
     @GetMapping("/products/search")
     public Page<ProductReadResDTO> getSearchProduct(@RequestParam("keyword") String keyword, Pageable pageable) {
         return productService.getSearchProduct(keyword, pageable);
@@ -87,7 +83,6 @@ public class ProductControllerImpl implements ProductController {
         return productService.getProductByCategory(category, pageable);
     }
 
-    @Override
     @GetMapping("/products")
     public Page<ProductReadResDTO> getAllProducts( Pageable pageable) {
         return productService.getAllProduct(pageable);

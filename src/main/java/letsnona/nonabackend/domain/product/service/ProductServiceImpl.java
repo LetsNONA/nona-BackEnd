@@ -11,6 +11,7 @@ import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddResponseDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResImgDTO;
+import letsnona.nonabackend.domain.product.dto.update.ProductUpdateRequestDTO;
 import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.domain.product.enums.ProductState;
 import letsnona.nonabackend.domain.product.repository.ProductRepository;
@@ -72,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductAddResponseDTO updateProduct(ProductAddRequestDTO postDTO) {
+    public ProductAddResponseDTO updateProduct(ProductUpdateRequestDTO postDTO) {
 
         /*TODO
          *  -리팩토링 매우 필요 더러운 코드 **/
@@ -81,10 +82,10 @@ public class ProductServiceImpl implements ProductService {
             if (isPostOwner(post, memberService.getRequestUser()))
                 post.updatePost(postDTO);
 
-            if (postDTO.getCategoryCode() != null) {
-                Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(postDTO.getCategoryCode());
-                byCategoryCode.ifPresent(post::updateCategory);
-            }
+//            if (postDTO.getCategory() != null) {
+//                Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(postDTO.getCategory().getCategoryCode());
+//                byCategoryCode.ifPresent(post::updateCategory);
+//            }
         });
         return new ProductAddResponseDTO(byId.get());
 

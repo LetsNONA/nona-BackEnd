@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import letsnona.nonabackend.domain.cataegory.entity.Category;
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
+import letsnona.nonabackend.domain.product.dto.update.ProductUpdateRequestDTO;
 import letsnona.nonabackend.domain.product.enums.ProductState;
 import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.global.entity.BaseTimeEntity;
@@ -86,7 +87,7 @@ public class Product extends BaseTimeEntity {
         this.productState = ProductState.DELETE;
     }
 
-    public void updatePost(ProductAddRequestDTO dto) {
+    public void updatePost(ProductUpdateRequestDTO dto) {
         this.title = dto.getTitle();
         this.content = dto.getContent();
         this.tradePlace = dto.getTradePlace();

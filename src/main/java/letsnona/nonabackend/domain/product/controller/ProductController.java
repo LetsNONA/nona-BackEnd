@@ -12,19 +12,3 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-public interface ProductController {
-
-    ProductAddResponseDTO saveProduct(@RequestPart(value = "key") ProductAddRequestDTO postDTO
-            , @RequestPart(value = "file") List<MultipartFile> file);
-
-    ProductAddResponseDTO updateProduct(@RequestPart(value = "key") ProductAddRequestDTO postDTO);
-
-    String deleteProduct(@PathVariable long postIndex);
-
-    ProductReadResDTO getProductDetail(@PathVariable long postIndex);
-
-    Page<ProductReadResDTO> getSearchProduct(@RequestParam("keyword") String keyword, Pageable pageable);
-
-    Page<ProductReadResDTO> getAllProducts(Pageable pageable);
-
-}
