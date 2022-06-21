@@ -15,42 +15,42 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor 
+@RequiredArgsConstructor
 public class MemberController {
 
-	private final MemberService memberService;
-	private final MemberRepository memberRepository;
-	private final BCryptPasswordEncoder bCryptPasswordEncoder;
-	
-	// 모든 사람이 접근 가능
+    private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
 
-	
-	// 어드민이 접근 가능
-	@GetMapping("admin/users")
-	public List<Member> users(){
-		return memberRepository.findAll();
-	}
-	
-@GetMapping("/user/api/sellRatio")
-public SellProductRatioDTO getSellRatio (){
-		return memberService.getSellProductRatio();
-}
+    // 어드민이 접근 가능
+    @GetMapping("admin/users")
+    public List<Member> users() {
+        return memberRepository.findAll();
+    }
 
-	@GetMapping("/today")
-	public TotalNonaDataDTO getTodayData (){
-		return memberService.getCountMemberAndTotalProductAndTodayProduct();
-	}
+    @GetMapping("/user/api/sellRatio")
+    public SellProductRatioDTO getSellRatio() {
+        return memberService.getSellProductRatio();
+    }
 
-	@PostMapping("/join")
-	public Member joinMember(
-			@RequestPart(value = "key") Member member
-			, @RequestPart(value = "file",required = false) List<MultipartFile> file) {
-		 return memberService.JoinMember(member, file);
-	}
+    @GetMapping("/user/api/point")
+    public int getUserPoint(){
+        return memberService.getPoint();
+    }
+
+    @GetMapping("/today")
+    public TotalNonaDataDTO getTodayData() {
+        return memberService.getCountMemberAndTotalProductAndTodayProduct();
+    }
+
+    @PostMapping("/join")
+    public Member joinMember(
+            @RequestPart(value = "key") Member member
+            , @RequestPart(value = "file", required = false) List<MultipartFile> file) {
+        return memberService.JoinMember(member, file);
+    }
 
 
-	
 }
 
 

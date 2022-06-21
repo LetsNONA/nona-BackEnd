@@ -13,6 +13,8 @@ public interface MemberService {
     @Transactional
     Member getRequestUser();
 
+    @Transactional
+    int getPoint();
     int calculateAge(LocalDate birthday);
     @Transactional
     public TotalNonaDataDTO getCountMemberAndTotalProductAndTodayProduct();

@@ -24,18 +24,23 @@ public class Point extends BaseTimeEntity {
     @ManyToOne
     private Member owner;
 
-    @ManyToOne
-    private Review review;
+   /* @ManyToOne
+    private Review review;*/
 
     @Enumerated(value = EnumType.STRING)
     private PointState pointState;
 
+    /*  @Builder
+      public Point(Member owner, Review review, PointState pointState) {
+          this.owner = owner;
+          this.review = review;
+          this.pointState = pointState;
+      }*/
     @Builder
-    public Point(Member owner, Review review, PointState pointState) {
+    public Point(Member owner, PointState pointState) {
         this.owner = owner;
-        this.review = review;
+
         this.pointState = pointState;
     }
-
 
 }

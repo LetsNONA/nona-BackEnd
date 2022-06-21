@@ -32,12 +32,6 @@ public class Member extends BaseTimeEntity {
     private String username;
 
 
-//    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "MEMBERIMG_ID")
-//    @Builder.Default
-//
-//    private MemberImg image = new MemberImg();
-
     private String originalImgSrc;
     private String thumbImgSrc;
     private String originalName;
@@ -65,14 +59,7 @@ public class Member extends BaseTimeEntity {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
-    /*@CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime createdDate;
 
-    @LastModifiedDate
-    private LocalDateTime modifiedDate;
-    */
-    // ENUM으로 안하고 ,로 해서 구분해서 ROLE을 입력 -> 그걸 파싱!!
     public List<String> getRoleList() {
         if (this.roles.length() > 0) {
             return Arrays.asList(this.roles.split(","));
@@ -88,9 +75,6 @@ public class Member extends BaseTimeEntity {
         this.point = point;
     }
 
- /*   public void addImg(MemberImg img) {
-        this.image = img;
-    }*/
 
     public void updateMemberSate(MemberState memberState) {
         this.memberState = memberState;
@@ -99,6 +83,7 @@ public class Member extends BaseTimeEntity {
     public void decreasePoint(int fee) {
         this.point = this.point - fee;
     }
+
     public void increasePoint(int fee) {
         this.point = this.point + fee;
     }

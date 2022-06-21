@@ -55,7 +55,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         PointRequestDTO pointRequestDTO = new PointRequestDTO();
         pointRequestDTO.setOwner(requestUser);
-        pointRequestDTO.setReview(review);
+       // pointRequestDTO.setReview(review);
         pointRequestDTO.setPointState(PointState.DECREASE);
 
         Point point = pointRequestDTO.toEntity();
@@ -83,7 +83,7 @@ public class ReviewServiceImpl implements ReviewService {
 
             PointRequestDTO pointRequestDTO = new PointRequestDTO();
             pointRequestDTO.setOwner(product.getOwner());
-            pointRequestDTO.setReview(byId);
+          //  pointRequestDTO.setReview(byId);
             pointRequestDTO.setPointState(PointState.INCREASE);
 
             pointRepository.save(pointRequestDTO.toEntity());
@@ -95,7 +95,7 @@ public class ReviewServiceImpl implements ReviewService {
 
             PointRequestDTO pointRequestDTO = new PointRequestDTO();
             pointRequestDTO.setOwner(owner);
-            pointRequestDTO.setReview(byId);
+          //  pointRequestDTO.setReview(byId);
             pointRequestDTO.setPointState(PointState.INCREASE);
 
             pointRepository.save(pointRequestDTO.toEntity());

@@ -32,10 +32,16 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
 
+    @Override
     public Member getRequestUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
         return principal.getUser();
+    }
+
+    @Override
+    public int getPoint() {
+        return getRequestUser().getPoint();
     }
 
     @Override
@@ -47,8 +53,8 @@ public class MemberServiceImpl implements MemberService {
         return (currentYear - bornYear) + 1;
     }
 
-   @Override
-    public TotalNonaDataDTO getCountMemberAndTotalProductAndTodayProduct(){
+    @Override
+    public TotalNonaDataDTO getCountMemberAndTotalProductAndTodayProduct() {
         int total_member = memberRepository.countAllBy();
         CreateDateProductCountDTO createDateProductCount = customProductRepository.getCreateDateProductCount();
         int total_product = productRepository.countAllBy();
@@ -60,19 +66,20 @@ public class MemberServiceImpl implements MemberService {
 
         return totalNonaDataDTO;
     }
+
     @Override
-    public SellProductRatioDTO getSellProductRatio(){
+    public SellProductRatioDTO getSellProductRatio() {
         Member requestUser = getRequestUser();
         ProductStateCountDTO trading = customProductRepository.getCountProductStateOfProduct("TRADING", requestUser.getUsername());
         ProductStateCountDTO completed = customProductRepository.getCountProductStateOfProduct("COMPLETED", requestUser.getUsername());
         List<CountOfProductSellListAndPriceDTO> countOfProductSellList = customProductRepository.getCountOfProductSellList(requestUser.getUsername());
 
-        int totalPrice = 0 ;
+        int totalPrice = 0;
         SellProductRatioDTO sellProductRatioDTO = new SellProductRatioDTO();
 
-        for (CountOfProductSellListAndPriceDTO list: countOfProductSellList
-             ) {
-            totalPrice += (list.getPrice().intValue()*list.getCnt().intValue());
+        for (CountOfProductSellListAndPriceDTO list : countOfProductSellList
+        ) {
+            totalPrice += (list.getPrice().intValue() * list.getCnt().intValue());
         }
 
         sellProductRatioDTO.setTrading(trading);
@@ -96,6 +103,6 @@ public class MemberServiceImpl implements MemberService {
         member.setOriginalImgSrc(memberImgRequestDTO.getOriginalImgSrc());
         member.setThumbImgSrc(memberImgRequestDTO.getThumbImgSrc());
 
-         return memberRepository.save(member);
+        return memberRepository.save(member);
     }
 }

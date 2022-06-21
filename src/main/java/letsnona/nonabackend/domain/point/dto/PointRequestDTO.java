@@ -18,14 +18,14 @@ public class PointRequestDTO {
 
     private Member owner;
 
-    private Review review;
+    //private Review review;
 
     private PointState pointState;
 
     public Point toEntity() {
         return  Point.builder()
                 .owner(this.owner)
-                .review(this.review)
+               // .review(this.review)
                 .pointState(this.pointState)
                 .build();
     }
