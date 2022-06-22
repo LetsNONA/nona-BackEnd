@@ -22,13 +22,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 //@EntityListeners(AuditingEntityListener.class) /* JPA에게 해당 Entity는 Auditiong 기능을 사용함을 알립니다. */
 public class Member extends BaseTimeEntity {
     /*TODO - Setter 지워야함*/
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @Column(unique = true)
+   // @Column(unique = true)
     private String username;
 
 
@@ -86,5 +87,15 @@ public class Member extends BaseTimeEntity {
 
     public void increasePoint(int fee) {
         this.point = this.point + fee;
+    }
+
+    public void memberInfoUpdate(String username, String nickName, String password, String email, LocalDate birthday, String phoneNumber, String zipCode) {
+        this.username = username;
+        this.nickName = nickName;
+        this.password = password;
+        this.email = email;
+        this.birthday = birthday;
+        this.phoneNumber = phoneNumber;
+        this.zipCode = zipCode;
     }
 }

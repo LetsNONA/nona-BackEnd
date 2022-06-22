@@ -11,9 +11,7 @@ import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import letsnona.nonabackend.global.exception.CustomErrorCode;
 import letsnona.nonabackend.global.exception.CustomException;
 import letsnona.nonabackend.global.security.auth.PrincipalDetails;
-import letsnona.nonabackend.global.security.dto.ExchangeRequest;
-import letsnona.nonabackend.global.security.dto.ExchangeResponse;
-import letsnona.nonabackend.global.security.dto.TotalNonaDataDTO;
+import letsnona.nonabackend.global.security.dto.*;
 import letsnona.nonabackend.global.security.entity.Member;
 import letsnona.nonabackend.global.security.entity.enums.MemberState;
 import letsnona.nonabackend.global.security.repository.MemberRepository;
@@ -106,6 +104,9 @@ public class MemberServiceImpl implements MemberService {
         member.setOriginalName(memberImgRequestDTO.getOriginalName());
         member.setOriginalImgSrc(memberImgRequestDTO.getOriginalImgSrc());
         member.setThumbImgSrc(memberImgRequestDTO.getThumbImgSrc());
+        if(memberRepository.existsByUsernameOrNickName(member.getUsername(),member.getNickName())) {
+            throw new CustomException(CustomErrorCode.DUPLICATE_ID_OR_NICKNAME);
+        }
 
         return memberRepository.save(member);
     }
@@ -119,5 +120,40 @@ public class MemberServiceImpl implements MemberService {
         member.decreasePoint(exchangeMoney.getExchangeMoney());
         String response = "남아있는 포인트 : " + member.getPoint();
         return new ExchangeResponse(response);
+    }
+
+    @Override
+    public String isDuplicateId(String username) {
+        if(memberRepository.existsByUsername(username)) {
+            throw new CustomException(CustomErrorCode.DUPLICATE_ID);
+        }
+        return "사용가능한 아이디입니다.";
+    }
+
+    @Override
+    public String isDuplicateNickname(String nickname) {
+        if(memberRepository.existsByNickName(nickname)) {
+            throw new CustomException(CustomErrorCode.DUPLICATE_NICKNAME);
+        }
+        return "사용가능한 닉네임입니다.";
+    }
+
+    @Override
+    public MemberInfoUpdateResponse memberInfo() {
+        Member member = getRequestUser();
+        System.out.println(member);
+        return new MemberInfoUpdateResponse(member);
+    }
+
+    @Override
+    public MemberInfoUpdateResponse memberInfoUpdate(MemberInfoUpdateRequest memberIUR) {
+        Member member = memberRepository.findByUsername(getRequestUser().getUsername());
+        if(!memberIUR.getPassword().equals(memberIUR.getPasswordConfirm())) {
+            throw new CustomException(CustomErrorCode.NOT_MATCH_PASSWORD);
+        }
+        member.memberInfoUpdate(memberIUR.getUsername(),memberIUR.getNickname(),
+                bCryptPasswordEncoder.encode(memberIUR.getPassword()),memberIUR.getEmail(),
+                memberIUR.getBirthday(),memberIUR.getPhoneNumber(),memberIUR.getZipCode());
+        return new MemberInfoUpdateResponse(member);
     }
 }
