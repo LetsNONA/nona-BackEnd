@@ -1,9 +1,7 @@
 package letsnona.nonabackend.global.security.service;
 
 import letsnona.nonabackend.domain.product.dto.SellProductRatioDTO;
-import letsnona.nonabackend.global.security.dto.ExchangeRequest;
-import letsnona.nonabackend.global.security.dto.ExchangeResponse;
-import letsnona.nonabackend.global.security.dto.TotalNonaDataDTO;
+import letsnona.nonabackend.global.security.dto.*;
 import letsnona.nonabackend.global.security.entity.Member;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,4 +22,14 @@ public interface MemberService {
 
     @Transactional
     ExchangeResponse exchangeMoney(ExchangeRequest exchangeMoney);
+
+    String isDuplicateId(String username);
+    String isDuplicateNickname(String nickname);
+
+    MemberInfoUpdateResponse memberInfo();
+
+    MemberInfoUpdateResponse memberInfoUpdate(MemberInfoUpdateRequest memberInfoUpdateRequest);
+
+
+
 }

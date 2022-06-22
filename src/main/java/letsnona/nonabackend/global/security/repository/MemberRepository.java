@@ -14,4 +14,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findAllByUsernameAndMemberState(String username,MemberState memberState);
     int countAllBy();
+
+    boolean existsByUsername(String username);
+
+    boolean existsByNickName(String nickname);
+
+    boolean existsByUsernameOrNickName(String username, String nickname);
 }
