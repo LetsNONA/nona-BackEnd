@@ -1,14 +1,15 @@
 package letsnona.nonabackend.global.security.controller;
 
 import letsnona.nonabackend.domain.product.dto.SellProductRatioDTO;
-import letsnona.nonabackend.global.security.auth.PrincipalDetails;
+import letsnona.nonabackend.global.security.dto.ExchangeRequest;
+import letsnona.nonabackend.global.security.dto.ExchangeResponse;
 import letsnona.nonabackend.global.security.dto.TotalNonaDataDTO;
 import letsnona.nonabackend.global.security.entity.Member;
 import letsnona.nonabackend.global.security.repository.MemberRepository;
 import letsnona.nonabackend.global.security.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,7 +35,7 @@ public class MemberController {
     }
 
     @GetMapping("/user/api/point")
-    public int getUserPoint(){
+    public int getUserPoint() {
         return memberService.getPoint();
     }
 
@@ -48,6 +49,12 @@ public class MemberController {
             @RequestPart(value = "key") Member member
             , @RequestPart(value = "file", required = false) List<MultipartFile> file) {
         return memberService.JoinMember(member, file);
+    }
+
+    @PostMapping("/user/exchange")
+    public ResponseEntity<ExchangeResponse> exchangeMoney(@RequestBody ExchangeRequest exchangeMoney) {
+        return new ResponseEntity<>(memberService.exchangeMoney(exchangeMoney), HttpStatus.OK);
+
     }
 
 

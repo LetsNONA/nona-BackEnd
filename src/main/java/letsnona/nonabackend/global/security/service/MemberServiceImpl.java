@@ -8,7 +8,11 @@ import letsnona.nonabackend.domain.product.dto.ProductStateCountDTO;
 import letsnona.nonabackend.domain.product.dto.SellProductRatioDTO;
 import letsnona.nonabackend.domain.product.repository.CustomProductRepositoryImpl;
 import letsnona.nonabackend.domain.product.repository.ProductRepository;
+import letsnona.nonabackend.global.exception.CustomErrorCode;
+import letsnona.nonabackend.global.exception.CustomException;
 import letsnona.nonabackend.global.security.auth.PrincipalDetails;
+import letsnona.nonabackend.global.security.dto.ExchangeRequest;
+import letsnona.nonabackend.global.security.dto.ExchangeResponse;
 import letsnona.nonabackend.global.security.dto.TotalNonaDataDTO;
 import letsnona.nonabackend.global.security.entity.Member;
 import letsnona.nonabackend.global.security.entity.enums.MemberState;
@@ -104,5 +108,16 @@ public class MemberServiceImpl implements MemberService {
         member.setThumbImgSrc(memberImgRequestDTO.getThumbImgSrc());
 
         return memberRepository.save(member);
+    }
+
+    @Override
+    public ExchangeResponse exchangeMoney(ExchangeRequest exchangeMoney) {
+        Member member = memberRepository.findByUsername(getRequestUser().getUsername());
+        if (member.getPoint() < exchangeMoney.getExchangeMoney()) {
+            throw new CustomException(CustomErrorCode.NOT_CHANGE_MONEY);
+        }
+        member.decreasePoint(exchangeMoney.getExchangeMoney());
+        String response = "남아있는 포인트 : " + member.getPoint();
+        return new ExchangeResponse(response);
     }
 }
