@@ -1,4 +1,4 @@
-package letsnona.nonabackend.domain.basket.dto;
+package letsnona.nonabackend.domain.heart.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -7,12 +7,12 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder
 @RequiredArgsConstructor
-public class BasketAddReqDTO {
+public class HeartAddReqDTO {
     private long id;
     private long productId;
     private String ownerName;
 
-    public BasketAddReqDTO(long id, long productId, String ownerName) {
+    public HeartAddReqDTO(long id, long productId, String ownerName) {
         this.id = id;
         this.productId = productId;
         this.ownerName = ownerName;

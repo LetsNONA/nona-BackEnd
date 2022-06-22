@@ -1,4 +1,4 @@
-package letsnona.nonabackend.domain.basket.entity;
+package letsnona.nonabackend.domain.heart.entity;
 
 import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -14,7 +14,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Builder
-public class Basket {
+public class Heart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

@@ -1,11 +1,13 @@
-package letsnona.nonabackend.domain.basket.service;
+package letsnona.nonabackend.domain.heart.service;
 
 
-import letsnona.nonabackend.domain.basket.repository.BasketRepository;
+import letsnona.nonabackend.domain.heart.dto.HeartAddReqDTO;
+import letsnona.nonabackend.domain.heart.dto.HeartRespDTO;
+import letsnona.nonabackend.domain.heart.entity.Heart;
+import letsnona.nonabackend.domain.heart.repository.HeartRepository;
 import letsnona.nonabackend.domain.cart.dto.CartAddReqDTO;
 import letsnona.nonabackend.domain.cart.dto.CartRespDTO;
 import letsnona.nonabackend.domain.cart.entity.Cart;
-import letsnona.nonabackend.domain.cart.repository.CartRepository;
 import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -20,55 +22,57 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class BasketServiceImpl {
-    private final BasketRepository basketRepository;
+public class HeartServiceImpl {
+    private final HeartRepository heartRepository;
     private final MemberRepository memberRepository;
     private final ProductRepository productRepository;
     private final MemberService memberService;
 
 
-    public Page<CartRespDTO> getPageableCart(Pageable pageable) {
+    public Page<HeartRespDTO> getPageableHeart(Pageable pageable) {
 
         Member requestUser = memberService.getRequestUser();
-        Page<Cart> byOwner = cartRepository.findByOwner(requestUser, pageable);
+        Page<Heart> byOwner = heartRepository.findByOwner(requestUser, pageable);
 
-        Page<CartRespDTO> cartReadResDTOS = getCartReadResDTOS(byOwner);
+        Page<HeartRespDTO> cartReadResDTOS = getHeartReadResDTOS(byOwner);
         return cartReadResDTOS;
     }
 
-    public String removeProductCart(long index) {
+    public String removeProductHeart(long index) {
         Member requestUser = memberService.getRequestUser();
 
-        Cart cart = cartRepository.getById(index);
+        Heart heart = heartRepository.findById(index);
 
-        if (cart.getOwner().getUsername() == requestUser.getUsername()) {
-            cartRepository.delete(cart);
+        System.out.println("heart.getOwner().getUsername() = " + heart.getOwner().getUsername());
+        System.out.println("requestUser = " + requestUser.getUsername());
+        if (heart.getOwner().getUsername().equals(requestUser.getUsername())) {
+            heartRepository.delete(heart);
             return "삭제완료";
         }
         return "삭제실패";
     }
 
-    public CartRespDTO addCart(CartAddReqDTO reqDTO) {
+    public HeartRespDTO addHeart(long index) {
         Member byUsername = memberService.getRequestUser();
-        Optional<Product> byId = productRepository.findById(reqDTO.getProductId());
+        Optional<Product> byId = productRepository.findById(index);
 
         if (byId.isPresent()) {
-            Cart cartEntity = Cart.builder()
+            Heart heartEntity = Heart.builder()
                     .owner(byUsername)
                     .product(byId.get())
                     .build();
 
 
-            return new CartRespDTO(cartRepository.save(cartEntity));
+            return new HeartRespDTO(heartRepository.save(heartEntity));
 
         }
-        return new CartRespDTO();
+        return new HeartRespDTO();
     }
 
-    public Page<CartRespDTO> getCartReadResDTOS(Page<Cart> cart) {
+    public Page<HeartRespDTO> getHeartReadResDTOS(Page<Heart> heart) {
         /*
          *  Response :  Entity -> DTO
          * */
-        return cart.map(CartRespDTO::new);
+        return heart.map(HeartRespDTO::new);
     }
 }

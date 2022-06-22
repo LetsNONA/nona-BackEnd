@@ -19,20 +19,20 @@ public class CartController {
 
     @GetMapping("/user/api/cart")
     public Page<CartRespDTO> getAllCartList(Pageable pageable) {
-       return cartService.getPageableCart(pageable);
+        return cartService.getPageableCart(pageable);
     }
 
-    @PostMapping("/user/api/cart")
-    public CartRespDTO addProductForCart(@RequestBody CartAddReqDTO cartAddReqDTO){
-        return cartService.addCart(cartAddReqDTO);
+    @PostMapping("/user/api/cart/{index}")
+    public CartRespDTO addProductForCart(@PathVariable long index) {
+        return cartService.addCart(index);
     }
 
     /*TODO 모든걸 리팩토링하라*/
-     @GetMapping("/user/api/cart/remove/index")
-    public String removeProductForCart(@PathVariable long index){
+    @GetMapping("/user/api/cart/remove/{index}")
+    public String removeProductForCart(@PathVariable long index) {
 
-         return cartService.removeProductCart(index);
-     }
+        return cartService.removeProductCart(index);
+    }
 
 
 }

@@ -41,16 +41,16 @@ public class CartServiceImpl {
 
         Cart cart = cartRepository.getById(index);
 
-        if (cart.getOwner().getUsername() == requestUser.getUsername()) {
+        if (cart.getOwner().getUsername().equals(requestUser.getUsername()) ) {
             cartRepository.delete(cart);
             return "삭제완료";
         }
         return "삭제실패";
     }
 
-    public CartRespDTO addCart(CartAddReqDTO reqDTO) {
+    public CartRespDTO addCart(long index) {
         Member byUsername = memberService.getRequestUser();
-        Optional<Product> byId = productRepository.findById(reqDTO.getProductId());
+        Optional<Product> byId = productRepository.findById(index);
 
         if (byId.isPresent()) {
             Cart cartEntity = Cart.builder()
