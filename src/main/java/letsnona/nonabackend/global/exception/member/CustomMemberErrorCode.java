@@ -1,4 +1,4 @@
-package letsnona.nonabackend.global.exception;
+package letsnona.nonabackend.global.exception.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor
 @Getter
-public enum CustomErrorCode {
+public enum CustomMemberErrorCode {
     NOT_CHANGE_MONEY(HttpStatus.BAD_REQUEST, "환전할 포인트가 부족합니다."),
 
     DUPLICATE_ID(HttpStatus.CONFLICT, "이미 존재하는 아이디입니다."),

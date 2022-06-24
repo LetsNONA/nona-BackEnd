@@ -1,13 +1,11 @@
 package letsnona.nonabackend.global.exception;
 
-import lombok.AllArgsConstructor;
+import letsnona.nonabackend.global.exception.member.CustomMemberErrorCode;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Builder
@@ -18,14 +16,14 @@ public class CustomExceptionResponse {
     private final String code;
     private final String message;
 
-    public static ResponseEntity<CustomExceptionResponse> toResponseEntity(CustomErrorCode customErrorCode) {
+    public static ResponseEntity<CustomExceptionResponse> toResponseEntity(CustomMemberErrorCode customMemberErrorCode) {
         return ResponseEntity
-                .status(customErrorCode.getHttpStatus())
+                .status(customMemberErrorCode.getHttpStatus())
                 .body(CustomExceptionResponse.builder()
-                        .status(customErrorCode.getHttpStatus().value())
-                        .error(customErrorCode.getHttpStatus().name())
-                        .code(customErrorCode.name())
-                        .message(customErrorCode.getMessage())
+                        .status(customMemberErrorCode.getHttpStatus().value())
+                        .error(customMemberErrorCode.getHttpStatus().name())
+                        .code(customMemberErrorCode.name())
+                        .message(customMemberErrorCode.getMessage())
                         .build());
     }
 }

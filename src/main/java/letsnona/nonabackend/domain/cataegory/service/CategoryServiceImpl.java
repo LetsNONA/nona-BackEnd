@@ -6,6 +6,8 @@ import letsnona.nonabackend.domain.cataegory.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class CategoryServiceImpl implements CategoryService{
@@ -16,4 +18,16 @@ public class CategoryServiceImpl implements CategoryService{
         Category category = new Category(requestAddCategory);
         categoryRepository.save(category);
     }
+
+    public boolean existCategory(String categoryCode){
+        Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(categoryCode);
+        return byCategoryCode.isPresent();
+    }
+    public Category getCategory(String categoryCode){
+        Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(categoryCode);
+        if(byCategoryCode.isPresent())
+            return byCategoryCode.get();
+
+    }
+
 }

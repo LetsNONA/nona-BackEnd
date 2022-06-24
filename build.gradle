@@ -41,8 +41,8 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:2.6.4'
     //mysql
     implementation 'mysql:mysql-connector-java'
-    //h2 test scope
-    runtimeOnly 'com.h2database:h2'
+  /*  //h2 test scope
+    runtimeOnly 'com.h2database:h2'*/
 
 // https://mvnrepository.com/artifact/org.qlrm/qlrm
     implementation group: 'org.qlrm', name: 'qlrm', version: '3.0.4'
