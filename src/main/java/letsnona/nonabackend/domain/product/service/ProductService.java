@@ -23,7 +23,7 @@ import java.util.List;
 
 public interface ProductService {
     @Transactional
-    ProductAddResponseDTO saveProduct(ProductAddRequestDTO productAddRequestDTO, List<MultipartFile> imgList);
+    ProductAddResponseDTO saveProduct(Member member,ProductAddRequestDTO productAddRequestDTO);
 
     @Transactional
     Page<ProductReadResDTO> getProductReadResDTOS(Page<Product> postPage);

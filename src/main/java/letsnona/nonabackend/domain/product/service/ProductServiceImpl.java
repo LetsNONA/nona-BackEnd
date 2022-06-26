@@ -3,6 +3,7 @@ package letsnona.nonabackend.domain.product.service;
 
 import letsnona.nonabackend.domain.cataegory.entity.Category;
 import letsnona.nonabackend.domain.cataegory.repository.CategoryRepository;
+import letsnona.nonabackend.domain.cataegory.service.CategoryService;
 import letsnona.nonabackend.domain.file.dto.PostImgRequestDTO;
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.file.repository.PostImgRepository;
@@ -44,21 +45,23 @@ public class ProductServiceImpl implements ProductService {
     private final PostImgRepository imgRepository;
     private final FileService fileService;
     private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
     private final MemberService memberService;
 
     @Override
-    public ProductAddResponseDTO saveProduct(ProductAddRequestDTO postDTO, List<MultipartFile> imgList) {
-        Member requestUser = memberService.getRequestUser();
-        postDTO.setOwner(requestUser);
+    public ProductAddResponseDTO saveProduct(Member member, ProductAddRequestDTO postDTO) {
+        //Member requestUser = memberService.getRequestUser();
+        postDTO.setOwner(member);
 
         /*TODO
          *  Optional Refactoring *********
          * */
+        Product product = postDTO.toEntity();
 
-        Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(postDTO.getCategoryCode());
-        Product product = postDTO.toEntity(byCategoryCode.get());
+        if (categoryService.existCategory(postDTO.getCategoryCode()))
+            product.changeCategory(categoryService.getCategory(postDTO.getCategoryCode()));
 
-        List<PostImgRequestDTO> postImgRequestDTOList = fileService.saveImage(imgList);
+        List<PostImgRequestDTO> postImgRequestDTOList = fileService.saveImage(postDTO.getFile());
         List<PostImg> postImgEntityList = postImgRequestDTOList.stream()
                 .map(PostImgRequestDTO::toEntity).collect(Collectors.toList());
 
@@ -81,11 +84,6 @@ public class ProductServiceImpl implements ProductService {
         byId.ifPresent(post -> {
             if (isPostOwner(post, memberService.getRequestUser()))
                 post.updatePost(postDTO);
-
-//            if (postDTO.getCategory() != null) {
-//                Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(postDTO.getCategory().getCategoryCode());
-//                byCategoryCode.ifPresent(post::updateCategory);
-//            }
         });
         return new ProductAddResponseDTO(byId.get());
 
@@ -125,11 +123,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
-
     @Override
     public Page<ProductReadResDTO> getProductByCategory(String categoryCode, Pageable pageable) {
         Optional<Category> byCategoryCode = categoryRepository.findByCategoryCode(categoryCode);
-        Page<Product> byCategory = productRepository.findByCategoryAndProductState(pageable, byCategoryCode.get(),ProductState.SELL);
+        Page<Product> byCategory = productRepository.findByCategoryAndProductState(pageable, byCategoryCode.get(), ProductState.SELL);
         return getProductReadResDTOS(byCategory);
     }
 

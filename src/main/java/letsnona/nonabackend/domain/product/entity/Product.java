@@ -79,6 +79,9 @@ public class Product extends BaseTimeEntity {
         this.getImages().add(img);
     }
 
+    public void changeCategory(Category category){
+        this.category = category;
+    }
     public void increaseHit() {
         this.hit++;
     }

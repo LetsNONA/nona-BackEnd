@@ -8,8 +8,8 @@ import letsnona.nonabackend.domain.product.dto.ProductStateCountDTO;
 import letsnona.nonabackend.domain.product.dto.SellProductRatioDTO;
 import letsnona.nonabackend.domain.product.repository.CustomProductRepositoryImpl;
 import letsnona.nonabackend.domain.product.repository.ProductRepository;
-import letsnona.nonabackend.global.exception.member.CustomMemberErrorCode;
-import letsnona.nonabackend.global.exception.member.CustomMemberException;
+import letsnona.nonabackend.global.exception.CustomErrorCode;
+import letsnona.nonabackend.global.exception.CustomException;
 import letsnona.nonabackend.global.security.auth.PrincipalDetails;
 import letsnona.nonabackend.global.security.dto.*;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -96,7 +96,7 @@ public class MemberServiceImpl implements MemberService {
     public Member JoinMember(Member member, List<MultipartFile> file) {
         member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
         member.setRoles("ROLE_USER");
-        member.setMemberState(MemberState.LOCKED);
+        member.setMemberState(MemberState.SUCCESS); /*TODO - 상태값 시연전에 꼭바꿔라*/
         member.updateAge(calculateAge(member.getBirthday()));
         //  memberRepository.save(member);
         MemberImgRequestDTO memberImgRequestDTO = fileService.saveMemberImg(file);
@@ -104,8 +104,8 @@ public class MemberServiceImpl implements MemberService {
         member.setOriginalName(memberImgRequestDTO.getOriginalName());
         member.setOriginalImgSrc(memberImgRequestDTO.getOriginalImgSrc());
         member.setThumbImgSrc(memberImgRequestDTO.getThumbImgSrc());
-        if(memberRepository.existsByUsernameOrNickName(member.getUsername(),member.getNickName())) {
-            throw new CustomMemberException(CustomMemberErrorCode.DUPLICATE_ID_OR_NICKNAME);
+        if (memberRepository.existsByUsernameOrNickName(member.getUsername(), member.getNickName())) {
+            throw new CustomException(CustomErrorCode.DUPLICATE_ID_OR_NICKNAME);
         }
 
         return memberRepository.save(member);
@@ -115,7 +115,7 @@ public class MemberServiceImpl implements MemberService {
     public ExchangeResponse exchangeMoney(ExchangeRequest exchangeMoney) {
         Member member = memberRepository.findByUsername(getRequestUser().getUsername());
         if (member.getPoint() < exchangeMoney.getExchangeMoney()) {
-            throw new CustomMemberException(CustomMemberErrorCode.NOT_CHANGE_MONEY);
+            throw new CustomException(CustomErrorCode.NOT_CHANGE_MONEY);
         }
         member.decreasePoint(exchangeMoney.getExchangeMoney());
         String response = "남아있는 포인트 : " + member.getPoint();
@@ -124,16 +124,16 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public String isDuplicateId(String username) {
-        if(memberRepository.existsByUsername(username)) {
-            throw new CustomMemberException(CustomMemberErrorCode.DUPLICATE_ID);
+        if (memberRepository.existsByUsername(username)) {
+            throw new CustomException(CustomErrorCode.DUPLICATE_ID);
         }
         return "사용가능한 아이디입니다.";
     }
 
     @Override
     public String isDuplicateNickname(String nickname) {
-        if(memberRepository.existsByNickName(nickname)) {
-            throw new CustomMemberException(CustomMemberErrorCode.DUPLICATE_NICKNAME);
+        if (memberRepository.existsByNickName(nickname)) {
+            throw new CustomException(CustomErrorCode.DUPLICATE_NICKNAME);
         }
         return "사용가능한 닉네임입니다.";
     }
@@ -148,12 +148,12 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberInfoUpdateResponse memberInfoUpdate(MemberInfoUpdateRequest memberIUR) {
         Member member = memberRepository.findByUsername(getRequestUser().getUsername());
-        if(!memberIUR.getPassword().equals(memberIUR.getPasswordConfirm())) {
-            throw new CustomMemberException(CustomMemberErrorCode.NOT_MATCH_PASSWORD);
+        if (!memberIUR.getPassword().equals(memberIUR.getPasswordConfirm())) {
+            throw new CustomException(CustomErrorCode.NOT_MATCH_PASSWORD);
         }
-        member.memberInfoUpdate(memberIUR.getUsername(),memberIUR.getNickname(),
-                bCryptPasswordEncoder.encode(memberIUR.getPassword()),memberIUR.getEmail(),
-                memberIUR.getBirthday(),memberIUR.getPhoneNumber(),memberIUR.getZipCode());
+        member.memberInfoUpdate(memberIUR.getUsername(), memberIUR.getNickname(),
+                bCryptPasswordEncoder.encode(memberIUR.getPassword()), memberIUR.getEmail(),
+                memberIUR.getBirthday(), memberIUR.getPhoneNumber(), memberIUR.getZipCode());
         return new MemberInfoUpdateResponse(member);
     }
 }

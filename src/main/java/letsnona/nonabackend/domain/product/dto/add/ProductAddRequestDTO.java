@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -24,16 +27,15 @@ public class ProductAddRequestDTO {
     private String hashTag;
     private boolean flagCourierFee;
     //private List<PostImgRequestDTO> images = new ArrayList<>(); // 임시 이미지 아이디, join 필요
+    private List<MultipartFile> file;
 
-
-    public Product toEntity(Category category){
+    public Product toEntity() {
         return Product.builder()
                 .id(id)
                 .owner(owner)
                 .title(title)
                 .content(content)
                 .tradePlace(tradePlace)
-                .category(category)
                 .price(price)
                 .hashTag(hashTag)
                 .flagCourierFee(flagCourierFee)
