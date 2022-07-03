@@ -1,6 +1,7 @@
 package letsnona.nonabackend.global.security.controller;
 
 import letsnona.nonabackend.global.security.repository.MemberRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
+@Disabled
 @AutoConfigureMockMvc
-
 class MemberControllerUnitTest {
     @Autowired
     private MockMvc mockMvc;
@@ -27,6 +28,7 @@ class MemberControllerUnitTest {
     MemberRepository memberRepository;
 
     @Test
+
     void getHome() throws Exception {
 
         mockMvc.perform(get("/home"))
@@ -34,6 +36,7 @@ class MemberControllerUnitTest {
     }
 
     @Test
+
         @WithUserDetails(value = "testId")
 //    @WithMockUser(username = "admin", password = "admin") class 타입이 달라서 casting 실패
     void getUser() throws Exception {

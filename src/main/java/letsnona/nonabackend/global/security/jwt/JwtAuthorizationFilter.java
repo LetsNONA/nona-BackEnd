@@ -22,7 +22,7 @@ import java.io.IOException;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     public JwtAuthorizationFilter(AuthenticationManager authenticationManager, MemberRepository memberRepository) {
         super(authenticationManager);

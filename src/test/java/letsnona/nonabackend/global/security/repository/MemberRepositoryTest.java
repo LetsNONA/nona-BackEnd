@@ -2,6 +2,7 @@ package letsnona.nonabackend.global.security.repository;
 
 import letsnona.nonabackend.global.security.dto.chart.GenderRatioDTO;
 import letsnona.nonabackend.global.security.entity.Member;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.qlrm.mapper.JpaResultMapper;
@@ -21,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 //@DataJpaTest
 //@TestPropertySource(properties = { "spring.config.location=classpath:application-test.yml" })
 @SpringBootTest
+@Disabled
 class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
@@ -54,6 +56,7 @@ class MemberRepositoryTest {
 
     @Test
     @DisplayName("유저가입")
+    @Disabled
     void insertUser() {
         //given
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -75,6 +78,7 @@ class MemberRepositoryTest {
     }
     @Test
     @DisplayName("멤버갖고오기")
+    @Disabled
     void getUser() {
         Member test3 = memberRepository.findByUsername("test3");
         System.out.println("test3 = " + test3);
