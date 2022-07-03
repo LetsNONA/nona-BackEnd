@@ -37,6 +37,6 @@ jobs:
         arguments: build
 
     - name: Make gradlew executable
-      uses: chmod +x ./gradlew
+      run: chmod +x ./gradlew
       with:
         arguments: build
