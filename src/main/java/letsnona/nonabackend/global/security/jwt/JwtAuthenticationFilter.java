@@ -47,8 +47,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                         loginRequestDto.getUsername(),
                         loginRequestDto.getPassword());
 
-        System.out.println("JwtAuthenticationFilter : 토큰생성완료");
-
+        //AutenticationManager 를 통해 authenticate 호출시
+        // UserDetailsService 에 loadUserByUsername 실행
         Authentication authentication =
                 authenticationManager.authenticate(authenticationToken);
 
@@ -63,6 +63,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
 
+        //인증된 user 갖고오기
         PrincipalDetails principalDetailis = (PrincipalDetails) authResult.getPrincipal();
 
         String jwtToken = JWT.create()

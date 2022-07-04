@@ -1,5 +1,7 @@
 package letsnona.nonabackend.global.security.auth;
 
+import letsnona.nonabackend.global.exception.CustomErrorCode;
+import letsnona.nonabackend.global.exception.CustomException;
 import letsnona.nonabackend.global.security.entity.Member;
 import letsnona.nonabackend.global.security.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,8 @@ public class PrincipalDetailsService implements UserDetailsService {
         System.out.println("PrincipalDetailsService : 진입");
         Member member = memberRepository.findByUsername(username);
 
+        if(member == null)
+            throw new CustomException(CustomErrorCode.NOT_EXISTS_ID);
         // session.setAttribute("loginUser", user);
         return new PrincipalDetails(member);
     }

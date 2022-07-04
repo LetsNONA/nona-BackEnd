@@ -1,12 +1,9 @@
 package letsnona.nonabackend.domain.product.service;
 
-import letsnona.nonabackend.domain.cataegory.entity.Category;
 import letsnona.nonabackend.domain.cataegory.repository.CategoryRepository;
 import letsnona.nonabackend.domain.cataegory.service.CategoryService;
-import letsnona.nonabackend.domain.file.dto.PostImgRequestDTO;
 import letsnona.nonabackend.domain.file.repository.PostImgRepository;
 import letsnona.nonabackend.domain.file.service.FileService;
-import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddResponseDTO;
 import letsnona.nonabackend.domain.product.dto.update.ProductUpdateRequestDTO;
 import letsnona.nonabackend.domain.product.entity.Product;
@@ -19,22 +16,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -72,7 +61,8 @@ class ProductServiceImplTest {
     }
 
     @Test
-    @DisplayName("제품_업데이트_성공") // 어떻것ㅇ ㅣ 반환된다
+    @DisplayName("제품_업데이트_성공")
+        // 어떻것ㅇ ㅣ 반환된다
     void 제품_업데이트_성공() {
         //given
         Member member = Member.builder()
@@ -93,10 +83,11 @@ class ProductServiceImplTest {
                 .content("after_content")
                 .build();
 
+
         //when
         when(productRepository.findById(anyLong())).thenReturn(originalProduct); // 있는지 제품 포스트
         when(memberService.getRequestUser()).thenReturn(member); // 요청 유저반환
-        doReturn(Boolean.TRUE).when(productService).isPostOwner(any(Product.class),any(Member.class));
+        doReturn(Boolean.TRUE).when(productService).isPostOwner(any(Product.class), any(Member.class));
         //when(productService.isPostOwner(any(Product.class),any(Member.class))).thenReturn(Boolean.TRUE);
         ProductAddResponseDTO productAddResponseDTO = productService.updateProduct(afterUpdateProduct);
 
