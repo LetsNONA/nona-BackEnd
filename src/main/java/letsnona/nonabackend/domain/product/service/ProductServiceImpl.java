@@ -28,7 +28,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -59,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = postDTO.toEntity();
 
         if (categoryService.existCategory(postDTO.getCategoryCode()))
-            product.changeCategory(categoryService.getCategory(postDTO.getCategoryCode()));
+            product.setCategory(categoryService.getCategory(postDTO.getCategoryCode()));
 
         List<PostImgRequestDTO> postImgRequestDTOList = fileService.saveImage(postDTO.getFile());
         List<PostImg> postImgEntityList = postImgRequestDTOList.stream()

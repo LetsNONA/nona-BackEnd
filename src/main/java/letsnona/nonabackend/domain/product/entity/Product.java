@@ -3,7 +3,6 @@ package letsnona.nonabackend.domain.product.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import letsnona.nonabackend.domain.cataegory.entity.Category;
 import letsnona.nonabackend.domain.file.entity.PostImg;
-import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
 import letsnona.nonabackend.domain.product.dto.update.ProductUpdateRequestDTO;
 import letsnona.nonabackend.domain.product.enums.ProductState;
 import letsnona.nonabackend.domain.review.entity.Review;
@@ -79,7 +78,7 @@ public class Product extends BaseTimeEntity {
         this.getImages().add(img);
     }
 
-    public void changeCategory(Category category){
+    public void setCategory(Category category){
         this.category = category;
     }
     public void increaseHit() {
