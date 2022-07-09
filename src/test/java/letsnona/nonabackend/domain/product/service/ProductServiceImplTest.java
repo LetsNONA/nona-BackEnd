@@ -64,7 +64,7 @@ class ProductServiceImplTest {
     @DisplayName("제품_업데이트_성공")
         // 어떻것ㅇ ㅣ 반환된다
     void 제품_업데이트_성공() {
-        //given =
+        //given 
         Member member = Member.builder()
                 .id(1)
                 .username("kangheon")
