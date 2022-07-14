@@ -2,6 +2,10 @@ package letsnona.nonabackend.domain.file.service;
 
 import letsnona.nonabackend.domain.file.dto.MemberImgRequestDTO;
 import letsnona.nonabackend.domain.file.dto.PostImgRequestDTO;
+import letsnona.nonabackend.domain.file.entity.PostImg;
+import letsnona.nonabackend.domain.file.repository.PostImgRepository;
+import letsnona.nonabackend.domain.product.entity.Product;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
@@ -19,16 +23,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class FileServiceImpl implements FileService {
 
     /*TODO
-    *  - 리팩토링해야된다.... */
+     *  - 리팩토링해야된다.... */
      /* @Value("${file.path}")
       private String filePath;*/
 //    private final String filePath = File.separator + "storage";
+
+    private final PostImgRepository imgRepository;
 
     @Override
     public String getSaveDirectoryPath() {
@@ -159,11 +167,11 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public List<PostImgRequestDTO> saveImage(List<MultipartFile> multipartFiles) {
+    public List<PostImg> saveImage(List<MultipartFile> multipartFiles, Product savedProduct) {
         UUID uuid = UUID.randomUUID();
 
         List<PostImgRequestDTO> requestDTOList = new ArrayList<>();
-
+        List<PostImg> savedProductImgs = new ArrayList<>();
         for (MultipartFile file : multipartFiles
         ) {
 
@@ -183,11 +191,22 @@ public class FileServiceImpl implements FileService {
                 makeTumbnail(target, postImgRequestDTO);
                 //responseDTOList
                 requestDTOList.add(postImgRequestDTO);
+
+                List<PostImg> postImgEntityList = requestDTOList.stream()
+                        .map(PostImgRequestDTO::toEntity).collect(Collectors.toList());
+
+                for (PostImg img : postImgEntityList) {
+                    savedProduct.addImg(img);
+                }
+
+                savedProductImgs = imgRepository.saveAll(postImgEntityList);
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return requestDTOList;
+        return savedProductImgs;
     }
 
 

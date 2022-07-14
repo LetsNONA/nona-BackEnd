@@ -4,7 +4,6 @@ package letsnona.nonabackend.domain.product.service;
 import letsnona.nonabackend.domain.cataegory.entity.Category;
 import letsnona.nonabackend.domain.cataegory.repository.CategoryRepository;
 import letsnona.nonabackend.domain.cataegory.service.CategoryService;
-import letsnona.nonabackend.domain.file.dto.PostImgRequestDTO;
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.file.repository.PostImgRepository;
 import letsnona.nonabackend.domain.file.service.FileService;
@@ -48,31 +47,21 @@ public class ProductServiceImpl implements ProductService {
     private final MemberService memberService;
 
     @Override
-    public ProductAddResponseDTO saveProduct(Member member, ProductAddRequestDTO postDTO) {
-        //Member requestUser = memberService.getRequestUser();
-        postDTO.setOwner(member);
+    public ProductAddResponseDTO saveProduct(Member requestUser, ProductAddRequestDTO postDTO) {
 
-        /*TODO
-         *  Optional Refactoring *********
-         * */
+        postDTO.setOwner(requestUser);
         Product product = postDTO.toEntity();
 
         if (categoryService.existCategory(postDTO.getCategoryCode()))
             product.setCategory(categoryService.getCategory(postDTO.getCategoryCode()));
 
-        List<PostImgRequestDTO> postImgRequestDTOList = fileService.saveImage(postDTO.getFile());
-        List<PostImg> postImgEntityList = postImgRequestDTOList.stream()
-                .map(PostImgRequestDTO::toEntity).collect(Collectors.toList());
+        Product savedProduct = productRepository.save(product);
 
-        for (PostImg img : postImgEntityList
-        ) {
-            product.addImg(img);
-        }
-
-        imgRepository.saveAll(postImgEntityList);
-
+        List<PostImg> savedImgs = fileService.saveImage(postDTO.getFile(), savedProduct);
+        product.setImgList(savedImgs);
         return new ProductAddResponseDTO(product);
     }
+
 
     @Override
     public ProductAddResponseDTO updateProduct(ProductUpdateRequestDTO postDTO) {

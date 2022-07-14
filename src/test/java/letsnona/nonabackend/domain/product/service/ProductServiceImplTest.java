@@ -1,9 +1,12 @@
 package letsnona.nonabackend.domain.product.service;
 
+import letsnona.nonabackend.domain.cataegory.entity.Category;
 import letsnona.nonabackend.domain.cataegory.repository.CategoryRepository;
 import letsnona.nonabackend.domain.cataegory.service.CategoryService;
+import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.file.repository.PostImgRepository;
 import letsnona.nonabackend.domain.file.service.FileService;
+import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddResponseDTO;
 import letsnona.nonabackend.domain.product.dto.update.ProductUpdateRequestDTO;
 import letsnona.nonabackend.domain.product.entity.Product;
@@ -21,6 +24,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,6 +62,54 @@ class ProductServiceImplTest {
 
     @Test
     void 제품등록() {
+        //given
+        Member mockRequestUser = Member.builder()
+                .id(1L)
+                .username("username")
+                .build();
+
+        Category mockCategory = new Category(1L, "cg001", "과일");
+
+        ProductAddRequestDTO requestPostDTO = ProductAddRequestDTO.builder()
+                .title("제목입니다")
+                .content("본문입니다")
+                .tradePlace("장소")
+                .categoryCode("cg001")
+                .price(500)
+                .hashTag("해쉬태그")
+                .flagCourierFee(false)
+                .build();
+
+        Product mockSavedProduct = Product.builder()
+                .id(1L)
+                .title("제목입니다")
+                .content("본문입니다")
+                .tradePlace("장소")
+                .category(mockCategory)
+                .price(500)
+                .hashTag("해쉬태그")
+                .flagCourierFee(false)
+                .build();
+
+        PostImg savedProductImg1 = new PostImg(1L, requestPostDTO.toEntity(), "orinalSrc1", "thumbSrc1", "사진명1");
+        PostImg savedProductImg2 = new PostImg(2L, requestPostDTO.toEntity(), "orinalSrc2", "thumbSrc2", "사진명2");
+
+        List<PostImg> mockSavedImgList = new ArrayList<>();
+        mockSavedImgList.add(savedProductImg1);
+        mockSavedImgList.add(savedProductImg2);
+
+
+        when(categoryService.existCategory(anyString())).thenReturn(Boolean.TRUE);
+        when(categoryService.getCategory(anyString())).thenReturn(mockCategory);
+        when(productRepository.save(any())).thenReturn(mockSavedProduct);
+        when(fileService.saveImage(any(), any())).thenReturn(mockSavedImgList);
+        ProductAddResponseDTO productAddResponseDTO = productService.saveProduct(mockRequestUser, requestPostDTO);
+
+        //then
+        assertThat(productAddResponseDTO.getId()).isNotNull();
+        assertThat(productAddResponseDTO.getTitle()).isEqualTo(mockSavedProduct.getTitle());
+        assertThat(productAddResponseDTO.getImages()).hasSize(2);
+        assertThat(productAddResponseDTO).isInstanceOf(ProductAddResponseDTO.class);
 
     }
 

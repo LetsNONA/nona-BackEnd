@@ -78,9 +78,10 @@ public class Product extends BaseTimeEntity {
         this.getImages().add(img);
     }
 
-    public void setCategory(Category category){
+    public void setCategory(Category category) {
         this.category = category;
     }
+
     public void increaseHit() {
         this.hit++;
     }
@@ -96,6 +97,10 @@ public class Product extends BaseTimeEntity {
         this.price = dto.getPrice();
         this.hashTag = dto.getHashTag();
         this.flagCourierFee = dto.isFlagCourierFee();
+    }
+
+    public void setImgList(List<PostImg> savedPostImg) {
+        this.images = savedPostImg;
     }
 
     public void updateCategory(Category byCategoryCode) {
