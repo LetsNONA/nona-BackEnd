@@ -42,7 +42,7 @@ public class ProductController {
 
     @GetMapping("/cicd")
     public String cicdTest(){
-        return "성공";
+        return "실행완료";
     }
 
     @PostMapping("/user/api/product")
