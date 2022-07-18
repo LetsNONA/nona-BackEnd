@@ -13,3 +13,19 @@ services:
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
+      -
+  jenkins:
+    privileged: true
+    build: .
+    restart: always
+    ports:
+      - "9080:8080"
+      - "50010:50000"
+    expose:
+      - "8080"
+      - "50000"
+    volumes:
+      - './jenkins_home:/var/jenkins_home'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    environment:
+      TZ: "Asia/Seoul"
