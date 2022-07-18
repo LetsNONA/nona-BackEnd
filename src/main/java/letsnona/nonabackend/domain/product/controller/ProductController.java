@@ -11,14 +11,11 @@ import letsnona.nonabackend.domain.product.repository.CustomProductRepositoryImp
 import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import letsnona.nonabackend.domain.product.service.ProductService;
 import letsnona.nonabackend.global.security.auth.PrincipalDetails;
-import letsnona.nonabackend.global.security.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,11 +33,16 @@ public class ProductController {
     private final CategoryRepository categoryRepository;
 
 
-    @GetMapping("/test")
+ /*   @GetMapping("/test")
     public void hello(@AuthenticationPrincipal PrincipalDetails member) {
 
         System.out.println("member = " + member);
-        /*TODo - Authentication*/
+        *//*TODo - Authentication*//*
+    }*/
+
+    @GetMapping("/cicd")
+    public String cicdTest(){
+        return "성공";
     }
 
     @PostMapping("/user/api/product")

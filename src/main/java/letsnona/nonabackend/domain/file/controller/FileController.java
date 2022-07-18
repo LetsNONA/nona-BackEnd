@@ -23,8 +23,5 @@ public class FileController {
         return productService.getRespIMG(decodeFilePath);
     }
 
-  @GetMapping("/test")
-    public String cicdTest(){
-        return "성공";
-  }
+
 }
