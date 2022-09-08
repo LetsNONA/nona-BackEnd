@@ -81,7 +81,7 @@ public class MemberServiceImpl implements MemberService {
 
         for (CountOfProductSellListAndPriceDTO list : countOfProductSellList
         ) {
-            totalPrice += (list.getPrice().intValue() * list.getCnt().intValue());
+            totalPrice += (list.getPrice() * list.getCnt().intValue());
         }
 
         sellProductRatioDTO.setTrading(trading);

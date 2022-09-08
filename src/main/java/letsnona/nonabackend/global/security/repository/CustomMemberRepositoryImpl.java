@@ -1,5 +1,6 @@
 package letsnona.nonabackend.global.security.repository;
 
+import letsnona.nonabackend.global.security.dto.MemberRecommendProductDTO;
 import letsnona.nonabackend.global.security.dto.chart.AgeRatioDTO;
 import letsnona.nonabackend.global.security.dto.chart.GenderRatioDTO;
 import org.qlrm.mapper.JpaResultMapper;
@@ -35,6 +36,42 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
                 " END AS age_group,count(*) cnt " +
                 " FROM member Group by age_group");
         return jpaResultMapper.list(nativeQuery, AgeRatioDTO.class);
+    }
+
+    @Override
+    public List<MemberRecommendProductDTO> getRecommendProduct(int memberSeq){
+        JpaResultMapper jpaResultMapper = new JpaResultMapper();
+        Query nativeQuery = em.createNativeQuery("SELECT  " +
+                "    CASE" +
+                "        WHEN m.age >= 10 AND m.age < 20 THEN '10대' " +
+                "        WHEN m.age >= 20 AND m.age < 30 THEN '20대' " +
+                "        WHEN m.age >= 30 AND m.age < 40 THEN '30대' " +
+                "        WHEN m.age >= 40 AND m.age < 50 THEN '40대' " +
+                "        WHEN m.age >= 60 AND m.age < 70 THEN '50대' " +
+                "    END AS age_group, " +
+                "    r.product_id, " +
+                "    COUNT(*) AS 'cnt' " +
+                "FROM " +
+                "    review r " +
+                "        JOIN " +
+                "    member m ON r.owner_id = m.id " +
+                "GROUP BY age_group , r.product_id " +
+                "HAVING age_group = (SELECT  " +
+                "        CASE " +
+                "                WHEN m.age >= 10 AND m.age < 20 THEN '10대' " +
+                "                WHEN m.age >= 20 AND m.age < 30 THEN '20대' " +
+                "                WHEN m.age >= 30 AND m.age < 40 THEN '30대' " +
+                "                WHEN m.age >= 40 AND m.age < 50 THEN '40대' " +
+                "                WHEN m.age >= 60 AND m.age < 70 THEN '50대' " +
+                "            END AS age_group " +
+                "    FROM " +
+                "        member m " +
+                "    WHERE " +
+                "        id =  " + memberSeq +
+                ") ORDER BY COUNT(*) DESC " +
+                "LIMIT 3");
+
+        return jpaResultMapper.list(nativeQuery, MemberRecommendProductDTO.class);
     }
 
 }

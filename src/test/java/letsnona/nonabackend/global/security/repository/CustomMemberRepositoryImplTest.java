@@ -1,5 +1,6 @@
 package letsnona.nonabackend.global.security.repository;
 
+import letsnona.nonabackend.global.security.dto.MemberRecommendProductDTO;
 import letsnona.nonabackend.global.security.dto.chart.AgeRatioDTO;
 import letsnona.nonabackend.global.security.dto.chart.GenderRatioDTO;
 import org.junit.jupiter.api.Disabled;
@@ -26,5 +27,14 @@ class CustomMemberRepositoryImplTest {
     void countMemberAge() {
         List<AgeRatioDTO> ageStatisticsDTOS = customMemberRepository.getAgeRatio();
         System.out.println("ageStatisticsDTOS = " + ageStatisticsDTOS);
+    }
+
+    @Test
+    void getRecommendProduct(){
+        List<MemberRecommendProductDTO> recommendProduct = customMemberRepository.getRecommendProduct(10);
+        for (MemberRecommendProductDTO dto: recommendProduct
+             ) {
+            System.out.println("dto = " + dto.toString());
+        }
     }
 }
