@@ -10,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest
 @Disabled
 class CustomMemberRepositoryImplTest {
@@ -32,9 +34,11 @@ class CustomMemberRepositoryImplTest {
     @Test
     void getRecommendProduct(){
         List<MemberRecommendProductDTO> recommendProduct = customMemberRepository.getRecommendProduct(10);
+       assertThat(recommendProduct).hasSize(3);
         for (MemberRecommendProductDTO dto: recommendProduct
              ) {
-            System.out.println("dto = " + dto.toString());
+            System.out.println("dto.toString() = " + dto.toString());
         }
+
     }
 }
