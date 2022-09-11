@@ -10,6 +10,6 @@ public interface CustomMemberRepository {
     List<GenderRatioDTO> getGenderRatio();
     List<AgeRatioDTO> getAgeRatio();
 
-     List<MemberRecommendProductDTO> getRecommendProduct(int memberSeq);
+     List<MemberRecommendProductDTO> getRecommendProduct(Long memberSeq);
 
 }

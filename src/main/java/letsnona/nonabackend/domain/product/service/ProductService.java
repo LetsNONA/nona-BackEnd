@@ -9,13 +9,13 @@ import letsnona.nonabackend.domain.product.dto.update.ProductUpdateRequestDTO;
 import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
 import letsnona.nonabackend.domain.review.entity.Review;
+import letsnona.nonabackend.global.security.dto.MemberRecommendProductDTO;
 import letsnona.nonabackend.global.security.entity.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,6 +31,7 @@ public interface ProductService {
     @Transactional
     Page<ProductReadResDTO> getAllProduct(Pageable pageable);
 
+    List<MemberRecommendProductDTO> getRecommendProductList(Member reqUser);
     @Transactional
     Page<ProductReadResDTO> getProductByCategory(String categoryCode, Pageable pageable);
 

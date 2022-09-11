@@ -18,7 +18,9 @@ import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
 import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.domain.review.enums.TradeState;
+import letsnona.nonabackend.global.security.dto.MemberRecommendProductDTO;
 import letsnona.nonabackend.global.security.entity.Member;
+import letsnona.nonabackend.global.security.repository.CustomMemberRepository;
 import letsnona.nonabackend.global.security.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
@@ -45,6 +47,7 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
     private final CategoryService categoryService;
     private final MemberService memberService;
+    private final CustomMemberRepository customMemberRepository;
 
     @Override
     public ProductAddResponseDTO saveProduct(Member requestUser, ProductAddRequestDTO postDTO) {
@@ -87,6 +90,12 @@ public class ProductServiceImpl implements ProductService {
             List<ProductReadResReviewDTO> reviewDTOList = getReviewEntityToDTO(post.getReviews());
             return new ProductReadResDTO(post, imgDTOList, reviewDTOList);
         });
+    }
+
+    @Override
+    public List<MemberRecommendProductDTO> getRecommendProductList(Member reqUser){
+
+        return customMemberRepository.getRecommendProduct(reqUser.getId());
     }
 
     @Override

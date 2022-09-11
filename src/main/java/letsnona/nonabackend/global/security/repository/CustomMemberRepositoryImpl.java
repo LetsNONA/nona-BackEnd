@@ -39,7 +39,7 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
     }
 
     @Override
-    public List<MemberRecommendProductDTO> getRecommendProduct(int memberSeq) {
+    public List<MemberRecommendProductDTO> getRecommendProduct(Long memberSeq) {
         JpaResultMapper jpaResultMapper = new JpaResultMapper();
         Query nativeQuery = em.createNativeQuery("SELECT  " +
                 "    CASE" +

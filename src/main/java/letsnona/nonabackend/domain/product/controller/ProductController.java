@@ -11,6 +11,7 @@ import letsnona.nonabackend.domain.product.repository.CustomProductRepositoryImp
 import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import letsnona.nonabackend.domain.product.service.ProductService;
 import letsnona.nonabackend.global.security.auth.PrincipalDetails;
+import letsnona.nonabackend.global.security.dto.MemberRecommendProductDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -52,6 +53,12 @@ public class ProductController {
         postDTO.setFile(file);
         return productService.saveProduct(member.getUser(), postDTO);
     }
+
+    @GetMapping("/user/api/recommend_product")
+  public List<MemberRecommendProductDTO> getRecommendProductList (@AuthenticationPrincipal PrincipalDetails member){
+        return productService.getRecommendProductList(member.getUser());
+    }
+
 
     @PutMapping("/user/api/product")
     public ProductAddResponseDTO updateProduct(@RequestBody ProductUpdateRequestDTO postDTO) {

@@ -33,7 +33,7 @@ class CustomMemberRepositoryImplTest {
 
     @Test
     void getRecommendProduct(){
-        List<MemberRecommendProductDTO> recommendProduct = customMemberRepository.getRecommendProduct(10);
+        List<MemberRecommendProductDTO> recommendProduct = customMemberRepository.getRecommendProduct(10L);
        assertThat(recommendProduct).hasSize(3);
         for (MemberRecommendProductDTO dto: recommendProduct
              ) {
