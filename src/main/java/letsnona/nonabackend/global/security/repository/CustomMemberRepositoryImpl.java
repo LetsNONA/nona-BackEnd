@@ -61,6 +61,8 @@ public class CustomMemberRepositoryImpl implements CustomMemberRepository {
                 "   product p ON r.product_id = p.id " +
                 "      LEFT  JOIN " +
                 "   post_img img ON r.product_id = img.id " +
+                "      WHERE " +
+                "    r.trade_state = 'COMPLETED' " +
                 "GROUP BY age_group , r.product_id " +
                 "HAVING age_group = (SELECT  " +
                 "        CASE " +

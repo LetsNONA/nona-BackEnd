@@ -39,7 +39,7 @@ public interface ProductService {
     ProductAddResponseDTO updateProduct(ProductUpdateRequestDTO postDTO);
 
     @Transactional
-    Page<ProductReadResDTO> getSearchProduct(String keyword, Pageable pageable);
+                                                     Page<ProductReadResDTO> getSearchProduct(String keyword, Pageable pageable);
 
     @Transactional
     Page<ProductReadResDTO> getSearchForOwner(Pageable pageable);
