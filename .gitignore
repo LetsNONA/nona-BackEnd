@@ -11,6 +11,9 @@ build/
 #src/main/resources/application-jwt.yml
 #JwtProperties.java
 
+### SMS KEY###
+/src/main/resources/application-SMS.yml
+
 ### STS ###
 .apt_generated
 .classpath
@@ -31,6 +34,7 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+
 
 ### NetBeans ###
 /nbproject/private/

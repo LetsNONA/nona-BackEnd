@@ -1,6 +1,7 @@
 package letsnona.nonabackend.domain.product.service;
 
 import letsnona.nonabackend.domain.file.entity.PostImg;
+import letsnona.nonabackend.domain.product.dto.CategoryRecommendProductDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddResponseDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
@@ -23,7 +24,7 @@ import java.util.List;
 
 public interface ProductService {
     @Transactional
-    ProductAddResponseDTO saveProduct(Member member,ProductAddRequestDTO productAddRequestDTO);
+    ProductAddResponseDTO saveProduct(Member member, ProductAddRequestDTO productAddRequestDTO);
 
     @Transactional
     Page<ProductReadResDTO> getProductReadResDTOS(Page<Product> postPage);
@@ -32,6 +33,7 @@ public interface ProductService {
     Page<ProductReadResDTO> getAllProduct(Pageable pageable);
 
     List<MemberRecommendProductDTO> getRecommendProductList(Member reqUser);
+
     @Transactional
     Page<ProductReadResDTO> getProductByCategory(String categoryCode, Pageable pageable);
 
@@ -39,10 +41,11 @@ public interface ProductService {
     ProductAddResponseDTO updateProduct(ProductUpdateRequestDTO postDTO);
 
     @Transactional
-                                                     Page<ProductReadResDTO> getSearchProduct(String keyword, Pageable pageable);
+    Page<ProductReadResDTO> getSearchProduct(String keyword, Pageable pageable);
 
     @Transactional
     Page<ProductReadResDTO> getSearchForOwner(Pageable pageable);
+
     @Transactional
     ProductReadResDTO getProductDetails(long index);
 
@@ -58,5 +61,6 @@ public interface ProductService {
 
     boolean isPostOwner(Product product, Member requestMember);
 
+    List<CategoryRecommendProductDTO> getCategoryRecommendProduct(String categoryCode);
 
 }

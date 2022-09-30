@@ -19,24 +19,23 @@ class CustomMemberRepositoryImplTest {
     CustomMemberRepository customMemberRepository;
 
     @Test
-
     void getGenderRatio() {
         List<GenderRatioDTO> genderRatio = customMemberRepository.getGenderRatio();
         System.out.println("genderRatio = " + genderRatio);
     }
-    @Test
 
+    @Test
     void countMemberAge() {
         List<AgeRatioDTO> ageStatisticsDTOS = customMemberRepository.getAgeRatio();
         System.out.println("ageStatisticsDTOS = " + ageStatisticsDTOS);
     }
 
     @Test
-    void getRecommendProduct(){
+    void getRecommendProduct() {
         List<MemberRecommendProductDTO> recommendProduct = customMemberRepository.getRecommendProduct(10L);
-       assertThat(recommendProduct).hasSize(3);
-        for (MemberRecommendProductDTO dto: recommendProduct
-             ) {
+        assertThat(recommendProduct).hasSize(3);
+        for (MemberRecommendProductDTO dto : recommendProduct
+        ) {
             System.out.println("dto.toString() = " + dto.toString());
         }
 

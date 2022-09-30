@@ -7,6 +7,7 @@ import letsnona.nonabackend.domain.cataegory.service.CategoryService;
 import letsnona.nonabackend.domain.file.entity.PostImg;
 import letsnona.nonabackend.domain.file.repository.PostImgRepository;
 import letsnona.nonabackend.domain.file.service.FileService;
+import letsnona.nonabackend.domain.product.dto.CategoryRecommendProductDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddResponseDTO;
 import letsnona.nonabackend.domain.product.dto.read.ProductReadResDTO;
@@ -14,6 +15,7 @@ import letsnona.nonabackend.domain.product.dto.read.ProductReadResImgDTO;
 import letsnona.nonabackend.domain.product.dto.update.ProductUpdateRequestDTO;
 import letsnona.nonabackend.domain.product.entity.Product;
 import letsnona.nonabackend.domain.product.enums.ProductState;
+import letsnona.nonabackend.domain.product.repository.CustomProductRepositoryImpl;
 import letsnona.nonabackend.domain.product.repository.ProductRepository;
 import letsnona.nonabackend.domain.review.dto.ProductReadResReviewDTO;
 import letsnona.nonabackend.domain.review.entity.Review;
@@ -48,6 +50,7 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryService categoryService;
     private final MemberService memberService;
     private final CustomMemberRepository customMemberRepository;
+    private final CustomProductRepositoryImpl customProductRepository;
 
     @Override
     public ProductAddResponseDTO saveProduct(Member requestUser, ProductAddRequestDTO postDTO) {
@@ -184,5 +187,9 @@ public class ProductServiceImpl implements ProductService {
         return product.getOwner().getUsername().equals(requestMember.getUsername());
     }
 
+    @Override
+    public List<CategoryRecommendProductDTO> getCategoryRecommendProduct(String categoryCode){
+        return customProductRepository.getCategoryProductsRecommend(categoryCode);
+    }
 
 }

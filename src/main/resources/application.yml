@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include: local, security, app, file, fetch
+    include: local, security, app, file, fetch, SMS
 
 server:
   tomcat:

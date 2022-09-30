@@ -41,6 +41,9 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:2.6.4'
     //mysql
     implementation 'mysql:mysql-connector-java'
+
+    //SMS (solapi)
+    implementation 'net.nurigo:sdk:4.2.4'
   /*  //h2 test scope
     runtimeOnly 'com.h2database:h2'*/
 
