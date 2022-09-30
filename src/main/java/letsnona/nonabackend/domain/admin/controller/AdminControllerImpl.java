@@ -6,10 +6,7 @@ import letsnona.nonabackend.domain.admin.dto.PieChartDTO;
 import letsnona.nonabackend.domain.admin.service.AdminService;
 import letsnona.nonabackend.global.security.entity.Member;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +14,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminControllerImpl {
     private  final AdminService adminService;
+
+    @GetMapping("/api/point/increase")
+    public void increasePoint(@RequestParam String fee,@RequestParam String targetName){
+        adminService.IncreasePoint(fee,targetName);
+    }
 
     @GetMapping("/api/allMember")
     public List<Member> getAllMember() {

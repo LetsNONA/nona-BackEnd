@@ -2,6 +2,9 @@ package letsnona.nonabackend.domain.admin.service;
 
 import letsnona.nonabackend.domain.admin.dto.*;
 import letsnona.nonabackend.domain.admin.repository.CustomReviewRepository;
+import letsnona.nonabackend.domain.point.dto.PointRequestDTO;
+import letsnona.nonabackend.domain.point.enums.PointState;
+import letsnona.nonabackend.domain.point.repository.PointRepository;
 import letsnona.nonabackend.domain.review.dto.MyReviewRespDTO;
 import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.global.security.dto.chart.AgeRatioDTO;
@@ -25,6 +28,7 @@ public class AdminServiceImpl implements AdminService {
     private final CustomMemberRepository customMemberRepository;
     private final MemberRepository memberRepository;
     private final CustomReviewRepository customReviewRepository;
+    private final PointRepository pointRepository;
 
     public List<Member> findAllMember() {
         return memberRepository.findAll();
@@ -52,6 +56,22 @@ public class AdminServiceImpl implements AdminService {
         Member byUsername = memberRepository.findByUsername(username);
         byUsername.updateMemberSate(MemberState.SUCCESS);
         return byUsername;
+    }
+
+    @Override
+    public void IncreasePoint(String fee,String targetName) {
+
+        Member byUsername = memberRepository.findByUsername(targetName);
+
+        PointRequestDTO pointRequestDTO = new PointRequestDTO();
+        pointRequestDTO.setOwner(byUsername);
+        pointRequestDTO.setPointState(PointState.INCREASE);
+
+
+
+        byUsername.increasePoint(Integer.parseInt(fee));
+        pointRepository.save(pointRequestDTO.toEntity());
+
     }
 
     @Override

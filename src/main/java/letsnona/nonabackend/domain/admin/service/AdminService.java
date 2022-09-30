@@ -27,6 +27,7 @@ Member findByUsername(String username);
 
     @Transactional
     List<BrokenChartDTO> getBrokenChartData();
+    void IncreasePoint(String fee,String targetName);
 
 
 

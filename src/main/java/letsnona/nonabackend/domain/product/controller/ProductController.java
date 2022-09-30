@@ -1,6 +1,7 @@
 package letsnona.nonabackend.domain.product.controller;
 
 import letsnona.nonabackend.domain.cataegory.repository.CategoryRepository;
+import letsnona.nonabackend.domain.product.dto.CategoryRecommendProductDTO;
 import letsnona.nonabackend.domain.product.dto.CreateDateProductCountDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddRequestDTO;
 import letsnona.nonabackend.domain.product.dto.add.ProductAddResponseDTO;
@@ -52,6 +53,11 @@ public class ProductController {
             , @RequestPart(value = "file") List<MultipartFile> file) {
         postDTO.setFile(file);
         return productService.saveProduct(member.getUser(), postDTO);
+    }
+
+    @GetMapping("/category_recommend_product")
+    public List<CategoryRecommendProductDTO> getRecommendProductList ( @RequestParam String categoryCode){
+        return productService.getCategoryRecommendProduct(categoryCode);
     }
 
     @GetMapping("/user/api/recommend_product")
