@@ -96,7 +96,7 @@ public class MemberServiceImpl implements MemberService {
     public Member JoinMember(Member member, List<MultipartFile> file) {
         member.setPassword(bCryptPasswordEncoder.encode(member.getPassword()));
         member.setRoles("ROLE_USER");
-        member.setMemberState(MemberState.SUCCESS); /*TODO - 상태값 시연전에 꼭바꿔라*/
+        member.setMemberState(MemberState.LOCKED); /*TODO - 상태값 시연전에 꼭바꿔라*/
         member.updateAge(calculateAge(member.getBirthday()));
         //  memberRepository.save(member);
         MemberImgRequestDTO memberImgRequestDTO = fileService.saveMemberImg(file);

@@ -5,8 +5,6 @@ import letsnona.nonabackend.domain.admin.repository.CustomReviewRepository;
 import letsnona.nonabackend.domain.point.dto.PointRequestDTO;
 import letsnona.nonabackend.domain.point.enums.PointState;
 import letsnona.nonabackend.domain.point.repository.PointRepository;
-import letsnona.nonabackend.domain.review.dto.MyReviewRespDTO;
-import letsnona.nonabackend.domain.review.entity.Review;
 import letsnona.nonabackend.global.security.dto.chart.AgeRatioDTO;
 import letsnona.nonabackend.global.security.dto.chart.GenderRatioDTO;
 import letsnona.nonabackend.global.security.entity.Member;
@@ -14,7 +12,6 @@ import letsnona.nonabackend.global.security.entity.enums.MemberState;
 import letsnona.nonabackend.global.security.repository.CustomMemberRepository;
 import letsnona.nonabackend.global.security.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -86,6 +83,11 @@ public class AdminServiceImpl implements AdminService {
         return parseRespBarChartDTO(ageRatioDTOS);
     }
 
+    public List<BarChartDTO> getCategory() {
+        List<AgeRatioDTO> ageRatioDTOS = customMemberRepository.getAgeRatio();
+        return parseRespBarChartDTO(ageRatioDTOS);
+    }
+
     @Override
     public List<BrokenChartDTO> getBrokenChartData() {
         List<BrokenChartCompletedData> completed = customReviewRepository.getReviewBrokenCompletedChartData("COMPLETED");
@@ -140,6 +142,11 @@ public class AdminServiceImpl implements AdminService {
         return pieChartDTOList;
     }
 
+    @Override
+    public List<BarChartCategoryReport> getCompletedTransactForCateogry(String categoryCode, String startDay, String endDay){
+       return customReviewRepository.getCompletedTransactForCateogry(categoryCode, startDay, endDay);
+
+    }
     @Override
     public List<BarChartDTO> parseRespBarChartDTO(List<AgeRatioDTO> dtoList) {
         /*Todo

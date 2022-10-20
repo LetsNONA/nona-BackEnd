@@ -1,5 +1,6 @@
 package letsnona.nonabackend.domain.admin.controller;
 
+import letsnona.nonabackend.domain.admin.dto.BarChartCategoryReport;
 import letsnona.nonabackend.domain.admin.dto.BarChartDTO;
 import letsnona.nonabackend.domain.admin.dto.BrokenChartDTO;
 import letsnona.nonabackend.domain.admin.dto.PieChartDTO;
@@ -47,6 +48,12 @@ public class AdminControllerImpl {
     public List<BarChartDTO> getAgeRatio() {
         return adminService.getBarChartData();
     }
+
+    @GetMapping("/api/completedTransact/category")
+    public List<BarChartCategoryReport> getCompletedTransactForCateogry(@RequestParam String categoryCode, @RequestParam String startDay, @RequestParam String endDay){
+        return adminService.getCompletedTransactForCateogry(categoryCode,startDay,endDay);
+    }
+
 
     @GetMapping("/api/reviewRatio")
     public List<BrokenChartDTO> getReviewRatio() {

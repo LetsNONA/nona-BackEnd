@@ -1,5 +1,6 @@
 package letsnona.nonabackend.domain.admin.service;
 
+import letsnona.nonabackend.domain.admin.dto.BarChartCategoryReport;
 import letsnona.nonabackend.domain.admin.dto.BarChartDTO;
 import letsnona.nonabackend.domain.admin.dto.BrokenChartDTO;
 import letsnona.nonabackend.domain.admin.dto.PieChartDTO;
@@ -25,6 +26,7 @@ public interface AdminService {
     @Transactional
 Member findByUsername(String username);
 
+    public List<BarChartCategoryReport> getCompletedTransactForCateogry(String categoryCode, String startDay, String endDay);
     @Transactional
     List<BrokenChartDTO> getBrokenChartData();
     void IncreasePoint(String fee,String targetName);

@@ -1,5 +1,6 @@
 package letsnona.nonabackend.domain.admin.repository;
 
+import letsnona.nonabackend.domain.admin.dto.BarChartCategoryReport;
 import letsnona.nonabackend.domain.admin.dto.BrokenChartCompletedData;
 import letsnona.nonabackend.domain.admin.dto.BrokenChartTradingData;
 import org.qlrm.mapper.JpaResultMapper;
@@ -37,4 +38,17 @@ public class CustomReviewRepositoryImpl implements CustomReviewRepository {
                 "    group by left(created_date,10);");
         return jpaResultMapper.list(nativeQuery, BrokenChartTradingData.class);
     }
+    @Override
+    public List<BarChartCategoryReport> getCompletedTransactForCateogry(String categoryCode, String startDay, String endDay) {
+        JpaResultMapper jpaResultMapper = new JpaResultMapper();
+        Query nativeQuery = em.createNativeQuery("SELECT count(a.id) as 'cnt' ,a.trade_completed_date as 'date' FROM review a\n" +
+                "   JOIN product b ON a.product_id = b.id\n" +
+                "   JOIN category c ON b.category_id = c.id\n" +
+                "WHERE trade_state = 'COMPLETED'" +
+                "   AND c.category_code = '"+categoryCode+"'" +
+                "    AND a.trade_completed_date between '" + startDay+ "' AND '"+endDay+"'" +
+                "group by c.id,trade_completed_date");
+        return jpaResultMapper.list(nativeQuery, BarChartCategoryReport.class);
+    }
+
 }
